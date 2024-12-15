@@ -8,7 +8,41 @@ dash.register_page(__name__, path='/Course')
 
 # Charger le fichier CSV
 dt = pd.read_csv('resultat_course.csv')  # Remplace par ton fichier CSV
+dt['level'] = dt['level'].replace({
+    'Rég': 'Régional',
+    'Nat': 'National',
+    'Int': 'Interrégional',
+    'Dép': 'Départemental'
+})
+ligue_mapping = {
+    "NORM": "Normandie",
+    "NOR": "Normandie",
+    "BFC": "Bourgogne-Franche-Comté",
+    "OCC": "Occitanie",
+    "N-A": "Nouvelle-Aquitaine",
+    "PAC": "Provence-Alpes-Côte d'Azur",
+    "CEN": "Centre-Val de Loire",
+    "P-L": "Pays de la Loire",
+    "H-F": "Hauts-de-France",
+    "IDF": "Île-de-France",
+    "I-F": "Île-de-France", 
+    "ARA": "Auvergne-Rhône-Alpes",
+    "BRE": "Bretagne",
+    "GE": "Grand Est",
+    "G-E": "Grand Est",
+    "NAQ": "Nouvelle-Aquitaine",
+    "COR": "Corse",
+    "GUY": "Guyane",
+    "GUA": "Guadeloupe",
+    "MAR": "Martinique",
+    "REU": "La Réunion",
+    "MAY": "Mayotte"
+}
 
+
+
+# Remplacement de la colonne Ligue par les abréviations
+dt["ligue1"] = dt["ligue"].map(ligue_mapping)
 # Champs de recherche
 search_fields = [
     {'id': 'search-name', 'placeholder': 'Nom de la Course', 'column': 'competition_name', 'type': 'text'},
@@ -53,7 +87,7 @@ layout = html.Div([
                 {"name": "Date", "id": "date"},
                 {"name": "Nom", "id": "competition_name"},
                 {"name": "Lieu", "id": "location"},
-                {"name": "Ligue", "id": "ligue"},
+                {"name": "Ligue", "id": "ligue1"},
                 {"name": "Type", "id": "competition_type"},
                 {"name": "Niveau", "id": "level"},
                 {"name": "Distances", "id": "distance"},
