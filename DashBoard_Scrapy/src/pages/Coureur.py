@@ -8,13 +8,16 @@ dash.register_page(__name__, path='/')
 
 # Charger le fichier CSV
 dt = pd.read_csv('unlimited_results.csv')  # Remplace par ton fichier CSV
+dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
+#print(dt[(dt['vitesse']<5) & (dt['rank'] != "-") & (dt['time'] != "-") & (dt['time'] != "- qi")])
 
 # Liste des champs de recherche
 search_fields = [
-    {'id': 'search-name', 'placeholder': 'Nom', 'column': 'athlete'},
-    {'id': 'search-club', 'placeholder': 'Club', 'column': 'club'},
-    {'id': 'search-cross', 'placeholder': 'Date', 'column': 'date'},
-    {'id': 'search-department', 'placeholder': 'Distance', 'column': 'distance'}
+    {'id': 'search-name', 'placeholder': 'Nom', 'column': 'athlete', 'type': 'text'},
+    {'id': 'search-club', 'placeholder': 'Club', 'column': 'club', 'type': 'text'},
+    {'id': 'search-data', 'placeholder': 'Date (J/M/A(2 derniers chiffres))', 'column': 'date', 'type': 'text'},
+    {'id': 'search-distance-min', 'placeholder': 'Distance minimale', 'column': 'distance_min', 'type': 'number'},
+    {'id': 'search-distance-max', 'placeholder': 'Distance maximale', 'column': 'distance_max', 'type': 'number'}
 ]
 
 # Fonction pour formater le temps en H:M:S à partir de Minute_Time
@@ -43,7 +46,7 @@ def format_speed(value):
 # Layout pour la page d'accueil
 layout = html.Div([
     Header(),
-    
+    Navbar(),
     html.H1("Bienvenue sur la page d'accueil", style={'textAlign': 'center'}),
 
     # Barres de recherche
@@ -51,7 +54,7 @@ layout = html.Div([
         html.Div([
             dcc.Input(
                 id=field['id'],
-                type='text',
+                type=field['type'],
                 placeholder=field['placeholder'],
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             )
@@ -106,15 +109,27 @@ def update_search_result(n_clicks, *args):
         
         # Filtrage des données
         filtered_data = dt.copy()
+
+        # Appliquer les filtres standards
         for column, value in filters.items():
+            if column == 'distance_min':
+                continue
+            if column == 'distance_max':
+                continue
             filtered_data = filtered_data[filtered_data[column].astype(str).str.contains(value, na=False, case=False)]
-        
+
+        # Filtrer par plage de distances
+        if 'distance_min' in filters:
+            filtered_data = filtered_data[filtered_data['distance'] >= float(filters['distance_min'])]
+        if 'distance_max' in filters:
+            filtered_data = filtered_data[filtered_data['distance'] <= float(filters['distance_max'])]
+
         # Préparer les résultats pour le tableau
         if not filtered_data.empty:
             filtered_data['formatted_time'] = filtered_data['Minute_Time'].apply(format_time_from_minutes)
             filtered_data['formatted_speed'] = filtered_data['vitesse'].apply(format_speed)
 
-            table_data = filtered_data[['rank','athlete', 'club', 'date', 'competition_name', 'formatted_time', 'formatted_speed', 'distance']].to_dict('records')
+            table_data = filtered_data[['rank', 'athlete', 'club', 'date', 'competition_name', 'formatted_time', 'formatted_speed', 'distance']].to_dict('records')
         else:
             table_data = []
 

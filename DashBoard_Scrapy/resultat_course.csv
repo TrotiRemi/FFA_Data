@@ -1,0 +1,266 @@
+competition_name,distance,date,competition_type,location,ligue,department,type,level,Nombre_Coureur
+ 1/4 de finale des championnats de france de cross,"2460.0, 2830.0, 3830.0, 4760.0, 6130.0, 7060.0, 8800.0",28/01/24,Cross,Saran,CEN,45.0,,Rég,1157
+1/2 de finale des championnats de france u16-u18-u20-u23,"10200.0, 3640.0, 4140.0, 5320.0, 6080.0, 7760.0",18/02/24,Cross,Challans,P-L,85.0,,Int,1998
+1/2 finale de cross des hauts-de-france,"2310.0, 3590.0, 4260.0, 5190.0, 5540.0, 6560.0, 7260.0, 9210.0, 9560.0",18/02/24,Cross,Arras,H-F,62.0,,Int,1895
+1/2 finale des championnats de france cross (i-f),"4050.0, 4482.0, 5187.0, 7060.0, 7492.0, 9797.0",18/02/24,Cross,Saint pierre les nemours,I-F,77.0,,Int,1887
+1/2 finale des championnats de france de cross,"3560.0, 4360.0, 5460.0, 6720.0, 7980.0, 9700.0",18/02/24,Cross,Chateauvillain,G-E,52.0,,Int,1502
+1/2 finale des championnats de france de cross country,"3930.0, 4290.0, 5410.0, 7130.0, 7810.0, 9970.0",18/02/24,Cross,Saint james,NOR,50.0,,Int,1948
+1/2 finale des championnats de france de cross-country,"3575.0, 4285.0, 5300.0, 6720.0, 7735.0, 9815.0",18/02/24,Cross,Aix les bains,ARA,73.0,,Int,1556
+1/2 finale des chpts de france de cross,"2973.0, 4052.0, 4676.0, 5637.0, 6925.0, 8001.0, 9707.0",18/02/24,Cross,Carcassonne,OCC,11.0,,Int,1327
+1/2 finales lana,"3820.0, 4220.0, 5020.0, 5420.0, 7040.0, 7860.0, 9880.0",18/02/24,Cross,Cherves richemont,N-A,16.0,,Int,1217
+1/4 de finale des championnats de france u14-u16-u18-u20,"2640.0, 3090.0, 3520.0, 3820.0, 4700.0, 5570.0, 6750.0, 8800.0",04/02/24,Cross,Pontchateau,P-L,44.0,,Rég,2162
+1/4 de finale zone sud,"2510.0, 3150.0, 3850.0, 4490.0, 5890.0, 6530.0, 7230.0, 8570.0",28/01/24,Cross,Capbreton,N-A,40.0,,Rég,1124
+1/4 de finales zone nord,"2500.0, 3090.0, 3580.0, 3870.0, 4560.0, 4950.0, 5640.0, 6330.0, 7310.0, 8680.0",28/01/24,Cross,Montendre,N-A,17.0,,Rég,944
+1/4 finale des championnats de france de cross-country,"2840.0, 3000.0, 3465.0, 4105.0, 4695.0, 4965.0, 6700.0, 7770.0, 8950.0, 9850.0",04/02/24,Cross,Le mesnil sous jumieges,NOR,76.0,,Rég,1581
+1/4 finale des chpts de france de cross zone est,"2840.0, 3220.0, 3880.0, 4920.0, 6480.0, 7900.0, 9080.0",28/01/24,Cross,Ales,OCC,30.0,Cham,Rég,656
+1/4 finale des chpts de france de cross zone ouest,"2800.0, 3300.0, 4000.0, 5100.0, 6600.0, 7500.0, 9300.0",28/01/24,Cross,Lau balagnas,OCC,65.0,Cham,Rég,745
+19eme cross de la cigogne,"0.0, 1500.0, 2000.0, 4000.0, 5000.0",20/10/24,Cross,Le lamentin,MAR,972.0,Meet,Rég,239
+20ème cross rené arcuset,"0.0, 1000.0, 2420.0, 3510.0, 4600.0, 6020.0, 8530.0",17/11/24,Cross,Montauban,OCC,82.0,Meet,Nat,744
+2nd cross de l'as fac,"1500.0, 2500.0, 3200.0, 3500.0, 4500.0",17/11/24,Cross,Le francois,MAR,972.0,Meet,Rég,228
+34ème cross d'aubagne,"1450.0, 1940.0, 2670.0, 3680.0, 4690.0, 5540.0, 6550.0, 8410.0, 9260.0",24/11/24,Cross,Aubagne,PCA,13.0,Meet,Rég,716
+3ème cross d'uzès,"2400.0, 3400.0, 4400.0, 5400.0",17/03/24,Cross,Uzes,OCC,30.0,Meet,Dép,101
+42ème cross du plan d'eau,"1490.0, 220.0, 2500.0, 3421.0, 4611.0, 5853.0, 635.0, 7098.0, 8285.0",17/11/24,Cross,Dompierre sur besbre,ARA,3.0,Meet,Rég,346
+46ème challenge international de cross jean-vidal,"1421.0, 1999.0, 2517.0, 4547.0, 8565.0, 984.0",10/11/24,Cross,Lescure d'albigeois,OCC,81.0,Meet,Rég,487
+4è rohsy cross,"1500.0, 2150.0, 4300.0, 8600.0",03/02/24,Cross,Morsbronn les bains,G-E,67.0,Meet,Dép,196
+52e cross national du 11-novembre,"1000.0, 10500.0, 1210.0, 19000.0, 2070.0, 2420.0, 2930.0, 3140.0, 3290.0, 4000.0, 5860.0, 8430.0",11/11/24,Cross,Chartres,CEN,28.0,Meet,Nat,1079
+52ème cross du tour du lac de saint ferreol,"180.0, 2182.0, 3399.0, 4616.0, 6686.0, 9972.0",25/02/24,Cross,Revel,OCC,31.0,Meet,Rég,124
+59eme cross de simencourt,"1150.0, 2500.0, 3400.0, 4250.0, 7750.0",11/02/24,Cross,Simencourt,H-F,62.0,Meet,Dép,133
+60ème cross de bagnols sur ceze,"0.0, 2400.0, 2920.0, 3340.0, 4150.0, 6220.0, 800.0, 8120.0",01/12/24,Cross,Bagnols sur ceze,OCC,30.0,Meet,Rég,417
+Animation cross,1370.0,14/01/24,Cross,Pre en pail,P-L,53.0,Anim,Dép,31
+Animation relais cross ea-po,"500.0, 800.0",17/02/24,Cross,Liffre,BRE,35.0,Anim,Dép,440
+Aturun,10000.0,04/05/24,Cross,Aire sur l'adour,N-A,40.0,Meet,Dép,98
+Cd60 - championnats de l'oise de cross-country,"1455.0, 2775.0, 3523.0, 3860.0, 4103.0, 4561.0, 6047.0, 7132.0, 8623.0",28/01/24,Cross,Meru,H-F,60.0,Cham,Dép,522
+Cd60 - kid's cross - beauvais,"1300.0, 1400.0",17/02/24,Cross,Beauvais,H-F,60.0,Anim,Dép,133
+Cd60 - kid's cross - cauffry,1500.0,13/01/24,Cross,Cauffry,H-F,60.0,Anim,Dép,64
+Cd60 - kid's cross compiègne,"2680.0, 4020.0",06/01/24,Cross,Compiegne,H-F,60.0,Anim,Dép,27
+Challenge carrington,"1240.0, 2160.0, 2470.0, 2990.0, 4000.0, 5050.0, 6060.0, 7110.0, 8950.0, 930.0",11/11/24,Cross,Louviers,NOR,27.0,Meet,Nat,1634
+Challenge endurance ea po,1500.0,24/01/24,Cross,Tourcoing,H-F,59.0,Anim,Dép,90
+Challenge endurance ea wambrechies,,,Cross,Wambrechies,H-F,59.0,Anim,Dép,0
+Challenge guy petard,"1070.0, 1270.0, 2690.0, 4010.0, 5530.0, 600.0, 6650.0, 7090.0",14/01/24,Cross,Perignat les sarlieve,ARA,63.0,Meet,Dép,406
+Challenge hivernal ea-po auch,"120.0, 150.0, 200.0",09/03/24,Cross,Auch,OCC,32.0,Meet,Dép,59
+Challenge hivernal ea-po-be condom,"1000.0, 150.0, 200.0",03/02/24,Cross,Condom,OCC,32.0,Meet,Dép,53
+Challenge hivernal ea-po-be l'isle-jourdain,"120.0, 150.0, 200.0",21/01/24,Cross,L'isle jourdain,OCC,32.0,Meet,Dép,62
+Championnat 71 de cross court,3620.0,25/02/24,Cross,Tournus,BFC,71.0,,Dép,14
+Championnat d'allier de cross,"1120.0, 3000.0, 4020.0, 5920.0, 6820.0, 7820.0",14/01/24,Cross,Montlucon,ARA,3.0,,Dép,272
+Championnat de bretagne de cross country,"2590.0, 3510.0, 4110.0, 5030.0, 5630.0, 6850.0, 7330.0, 9190.0",28/01/24,Cross,Merdrignac,BRE,22.0,,Rég,2159
+Championnat de correze de cross,"1430.0, 2670.0, 3730.0, 4510.0, 6350.0, 8190.0",14/01/24,Cross,Aubazines,N-A,19.0,,Dép,211
+Championnat de corse de cross - memorial a. lemoal,"1240.0, 2440.0, 3000.0, 3440.0, 3850.0, 4490.0, 4850.0, 5670.0, 5900.0, 620.0, 9310.0",28/01/24,Cross,Ajaccio,COR,201.0,Meet,Dép,297
+Championnat de cross gironde 2024 et pouss'cross ea po,"1000.0, 1116.0, 2411.0, 2946.0, 3171.0, 3706.0, 3823.0, 4048.0, 4583.0, 5460.0, 6755.0, 8392.0",14/01/24,Cross,Merignac,N-A,33.0,,Dép,1333
+Championnat de cross guyane,"2000.0, 2500.0, 3000.0, 3500.0, 5000.0, 6500.0, 7000.0, 8500.0",06/01/24,Cross,Matoury,GUY,973.0,,Rég,64
+Championnat de la loire de cross-country,"2600.0, 2860.0, 3330.0, 3800.0, 4060.0, 4530.0, 6010.0, 6930.0, 8390.0",14/01/24,Cross,Villars,ARA,42.0,,Dép,367
+Championnat de la vienne de cross country,"1000.0, 2800.0, 3170.0, 3600.0, 4370.0, 5570.0, 6800.0, 8340.0",07/01/24,Cross,Poitiers,N-A,86.0,Cham,Dép,280
+Championnat de moselle,"2540.0, 2700.0, 3820.0, 6200.0, 6220.0, 800.0, 8620.0",07/01/24,Cross,Yutz,G-E,57.0,,Dép,353
+Championnat departemental de cross,"1430.0, 1490.0, 2490.0, 2670.0, 3065.0, 3410.0, 3460.0, 4210.0, 4750.0, 5600.0, 5970.0, 6350.0, 6890.0, 7130.0, 8585.0",07/01/24,Cross,Grand champ,BRE,56.0,Meet,Dép,974
+Championnat departemental de cross country,"1080.0, 2560.0, 3350.0, 4935.0, 8090.0",06/01/24,Cross,Saint germain du bel air,OCC,46.0,Meet,Dép,180
+Championnat departemental de cross de la somme,"4000.0, 4500.0, 6000.0, 7070.0, 8400.0",28/01/24,Cross,Abbeville,H-F,80.0,,Dép,167
+Championnat des ardennes de cross,"1185.0, 1780.0, 2255.0, 3325.0, 4380.0, 5435.0, 555.0, 8035.0",07/01/24,Cross,Vrigne aux bois,G-E,8.0,,Dép,473
+Championnat drome ardèche de cross,"1360.0, 2430.0, 2730.0, 3200.0, 3970.0, 5000.0, 6800.0, 8480.0",14/01/24,Cross,Valence,ARA,26.0,,Dép,313
+Championnat du finistère de cross-country,"1150.0, 2870.0, 3000.0, 3330.0, 3960.0, 4440.0, 5250.0, 6340.0, 8410.0",14/01/24,Cross,Quimper,BRE,29.0,,Dép,958
+Championnat du nord de cross ea/po/be/mi zone métropole/,"1200.0, 2500.0, 3100.0, 3500.0",27/01/24,Cross,Gravelines,H-F,59.0,,Dép,379
+Championnat du nord de cross jeunes zone valenciennois e,"1490.0, 2830.0, 3380.0, 3970.0, 4000.0, 4360.0, 5890.0, 6380.0, 8220.0",28/01/24,Cross,Raismes,H-F,59.0,,Dép,983
+Championnat du vaucluse de cross,"1360.0, 2430.0, 2730.0, 3200.0, 3970.0, 5000.0, 6800.0, 8480.0",14/01/24,Cross,Valence,ARA,26.0,,Dép,237
+Championnat départemental  de cross fsgt,"1125.0, 1675.0, 2075.0, 2625.0, 3025.0, 3525.0, 5375.0, 7625.0",06/01/24,Cross,Bolbec,NOR,76.0,Meet,Dép,65
+Championnat départemental de cross,"1420.0, 1500.0, 2450.0, 2480.0, 3390.0, 3450.0, 3900.0, 4040.0, 4590.0, 500.0, 6510.0, 6600.0, 6800.0, 8250.0, 8840.0, 930.0",07/01/24,Cross,Saint pardoux,N-A,87.0,Cham,Dép,570
+Championnat départemental de cross (yonne),"1320.0, 2782.0, 3305.0, 4167.0, 5415.0, 6904.0, 8498.0, 953.0",14/01/24,Cross,Venoy,BFC,89.0,,Dép,197
+Championnat départemental de cross country cda76,"1450.0, 2690.0, 2950.0, 3440.0, 3930.0, 4830.0, 5850.0, 7090.0, 8480.0",14/01/24,Cross,Forges les eaux,NOR,76.0,,Dép,696
+Championnat départemental de cross de l'herault,"1000.0, 2500.0, 3300.0, 3700.0, 4500.0, 6100.0, 7200.0, 8000.0",14/01/24,Cross,Saint mathieu de treviers,OCC,34.0,,Dép,533
+Championnat départemental de cross-country,"1370.0, 2830.0, 3200.0, 3920.0, 4290.0, 5750.0, 6410.0, 8160.0",14/01/24,Cross,Brinay,CEN,18.0,,Dép,417
+Championnat départemental val de marne,"1000.0, 1360.0, 2500.0, 3030.0, 3600.0, 3700.0, 3920.0, 5310.0, 6400.0, 7800.0, 8120.0",14/01/24,Cross,Champigny sur marne,I-F,94.0,,Dép,1163
+Championnats 54 55 de cross,"1260.0, 2660.0, 3000.0, 4080.0, 4560.0, 6680.0, 8800.0",07/01/24,Cross,Dombasle sur meurthe,G-E,54.0,,Dép,474
+Championnats 77 de cross tc,"2900.0, 3100.0, 4050.0, 6250.0, 7200.0, 8450.0",14/01/24,Cross,Pontault combault,I-F,77.0,Cham,Dép,972
+Championnats alpes de cross-country,"2770.0, 3220.0, 3900.0, 3920.0, 4250.0, 4930.0, 6430.0, 7110.0, 8940.0",28/01/24,Cross,L'isle d'abeau,ARA,38.0,Cham,Rég,886
+Championnats aura de relais cross,,,Cross,Echirolles,ARA,38.0,Cham,Rég,0
+Championnats aveyron cross country,"2300.0, 3420.0, 3890.0, 4220.0, 5530.0, 6230.0, 8850.0, 910.0",14/01/24,Cross,Villefranche de rouergue,OCC,12.0,,Dép,150
+Championnats cea zone est de cross contry,"1575.0, 2985.0, 3585.0, 3795.0, 4395.0, 4995.0, 6150.0, 7305.0, 765.0, 9270.0",14/01/24,Cross,Neuf brisach,G-E,68.0,Meet,Dép,366
+Championnats de bretagne de cross ugsel,"1840.0, 2280.0, 3380.0, 4340.0, 5880.0",27/11/24,Cross,Pontivy,BRE,56.0,Cham,Rég,1781
+Championnats de france de cross-country,"2230.0, 4000.0, 4460.0, 4500.0, 4730.0, 5460.0, 5960.0, 7690.0, 9190.0, 9920.0",09/03/24,Cross,Le garric,OCC,81.0,,Nat,4132
+Championnats de france de cross-country ffsa,"1000.0, 2000.0, 4000.0, 5000.0",02/03/24,Cross,Cholet,P-L,49.0,,Nat,355
+Championnats de france ff sport u de cross-country,"4600.0, 7110.0",05/12/24,Cross,Montauban,OCC,82.0,Cham,Nat,349
+Championnats de haute-saone de cross,"1500.0, 2650.0, 3150.0, 3650.0, 4650.0, 5650.0, 6650.0, 8650.0",14/01/24,Cross,Vaivre et montoille,BFC,70.0,,Dép,162
+Championnats de l'ain de cross jeunes,"1390.0, 2800.0, 3715.0, 865.0",07/01/24,Cross,Saint vulbas,ARA,1.0,,Dép,272
+Championnats de l'aisne de cross country,"1200.0, 2700.0, 3200.0, 3800.0, 4200.0, 6000.0, 7000.0, 8200.0",21/01/24,Cross,Villers cotterets,H-F,2.0,,Dép,429
+Championnats de l'essonne de cross,"1790.0, 2660.0, 3200.0, 3860.0, 3940.0, 4200.0, 500.0, 5570.0, 6680.0, 8270.0",13/01/24,Cross,Les ulis,I-F,91.0,,Dép,1344
+Championnats de l'isère de cross-country,"1400.0, 2550.0, 3050.0, 3550.0, 3780.0, 4550.0, 6350.0, 8500.0",14/01/24,Cross,Saint marcellin,ARA,38.0,,Dép,485
+Championnats de la manche de cross,"1200.0, 2500.0, 2900.0, 3400.0, 3900.0, 4300.0, 4800.0, 7500.0, 9200.0",14/01/24,Cross,Sourdeval,NOR,50.0,,Dép,476
+Championnats de seine saint denis  de cross court,3990.0,14/01/24,Cross,Stains,I-F,93.0,,Dép,83
+Championnats dep de cross long  de seine saint denis,"1000.0, 2860.0, 3260.0, 3990.0, 4720.0, 6270.0, 7000.0, 8550.0",14/01/24,Cross,Stains,I-F,93.0,,Dép,772
+Championnats departementaux de cross cd 47,"1400.0, 2600.0, 3100.0, 3650.0, 4150.0, 4850.0, 6400.0, 700.0, 8650.0",14/01/24,Cross,Villeneuve sur lot,N-A,47.0,,Dép,274
+Championnats departementaux de cross country,"1130.0, 2620.0, 3220.0, 3870.0, 4710.0, 5960.0, 6500.0, 7700.0, 8270.0, 850.0",14/01/24,Cross,Arnage,P-L,72.0,Cham,Dép,825
+Championnats des vosges de cross,"1000.0, 2000.0, 3000.0, 4000.0, 500.0, 6000.0, 8000.0",07/01/24,Cross,Mattaincourt,G-E,88.0,,Dép,460
+Championnats drôme ardèche de relais cross,,,Cross,Bourg saint andeol,ARA,7.0,Cham,Dép,0
+Championnats du bas-rhin de cross,"1450.0, 2800.0, 3200.0, 3800.0, 4550.0, 6300.0, 7050.0, 8050.0",07/01/24,Cross,Selestat,G-E,67.0,,Dép,495
+Championnats du tarn de cross 2024,"1050.0, 2530.0, 3530.0, 6730.0, 8330.0, 900.0",14/01/24,Cross,Albi,OCC,81.0,Meet,Dép,601
+Championnats départementaux 04 & 05 de cross,"10043.0, 2297.0, 3640.0, 4852.0, 6862.0",06/01/24,Cross,Les mees,PCA,4.0,,Dép,148
+Championnats départementaux 37 cross-country,"1260.0, 2360.0, 2960.0, 3510.0, 4470.0, 5580.0, 6690.0, 8240.0",14/01/24,Cross,Chambray les tours,CEN,37.0,,Dép,607
+Championnats départementaux 73/74  de cross-country,"2800.0, 3385.0, 4015.0, 4600.0, 5760.0, 7660.0, 8735.0",14/01/24,Cross,Albertville,ARA,73.0,Cham,Dép,611
+Championnats départementaux 75,"2316.0, 3883.0, 4096.0, 4481.0, 5989.0, 7284.0, 8579.0",14/01/24,Cross,Chaville,I-F,92.0,,Dép,758
+Championnats départementaux 92 et 75,"2316.0, 3883.0, 4096.0, 4481.0, 5989.0, 7284.0, 8579.0",14/01/24,Cross,Chaville,I-F,92.0,Cham,Dép,879
+Championnats départementaux cross,"2530.0, 3100.0, 3590.0, 4560.0, 5790.0, 6590.0, 7820.0, 900.0",07/01/24,Cross,Langres,G-E,52.0,Meet,Dép,88
+Championnats départementaux de cross,"1000.0, 2020.0, 2250.0, 2520.0, 3150.0, 3370.0, 3670.0, 3750.0, 4250.0, 4880.0, 6150.0, 6240.0, 7300.0, 8350.0",07/01/24,Cross,Saint laurent sur sevre,P-L,85.0,Cham,Dép,1328
+Championnats départementaux de cross (69) à anse,"2780.0, 3220.0, 3860.0, 4200.0, 5920.0, 6900.0, 8180.0, 8520.0",14/01/24,Cross,Anse,ARA,69.0,,Dép,878
+Championnats départementaux de cross country,"1150.0, 1200.0, 2200.0, 2350.0, 3150.0, 3400.0, 4200.0, 4350.0, 5600.0, 6350.0, 8350.0, 8400.0",07/01/24,Cross,Issoudun,CEN,36.0,Meet,Dép,940
+Championnats départementaux de cross du var,"2470.0, 3060.0, 3747.0, 3749.0, 4220.0, 6220.0, 9540.0",14/01/24,Cross,Ollieres,PCA,83.0,,Dép,643
+Championnats départementaux de cross-country,"1350.0, 1500.0, 2640.0, 2650.0, 2980.0, 3007.0, 3510.0, 3715.0, 3870.0, 4030.0, 4105.0, 4230.0, 4420.0, 5007.0, 5530.0, 6040.0, 6220.0, 7180.0, 8360.0, 8470.0, 9280.0",07/01/24,Cross,Saint vulbas,ARA,1.0,,Dép,912
+Championnats départementaux de cross-country 2023-2024,"1500.0, 2550.0, 2850.0, 3150.0, 3700.0, 4050.0, 4550.0, 5900.0, 6000.0, 7050.0, 7950.0, 8100.0",13/01/24,Cross,Opio,PCA,6.0,,Dép,821
+Championnats genevois de cross (sui),5000.0,10/02/24,Cross,Collonges bellerive (SUI),,0.0,Cham,Rég,7
+Championnats ille et vilaine de cross country,"1965.0, 3005.0, 3665.0, 4705.0, 6025.0, 7015.0, 8715.0, 925.0",14/01/24,Cross,Saint onen la chapelle,BRE,35.0,,Dép,1268
+Championnats large de cross,"2570.0, 3400.0, 4050.0, 4850.0, 5920.0, 6480.0, 7280.0, 9410.0",21/01/24,Cross,Sarrebourg,G-E,57.0,,Rég,1371
+Championnats loire & volcans de cross country,"2900.0, 3400.0, 3890.0, 4900.0, 6390.0, 7390.0, 8890.0",28/01/24,Cross,Yzeure,ARA,3.0,,Rég,721
+Championnats régionaux de cross,"2490.0, 3010.0, 3410.0, 3810.0, 4750.0, 5150.0, 5970.0, 7290.0, 7310.0, 9070.0",28/01/24,Cross,Belfort,BFC,90.0,,Rég,966
+Championnats régionaux de cross-country - ile de france ,"3400.0, 3800.0, 5400.0, 6500.0, 7300.0, 9200.0",28/01/24,Cross,Clamart,I-F,92.0,,Rég,1485
+Championnats régionaux de cross-country - île-de-france ,"2800.0, 3470.0, 4130.0, 4920.0, 6600.0, 7380.0, 8950.0",28/01/24,Cross,Aulnay sous bois,I-F,93.0,Cham,Rég,1623
+Championnats régionaux de relais cross,,,Cross,Vineuil,CEN,41.0,Cham,Rég,0
+Championnats régionaux de relais cross u14-u16,0.0,17/11/24,Cross,Saran,CEN,45.0,Cham,Rég,13
+Championnats régionaux de relais cross u18-u20 et ttc,,,Cross,Amboise,CEN,37.0,,Rég,0
+Championnats vallée du rhône de cross-country,"2500.0, 3500.0, 4000.0, 5050.0, 6800.0, 7500.0, 9300.0",28/01/24,Cross,Valence,ARA,26.0,Cham,Rég,781
+Chpt départemental de cross du gers,"2200.0, 2900.0, 4800.0, 8150.0",14/01/24,Cross,L'isle de noe,OCC,32.0,,Dép,68
+Chpts 95 cross,"1476.0, 200.0, 2219.0, 2747.0, 3490.0, 4116.0, 6130.0, 8125.0",14/01/24,Cross,Argenteuil,I-F,95.0,,Dép,1118
+Chpts départ.de cross court et cross relais u18 et +,"1000.0, 2290.0, 2430.0, 4010.0",14/01/24,Cross,Reze,P-L,44.0,,Dép,782
+Course du souffle parc pastre,"13000.0, 7000.0",29/09/24,Cross,Marseille,PCA,13.0,Meet,Dép,125
+Course nature de blesmes,"1.0, 1000.0, 17300.0, 1998.0, 8000.0",20/10/24,Cross,Blesmes,H-F,2.0,Meet,Dép,155
+Cross 1/2 finale région sud/ inter comités minimes,"4170.0, 4694.0, 5620.0, 7094.0, 8020.0, 9957.0",11/02/24,Cross,Fos sur mer,PCA,13.0,,Int,1005
+Cross 1/4 finale région sud,"2690.0, 3665.0, 4095.0, 5095.0, 6500.0, 7500.0, 8930.0",28/01/24,Cross,Serres,PCA,5.0,Meet,Rég,752
+Cross athle 632 plaisance du touch,"1240.0, 2270.0, 3260.0, 500.0, 5910.0, 8560.0",01/12/24,Cross,Plaisance du touch,OCC,31.0,Meet,Rég,600
+Cross banana fit,"2500.0, 6500.0",06/01/24,Cross,Wittenheim,G-E,68.0,Meet,Dép,178
+Cross bois notre dame,"1050.0, 200.0, 2050.0, 3350.0, 3950.0, 5650.0, 7900.0",21/01/24,Cross,Auterive,OCC,31.0,Meet,Dép,162
+Cross country de tergnier,"1825.0, 200.0, 2885.0, 3495.0, 3935.0, 400.0, 5435.0, 8735.0",02/11/24,Cross,Tergnier,H-F,2.0,Meet,Rég,287
+Cross d'echirolles - 7ème édition,"2600.0, 3200.0, 3500.0, 4700.0, 6100.0, 7500.0, 7900.0",01/12/24,Cross,Echirolles,ARA,38.0,Meet,Rég,319
+Cross d'isle,"1495.0, 2500.0, 3000.0, 4000.0, 5500.0, 7000.0, 975.0",17/02/24,Cross,Isle,N-A,87.0,Meet,Dép,226
+Cross d'ouverture de fourmies,"150.0, 1500.0, 1900.0, 3020.0, 3970.0, 5480.0, 6990.0",17/11/24,Cross,Fourmies,H-F,59.0,Meet,Rég,239
+Cross de balan,"1100.0, 1500.0, 2500.0, 2900.0, 3900.0",10/02/24,Cross,Balan,ARA,1.0,Anim,Dép,160
+Cross de bayel,"1450.0, 2400.0, 3250.0, 4200.0, 5500.0, 6050.0, 700.0, 8350.0",07/01/24,Cross,Bayel,G-E,10.0,Cham,Dép,152
+Cross de bedanne,"1350.0, 3600.0, 5850.0, 8100.0",28/01/24,Cross,Tourville la riviere,NOR,76.0,Meet,Dép,166
+Cross de chantilly,"1500.0, 2690.0, 3420.0, 3960.0, 5500.0, 7960.0",17/11/24,Cross,Chantilly,H-F,60.0,Meet,Rég,288
+Cross de cloture,"1495.0, 2370.0, 3180.0, 4700.0, 6260.0, 830.0",02/03/24,Cross,Panazol,N-A,87.0,Meet,Dép,208
+Cross de jonzac,"1000.0, 4520.0",16/03/24,Cross,Jonzac,N-A,17.0,Meet,Dép,134
+Cross de l' us saintes athlétisme,"1720.0, 2200.0, 2870.0, 2874.0, 3270.0, 4456.0, 8075.0, 830.0, 915.0",17/11/24,Cross,Saintes,N-A,17.0,Meet,Rég,556
+Cross de l'aj bastia,"1300.0, 2600.0, 3900.0, 5200.0, 7800.0",15/01/24,Cross,Bastia,COR,202.0,Meet,Dép,28
+Cross de l'amicale,"1000.0, 2000.0, 3500.0, 4500.0, 6000.0, 8500.0",04/02/24,Cross,Troyes,G-E,10.0,Meet,Dép,163
+Cross de l'erduriere,"1346.0, 2662.0, 3372.0, 3452.0, 3960.0, 4670.0, 5888.0, 6678.0, 8400.0, 8404.0, 859.0",10/11/24,Cross,Coueron,P-L,44.0,Meet,Rég,1122
+Cross de la bachasse,"0.0, 2020.0, 2110.0, 2720.0, 3940.0, 5250.0, 7870.0",10/11/24,Cross,Sainte foy les lyon,ARA,69.0,Meet,Rég,900
+Cross de la chatre,"1000.0, 2000.0, 3000.0, 4000.0",20/01/24,Cross,La chatre,CEN,36.0,Meet,Dép,96
+Cross de la cite,"1809.0, 1891.0, 2610.0, 3893.0, 4965.0, 5789.0, 7557.0, 9899.0",01/12/24,Cross,Carcassonne,OCC,11.0,Meet,Rég,228
+Cross de la fraternelle de chateau gaillard    à iloa  q,"1500.0, 1800.0, 3600.0, 5400.0, 7200.0",04/02/24,Cross,Thiers,ARA,63.0,Meet,Dép,309
+Cross de la jsf,"1300.0, 1900.0, 2500.0, 3500.0",10/11/24,Cross,Le francois,MAR,972.0,Meet,Rég,168
+Cross de la loire sauvage,"1390.0, 2810.0, 4000.0, 4290.0, 4510.0, 6900.0",07/01/24,Cross,Brives charensac,ARA,43.0,Meet,Dép,163
+Cross de la sabliere,"1000.0, 11100.0, 1500.0, 2800.0, 6000.0",04/02/24,Cross,Viroflay,I-F,78.0,Meet,Dép,1096
+Cross de la saucisse,"1480.0, 2200.0, 2420.0, 4080.0",01/11/24,Cross,Anduze,OCC,30.0,Meet,Dép,158
+Cross de la seulles,"0.0, 2430.0, 3600.0, 3930.0, 6370.0, 8390.0",24/11/24,Cross,Tilly sur seulles,NOR,14.0,Meet,Rég,335
+Cross de la seyne,"1260.0, 2020.0, 2650.0, 3030.0, 3620.0, 4250.0, 500.0, 6230.0, 6850.0, 8840.0",10/11/24,Cross,La seyne sur mer,PCA,83.0,Meet,Rég,671
+Cross de la ville de saint égrève - 30ème édition,,,Cross,Saint egreve,ARA,38.0,Meet,Rég,0
+Cross de limoux,"2500.0, 3600.0, 4650.0, 5100.0, 6800.0, 8500.0",14/01/24,Cross,Limoux,OCC,11.0,Meet,Dép,104
+"Cross de muret, ch dep 31 cross","1320.0, 2760.0, 3265.0, 3540.0, 3945.0, 5910.0, 7350.0, 8535.0",14/01/24,Cross,Muret,OCC,31.0,,Dép,725
+Cross de nouzonville,"1400.0, 2700.0, 4300.0, 6300.0, 8200.0",04/02/24,Cross,Nouzonville,G-E,8.0,Meet,Dép,224
+Cross de saint georges de mons,"1000.0, 1700.0, 2500.0, 3400.0, 5000.0, 6200.0, 8700.0",21/01/24,Cross,Saint georges de mons,ARA,63.0,Meet,Dép,281
+Cross de saint-gence,"1495.0, 2440.0, 3000.0, 3940.0, 4500.0, 6000.0, 940.0",20/01/24,Cross,Saint gence,N-A,87.0,Meet,Dép,290
+Cross de tournus,"2740.0, 9380.0",25/02/24,Cross,Tournus,BFC,71.0,Cham,Dép,80
+Cross de vieux-bourg,"1055.0, 1084.0, 2110.0, 2652.0, 3165.0, 3166.0, 4220.0",27/10/24,Cross,Morne a l'eau,GUA,971.0,Meet,Dép,229
+Cross de witry-lès-reims,"1400.0, 1800.0, 2900.0, 5000.0, 800.0",10/03/24,Cross,Witry les reims,G-E,51.0,Meet,Dép,85
+Cross departemental creusois,"2700.0, 3900.0, 6500.0, 8000.0, 900.0",14/01/24,Cross,Champagnat,N-A,23.0,,Dép,89
+Cross des iles,"1000.0, 1400.0, 2100.0, 2800.0, 3000.0, 3500.0, 4800.0, 8500.0, 9500.0",01/12/24,Cross,Cannes,PCA,6.0,Meet,Rég,1274
+Cross des jeunes,"1000.0, 1080.0, 1100.0, 1690.0, 1740.0, 2000.0, 2400.0, 2560.0, 3200.0, 3480.0, 800.0",04/02/24,Cross,Saint germain du bel air,OCC,46.0,Meet,Dép,197
+Cross des jeunes challenge cd aveyron j5,"1033.0, 1733.0, 2433.0, 3833.0, 700.0",20/01/24,Cross,Saint affrique,OCC,12.0,Meet,Dép,72
+Cross des jeunes de saint michel sport,"1300.0, 1500.0, 1800.0, 2200.0, 3000.0",17/11/24,Cross,Saint michel sur orge,I-F,91.0,Meet,Rég,536
+Cross des pres de lyon,"1000.0, 1370.0, 2350.0, 4160.0, 6040.0, 700.0, 7920.0",03/03/24,Cross,La chapelle saint luc,G-E,10.0,Meet,Dép,70
+Cross des sources de varces - 29ème édition,"10000.0, 5000.0",11/02/24,Cross,Varces allieres et risset,ARA,38.0,Meet,Dép,171
+Cross des terres noires,"1500.0, 1890.0, 2860.0, 3970.0, 8505.0",11/11/24,Cross,La roche sur yon,P-L,85.0,Meet,Rég,241
+Cross des uniformes de normandie,"5000.0, 6000.0, 6690.0, 8000.0, 8920.0",12/01/24,Cross,Le havre,NOR,76.0,Meet,Dép,773
+Cross du bois de florimond,"1500.0, 2400.0, 3200.0, 4000.0, 9000.0",17/11/24,Cross,Harnes,H-F,62.0,Meet,Rég,597
+Cross du comité,"1300.0, 2400.0, 250.0, 2960.0, 3500.0, 8000.0",03/11/24,Cross,Lomme,H-F,59.0,Meet,Rég,893
+Cross du courrier,"10200.0, 1471.0, 2232.0, 3030.0, 4298.0, 5300.0, 6400.0, 6800.0, 8581.0",11/11/24,Cross,Saint barthelemy d'anjou,P-L,49.0,Meet,Nat,3718
+Cross du grand paris sud,"1000.0, 1210.0, 2060.0, 3220.0, 4000.0, 6000.0, 8950.0",24/11/24,Cross,Lisses,I-F,91.0,Meet,Nat,959
+Cross du houssay - spay,"4588.0, 6832.0, 9089.0",28/01/24,Cross,Spay,P-L,72.0,Meet,Dép,240
+Cross du moulin des temps perdu,"1490.0, 1500.0, 2533.0, 3060.0, 3920.0, 4780.0",11/02/24,Cross,Persan,I-F,95.0,Meet,Dép,177
+Cross du plan d'eau de vieure,"1200.0, 1230.0, 1970.0, 2295.0, 3850.0, 5800.0, 7350.0",03/11/24,Cross,Vieure,ARA,3.0,Meet,Dép,206
+Cross du val d'essonne,"1490.0, 2560.0, 3500.0, 6680.0, 8150.0",10/11/24,Cross,Mennecy,I-F,91.0,Meet,Rég,594
+Cross du vallon sauvage,8000.0,28/01/24,Cross,Cherbourg en cotentin,NOR,50.0,Meet,Dép,57
+Cross départemental,"100.0, 1224.0",20/01/24,Cross,Villeneuve la garenne,I-F,92.0,Cham,Dép,223
+Cross départemental cd 40 et cd 64,"1110.0, 2510.0, 3150.0, 3850.0, 4490.0, 5890.0, 6530.0, 700.0, 8570.0",14/01/24,Cross,Capbreton,N-A,40.0,,Dép,896
+Cross ea/po,"100.0, 1500.0",07/02/24,Cross,Rueil malmaison,I-F,92.0,Anim,Dép,146
+Cross ea/po/be/mi phalempin,"1225.0, 2450.0, 3675.0",11/02/24,Cross,Phalempin,H-F,59.0,Anim,Dép,140
+Cross fsgt de rânes,"1000.0, 2400.0, 4000.0, 500.0, 5000.0, 7500.0",19/10/24,Cross,Ranes,NOR,61.0,Meet,Dép,175
+Cross fsgt à argentan,"2000.0, 3000.0, 4500.0, 5800.0, 8800.0",10/02/24,Cross,Argentan,NOR,61.0,Meet,Dép,173
+Cross international hubert andre,,,Cross,Carmaux,OCC,81.0,Meet,Nat,0
+Cross le maine libre allonnes sarthe,"1000.0, 10000.0, 12000.0, 1450.0, 2100.0, 2400.0, 2490.0, 2810.0, 3100.0, 3440.0, 4070.0, 5300.0, 6010.0, 660.0, 7610.0, 840.0, 8420.0, 990.0, 995.0",13/11/24,Cross,Allonnes,P-L,72.0,Meet,Nat,8870
+Cross les galopades,890.0,28/01/24,Cross,Orvault,P-L,44.0,Meet,Dép,131
+Cross national bayard -13ème édition,"2080.0, 2540.0, 3200.0, 3890.0, 5240.0, 7710.0",17/11/24,Cross,Pontcharra,ARA,38.0,Meet,Nat,383
+Cross national des mureaux ile de france,"1060.0, 1500.0, 2550.0, 2990.0, 3270.0, 3710.0, 4055.0, 6260.0, 8500.0",01/12/24,Cross,Verneuil sur seine,I-F,78.0,Meet,Nat,1026
+Cross ouest france le mans,"10000.0, 1375.0, 1520.0, 20000.0, 2095.0, 2830.0, 3375.0, 3580.0, 5000.0, 8035.0",19/01/24,Cross,Le mans,P-L,72.0,Meet,Nat,3528
+Cross sud ouest,"2000.0, 2400.0, 3300.0, 3900.0, 4300.0, 5500.0, 7700.0, 9300.0",23/11/24,Cross,Gujan mestras,N-A,33.0,Meet,Nat,1113
+Cross uasn,"1300.0, 1900.0, 2110.0, 2500.0, 800.0",20/10/24,Cross,Anse bertrand,GUA,971.0,Meet,Dép,98
+Cross volvic elite 2024,"10400.0, 1300.0, 2610.0, 3580.0, 4230.0, 4560.0, 5200.0, 5850.0, 7810.0",16/11/24,Cross,Volvic,ARA,63.0,Meet,Nat,978
+Cross/trail xxs découverte des castors,11500.0,21/01/24,Cross,Florange,G-E,57.0,Meet,Dép,134
+Departementaux de cross,"1230.0, 1500.0, 1840.0, 2395.0, 2925.0, 3020.0, 3080.0, 3770.0, 4175.0, 4880.0, 5800.0, 6175.0, 620.0, 8620.0, 9020.0",13/01/24,Cross,Alencon,NOR,61.0,Cham,Dép,617
+Departementaux de cross country et marche nordique 2024,"1400.0, 2600.0, 3100.0, 4000.0, 6200.0, 8500.0",14/01/24,Cross,Saint esteve,OCC,66.0,,Dép,199
+Départementaux 13 de cross,"1450.0, 2630.0, 3450.0, 3460.0, 4050.0, 5250.0, 7130.0, 8520.0, 8550.0",14/01/24,Cross,Marignane,PCA,13.0,,Dép,888
+Départementaux 79,"1400.0, 1900.0, 2400.0, 3100.0, 3800.0, 6000.0, 700.0, 8400.0",14/01/24,Cross,Saint martin de sanzay,N-A,79.0,,Dép,209
+Départementaux cross long,"1200.0, 2875.0, 3634.0, 3680.0, 538.0, 5971.0, 6017.0, 8354.0",13/01/24,Cross,Soues,OCC,65.0,,Dép,227
+Départementaux de cross,"1350.0, 2780.0, 3250.0, 3720.0, 4130.0, 6420.0, 6890.0, 8240.0",14/01/24,Cross,Ruelle sur touvre,N-A,16.0,Cham,Dép,316
+Départementaux de cross - épreuves annexes : open et mar,"5178.0, 950.0",14/01/24,Cross,Vernon,NOR,27.0,Meet,Dép,193
+Départementaux de cross 09,"1200.0, 200.0, 2500.0, 3500.0, 4000.0, 4500.0, 6000.0, 7000.0, 8500.0",14/01/24,Cross,Pamiers,OCC,9.0,,Dép,73
+Départementaux de cross 17,"2105.0, 2487.0, 3026.0, 3408.0, 3994.0, 5297.0, 6804.0, 8154.0, 933.0",14/01/24,Cross,Cabariot,N-A,17.0,,Dép,370
+Départementaux de cross 21,"1120.0, 2770.0, 3320.0, 3520.0, 4070.0, 4420.0, 5720.0, 6620.0, 8470.0",14/01/24,Cross,Dijon,BFC,21.0,,Dép,443
+Départementaux de cross 22,"1350.0, 2550.0, 3150.0, 3750.0, 4350.0, 4950.0, 6150.0, 8550.0",14/01/24,Cross,Langueux,BRE,22.0,,Dép,709
+Départementaux de cross 25 et 39 - cross du grillon,"1000.0, 2500.0, 3000.0, 3500.0, 4000.0, 6000.0, 8000.0",14/01/24,Cross,Dannemarie sur crete,BFC,25.0,Cham,Dép,325
+Départementaux de cross 27,"1130.0, 2630.0, 2914.0, 3154.0, 3944.0, 4654.0, 6438.0, 9226.0",14/01/24,Cross,Vernon,NOR,27.0,,Dép,645
+Départementaux de cross 58,"3000.0, 4000.0, 4400.0, 4800.0, 6200.0, 6600.0, 8000.0",13/01/24,Cross,Nevers,BFC,58.0,,Dép,150
+Départementaux de cross 71,"1270.0, 2320.0, 3120.0, 3920.0, 5770.0, 8680.0",14/01/24,Cross,Chalon sur saone,BFC,71.0,,Dép,346
+Départementaux de cross cda 45 + sdis 45,"10000.0, 1500.0, 2380.0, 2980.0, 3830.0, 4430.0, 500.0, 5930.0, 6330.0, 8430.0",14/01/24,Cross,Montargis,CEN,45.0,,Dép,727
+Départementaux de cross country,"1060.0, 1500.0, 2550.0, 2990.0, 3270.0, 3710.0, 4055.0, 4500.0, 6260.0, 7050.0, 8500.0",14/01/24,Cross,Verneuil sur seine,I-F,78.0,Cham,Dép,1246
+Départementaux de cross du pas de calais,"1470.0, 2470.0, 2980.0, 3690.0, 4200.0, 6310.0, 8500.0",28/01/24,Cross,Maisnil les ruitz,H-F,62.0,Meet,Dép,909
+Départementaux de cross à riom - 63 -,"1410.0, 2550.0, 3020.0, 3490.0, 4290.0, 5630.0, 6570.0, 7440.0, 8380.0",07/01/24,Cross,Riom,ARA,63.0,,Dép,596
+Départementaux de cross-country cd14,"100.0, 1320.0, 2870.0, 3290.0, 3870.0, 4450.0, 6580.0",14/01/24,Cross,Caen,NOR,14.0,,Dép,614
+Déptx de cross long et jeunes,"2770.0, 3230.0, 3730.0, 4230.0, 6050.0, 7050.0, 8470.0",14/01/24,Cross,Pre en pail,P-L,53.0,Cham,Dép,316
+Festival du cross,"1600.0, 2020.0, 2200.0, 2510.0, 3000.0, 3020.0, 3100.0, 3220.0, 3880.0, 4070.0, 5070.0, 6000.0, 7310.0",20/11/24,Cross,Carhaix plouguer,BRE,29.0,,Rég,3653
+Finale départementale de relais cross ea-po,,,Cross,Saint ave,BRE,56.0,Anim,Dép,0
+Finlale challenge cross cd aveyron,"1200.0, 1700.0, 2600.0, 3500.0, 750.0, 950.0",03/02/24,Cross,Villefranche de panat,OCC,12.0,Meet,Dép,87
+Foulée de chevry 2024,"10000.0, 1500.0, 1700.0, 2500.0, 6000.0",29/09/24,Cross,Chevry,ARA,1.0,Meet,Dép,259
+Fuchey cross,"2600.0, 3050.0, 5000.0, 5450.0, 650.0, 7850.0",11/11/24,Cross,Arnay le duc,BFC,21.0,Meet,Nat,1201
+Grand cross de massy 2024,"1000.0, 2800.0, 3800.0, 5400.0, 7900.0, 8900.0",01/12/24,Cross,Massy,I-F,91.0,Meet,Rég,571
+J1 kid cross zone 1,"1000.0, 1500.0",12/10/24,Cross,Guidel,BRE,56.0,Anim,Dép,115
+J1 kid cross zone 2,"1000.0, 1500.0",12/10/24,Cross,Theix-noyalo,BRE,56.0,Anim,Dép,122
+J1 kid cross zone 3,"1000.0, 1500.0",12/10/24,Cross,Serent,BRE,56.0,Anim,Dép,82
+Kid athlé limoux,500.0,18/05/24,Cross,Limoux,OCC,11.0,Meet,Dép,32
+Kid cross,"1100.0, 500.0",10/02/24,Cross,Notre dame de gravenchon,NOR,76.0,Anim,Dép,133
+Kid cross - montceau,,,Cross,Montceau les mines,BFC,71.0,Anim,Dép,0
+Kid cross anduze,"420.0, 540.0, 760.0",01/11/24,Cross,Anduze,OCC,30.0,Anim,Dép,96
+Kid cross de bourg-en-bresse (ea/po),,,Cross,Bourg en bresse,ARA,1.0,Anim,Dép,0
+Kid cross de lunel,,,Cross,Lunel,OCC,34.0,Anim,Dép,0
+Kid cross de saint gely,,,Cross,Saint clement de riviere,OCC,34.0,Anim,Dép,0
+Kid cross des geules noires,"1000.0, 800.0",04/02/24,Cross,La ricamarie,ARA,42.0,Anim,Dép,74
+Kid cross du 1er mai,,,Cross,Lons le saunier,BFC,39.0,Anim,Dép,0
+Kid cross départemental centre et nord seine-et-marne,300.0,10/03/24,Cross,Pontault combault,I-F,77.0,Meet,Dép,117
+Kid cross ea du muret ac,,,Cross,Muret,OCC,31.0,Anim,Dép,0
+Kid cross ea po du cac,240.0,23/03/24,Cross,Castelginest,OCC,31.0,Anim,Dép,183
+Kid cross eveils,470.0,13/01/24,Cross,Barentin,NOR,76.0,Anim,Dép,23
+Kid cross limoux 2024,,,Cross,Limoux,OCC,11.0,Meet,Dép,0
+Kid cross pierre bénite,,,Cross,Pierre benite,ARA,69.0,Anim,Dép,0
+Kid cross relais tassin,1.0,16/03/24,Cross,Tassin la demi lune,ARA,69.0,Anim,Dép,172
+Kid cross zone franche comté,,,Cross,Besancon,BFC,25.0,Anim,Dép,0
+Kid s cross de la vallee des lacs,200.0,24/03/24,Cross,Xonrupt longemer,G-E,88.0,Anim,Dép,50
+Kid'cross départementaux 73/74,"1015.0, 1410.0",14/01/24,Cross,Albertville,ARA,73.0,Anim,Dép,154
+Kid's cross,"1000.0, 1070.0, 1200.0, 1355.0, 2000.0, 500.0, 650.0, 800.0",20/01/24,Cross,Saint nazaire,P-L,44.0,Anim,Dép,1018
+Kid's cross district centre 3,,,Cross,Pompey,G-E,54.0,Anim,Dép,0
+Kid's cross district centre 4,,,Cross,Gondreville,G-E,54.0,Anim,Dép,0
+Kid's trail,,,Cross,Saulxures sur moselotte,G-E,88.0,Anim,Dép,0
+Kids athlé eveils / poussins,,,Cross,Franqueville saint pierre,NOR,76.0,Anim,Dép,0
+Kids cross,800.0,14/01/24,Cross,Marignane,PCA,13.0,Anim,Dép,145
+Kids cross ea/po uscvl,,,Cross,Venarey les laumes,BFC,21.0,Anim,Dép,0
+Kids cross eveils,500.0,27/01/24,Cross,Rouen,NOR,76.0,Anim,Dép,63
+Kids cross eveils st esteve 2024,500.0,14/01/24,Cross,Saint esteve,OCC,66.0,Anim,Dép,60
+Le cross de la source de la charente,"1000.0, 1300.0, 2100.0, 2700.0, 3500.0, 3800.0, 4400.0, 5700.0, 7200.0",02/11/24,Cross,Cheronnac,N-A,87.0,Meet,Dép,241
+Le retour des loups,"1250.0, 2500.0, 3750.0, 7800.0, 8600.0",07/01/24,Cross,Bruyeres et montberault,H-F,2.0,Meet,Dép,113
+Les foulées de printemps,"1822.0, 2709.0, 935.0",16/03/24,Cross,Charleville mezieres,G-E,8.0,Meet,Dép,210
+Les foulées des 2 ponts,"10000.0, 5000.0",15/09/24,Cross,Precy sur oise,H-F,60.0,Meet,Dép,131
+Les foulées pédestre du sud,"1500.0, 2800.0, 3200.0, 4000.0, 4500.0, 6000.0",01/12/24,Cross,Saint esprit,MAR,972.0,Meet,Rég,200
+Match interdépartemental benjamins,2609.0,18/02/24,Cross,Saint pierre les nemours,I-F,77.0,Meet,Dép,199
+Poussinade de cross de l'uacg-,,,Cross,Floirac,N-A,33.0,Anim,Dép,0
+Poussinade de cross de l'us bazas,500.0,10/02/24,Cross,Bazas,N-A,33.0,Anim,Dép,80
+Sirikwa cross country classics (ken),10000.0,03/02/24,Cross,Eldoret (KEN),,0.0,Meet,Nat,4
+Ti gwada challenge olympique 2024 - manche 1,"1100.0, 1500.0",08/05/24,Cross,Sainte rose,GUA,971.0,Anim,Dép,45
+Ti gwada challenge olympique 2024 -finale,"1100.0, 1500.0",30/06/24,Cross,Goyave,GUA,971.0,Anim,Dép,74
+Ti gwada challenge olympique 2024 -manche 2,"1100.0, 1500.0",02/06/24,Cross,Anse bertrand,GUA,971.0,Anim,Dép,60
+Trail de la crémaillère,"3000.0, 9000.0",02/11/24,Cross,Langres,G-E,52.0,Meet,Dép,259
+Trail des chioures - 19ème édition,"13000.0, 23000.0, 8000.0",01/09/24,Cross,Saint pancrasse,ARA,38.0,Meet,Dép,107
+Trophée de l'avenir 2024 - 2ème journée,200.0,20/01/24,Cross,Vielmur sur agout,OCC,81.0,Anim,Dép,82
+Trophée de l'avenir 2024 - 3ème journée,200.0,03/02/24,Cross,Labruguiere,OCC,81.0,Anim,Dép,84

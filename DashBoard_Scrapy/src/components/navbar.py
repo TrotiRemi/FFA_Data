@@ -4,28 +4,13 @@ def Navbar():
     return html.Nav(
         children=[
             dcc.Link(
-                [html.Img(src='/assets/house-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Home")],
+                [html.Img(src='/assets/run.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Coureur")],
                 href='/',
                 style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
             dcc.Link(
-                [html.Img(src='/assets/chart-simple-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Histogram Boston 2019")],
-                href='/histogram',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
-            ),
-            dcc.Link(
-                [html.Img(src='/assets/chart-line-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Répartition des records des 8000 meilleurs coureurs")],
-                href='/graph',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
-            ),
-            dcc.Link(
-                [html.Img(src='/assets/globe-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Carte des meilleurs pays au marathon")],
-                href='/map',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
-            ),
-            dcc.Link(
-                [html.Img(src='/assets/arrow-up-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Évolution des records enregistrés des pays au marathon")],
-                href='/evolution',
+                [html.Img(src='/assets/flag.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Course")],
+                href='/Course',
                 style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
         ],

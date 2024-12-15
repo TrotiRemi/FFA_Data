@@ -1,5 +1,7 @@
 import dash
-from . import home
+from . import Coureur
+from . import Course
 
 # Enregistrement des pages
-dash.register_page('search', path='/', name='search', layout=home.layout)
+dash.register_page('Coureur', path='/', name='Coureur', layout=Coureur.layout)
+dash.register_page('Course', path='/Course', name='Course', layout=Course.layout)
