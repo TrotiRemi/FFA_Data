@@ -21,13 +21,22 @@ class CompetitionSpider(scrapy.Spider):
     # Paramètres possibles
     saisons = range(1993, 2025)  # De 1993 à 2024 inclus
     niveaux = ["Départemental", "Régional", "National", "International"]
-    types = ["Hors", "Stade", "Marche", "Route", "Piste", "Salle", "Cross"]
+    types = ["Hors+Stade", "Marche+Route", "Piste", "Salle", "Cross"]
+
+    # Limite du nombre d'URL
+    MAX_URLS = 10
 
     def start_requests(self):
         # Générer toutes les combinaisons d'URL
+        count = 0  # Compteur d'URL
         for saison, niveau, type_ in product(self.saisons, self.niveaux, self.types):
+            if count >= self.MAX_URLS:
+                self.logger.info("Limite de 100 URLs atteinte, arrêt de la génération d'URL.")
+                break  # Arrêter la génération des URLs
+
             url = f"{self.base_url}&frmsaison={saison}&frmniveau={niveau}&frmtype1={type_}"
             yield scrapy.Request(url, callback=self.parse)
+            count += 1
 
     def parse(self, response):
         # Sélectionner les lignes correspondant aux compétitions

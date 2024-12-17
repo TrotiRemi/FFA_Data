@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-file_name = 'concatenated_FFA.csv'
+file_name = 'Test123.csv'
 data = pd.read_csv(file_name)
 
 def extract_date_from_header(soup):
@@ -88,7 +88,7 @@ def scrape_url_with_pagination(base_url, max_results):
     return all_results[:max_results]
 
 all_results = []
-MAX_RESULTS = 1000000
+MAX_RESULTS = 1000
 for index, row in data.iterrows():
     if len(all_results) >= MAX_RESULTS:
         break 
@@ -147,7 +147,7 @@ def convert_to_minutes(time_str):
     total_minutes = hours * 60 + minutes + seconds / 60
     return total_minutes
 
-df.loc[(df['rank'] == '1') & (df['athlete'] == 'GALLOT Camille') & (df['distance'] == 3080.0) & (df['competition_name'] == 'Departementaux de cross'), 'time'] = "11'16"
+#df.loc[(df['rank'] == '1') & (df['athlete'] == 'GALLOT Camille') & (df['distance'] == 3080.0) & (df['competition_name'] == 'Departementaux de cross'), 'time'] = "11'16"
 df['distance'] = pd.to_numeric(df['distance'], errors='coerce')
 df = df[~((df['rank'].isna() & df['athlete'].isna()) | (df['rank'] == "") | (df['athlete'] == ""))]
 df = df[df['rank'].str.len() <= 10]
@@ -161,7 +161,7 @@ df['vitesse'] = (df['distance'] / 1000) / (df['Minute_Time'] / 60)
 df.loc[df['vitesse'] == float('inf'), 'vitesse'] = 0
 
 
-output_csv = 'unlimited_results.csv'
+output_csv = 'TestDocker_results.csv'
 df.to_csv(output_csv, index=False, encoding='utf-8')
 
 print(f"Résultats sauvegardés dans {output_csv}")
