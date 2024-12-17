@@ -32,36 +32,59 @@ def scrape_page_with_distances(url):
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
 
+        # Extraire la date de la compétition
         competition_date = extract_date_from_header(soup)
 
+        # Initialiser les résultats et la distance courante
         results = []
         current_distance = None
 
+        # Parcourir les lignes de la table
         rows = soup.select('tr')
         for row in rows:
+            # Vérifier si la ligne contient une nouvelle distance
             distance_element = row.select_one('div.subheaders')
             if distance_element:
-                match = re.search(r'\|\s*(\d+)\s*m', distance_element.text)
-                if match:
-                    current_distance = int(match.group(1))
-                    continue 
+                text = distance_element.text
 
+                # Vérifier les cas spécifiques
+                if "Marathon" in text:
+                    if "1/2 Marathon" in text:
+                        current_distance = 42195 / 2  # 1/2 Marathon = 21 097.5 m
+                    else:
+                        current_distance = 42195  # Marathon = 42 195 m
+                else:
+                    # Cas où la distance est au format "XX km/Km" ou "XXXX m"
+                    km_match = re.search(r'(\d+)\s*km', text, re.IGNORECASE)  # Format km/Km
+                    m_match = re.search(r'\|\s*(\d+)\s*m', text)  # Format m entre "|"
+
+                    if km_match:
+                        current_distance = int(km_match.group(1)) * 1000  # Convertir km en mètres
+                    elif m_match:
+                        current_distance = int(m_match.group(1))  # Distance en mètres
+                    else:
+                        current_distance = 0  # Mettre 0 si aucune distance valide n'est trouvée
+                continue  # Passer à la ligne suivante
+
+            # Si la ligne contient des résultats
             columns = row.find_all('td')
-            if len(columns) > 1 and current_distance is not None: 
+            if len(columns) > 1:
                 results.append({
                     "rank": columns[0].text.strip() if len(columns) > 0 else None,
                     "time": columns[2].text.strip() if len(columns) > 2 else None,
                     "athlete": columns[4].text.strip() if len(columns) > 4 else None,
                     "club": columns[6].text.strip() if len(columns) > 6 else None,
                     "category": columns[12].text.strip() if len(columns) > 12 else None,
-                    "distance": current_distance, 
-                    "date": competition_date,
+                    "distance": current_distance if current_distance is not None else 0,  # Distance = 0 si None
+                    "date": competition_date,  # Ajouter la date extraite
                 })
 
         return results
     except Exception as e:
         print(f"Erreur lors du scraping de l'URL {url}: {e}")
         return []
+
+
 
 def scrape_url_with_pagination(base_url, max_results):
     all_results = []
@@ -88,7 +111,7 @@ def scrape_url_with_pagination(base_url, max_results):
     return all_results[:max_results]
 
 all_results = []
-MAX_RESULTS = 1000
+MAX_RESULTS = 50000
 for index, row in data.iterrows():
     if len(all_results) >= MAX_RESULTS:
         break 
@@ -99,7 +122,7 @@ for index, row in data.iterrows():
 
     for result in scraped_data:
         result.update({
-            "competition_type": row['competition_type'],
+            "competition_type": row['type'],
             "competition_name": row['competition_name'],
             "location": row['location'],
             "ligue": row['ligue'],
