@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   scrapy-service:
     build:
@@ -10,9 +8,14 @@ services:
       - shared_data:/shared  # Monte le volume dans /shared
     command: >
       sh -c "
-      cd FFA && scrapy crawl Extract_Course -o Course.csv &&
+      cd FFA &&
+      scrapy crawl Extract_Course -o Course.csv &&
       echo 'Fichier Course.csv créé :' && ls -la &&
-      cp Course.csv /shared/Docker_results_laver.csv &&
+      cp Course.csv /shared/Course.csv &&
+      cd .. &&
+      python Extract_Coureur.py &&
+      python Lavage.py &&
+      cp Docker_results_laver.csv /shared/Docker_results_laver.csv &&
       echo 'Fichier déplacé vers volume partagé : /shared' && ls -la /shared
       "
 
@@ -27,7 +30,8 @@ services:
       - "8060:8060"
     volumes:
       - shared_data:/shared  # Monte le volume dans /shared
-    command: ["python", "main.py"]
+    command: >
+      /bin/sh -c "/app/wait_for_file.sh python3 /app/main.py"
 
 volumes:
-  shared_data:  # Déclaration du volume partagé
+  shared_data: # Déclaration du volume partagé

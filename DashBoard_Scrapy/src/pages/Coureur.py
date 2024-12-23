@@ -7,7 +7,7 @@ import pandas as pd
 dash.register_page(__name__, path='/')
 
 # Charger le fichier CSV
-dt = pd.read_csv('Docker_results_laver.csv')  # Remplace par ton fichier CSV
+dt = pd.read_csv('/shared/Docker_results_laver.csv')  # Remplace par ton fichier CSV
 dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
 #print(dt[(dt['vitesse']<5) & (dt['rank'] != "-") & (dt['time'] != "-") & (dt['time'] != "- qi")])
 

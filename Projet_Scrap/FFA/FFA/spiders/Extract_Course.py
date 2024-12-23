@@ -2,6 +2,9 @@ import scrapy
 from urllib.parse import urljoin
 from itertools import product
 import re
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 class CompetitionSpider(scrapy.Spider):
     name = "Extract_Course"
@@ -76,3 +79,34 @@ class CompetitionSpider(scrapy.Spider):
                 "type": row.xpath('./td[15]/text()').get(),
                 "level": row.xpath('./td[17]/text()').get(),
             }
+    def closed(self, reason):
+        # Fonction appelée lorsque le spider se termine
+        self.send_email(reason)
+
+    def send_email(self, reason):
+        # Configurer les paramètres d'envoi
+        sender_email = "rere.locquette@gmail.com"
+        receiver_email = "remi.locquette@edu.esiee.fr"
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        smtp_user = sender_email  # Utilisez votre adresse email complète ici
+        smtp_password = "psng zuef uulb ivif"  # Remplacez par votre mot de passe d'application Gmail
+
+        # Créer le message
+        subject = "Rapport de fin de Scrapy"
+        body = f"Le spider {self.name} s'est terminé avec le statut : {reason}."
+        msg = MIMEMultipart()
+        msg["From"] = sender_email
+        msg["To"] = receiver_email
+        msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain"))
+
+        try:
+            # Envoyer l'email
+            with smtplib.SMTP(smtp_server, smtp_port) as server:
+                server.starttls()
+                server.login(smtp_user, smtp_password)
+                server.sendmail(sender_email, receiver_email, msg.as_string())
+            self.logger.info("Email de notification envoyé avec succès.")
+        except Exception as e:
+            self.logger.error(f"Échec de l'envoi de l'email : {e}")
