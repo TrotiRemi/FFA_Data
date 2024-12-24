@@ -7,7 +7,7 @@ import pandas as pd
 dash.register_page(__name__, path='/')
 
 # Charger le fichier CSV
-dt = pd.read_csv('/shared/Docker_results_laver.csv')  # Remplace par ton fichier CSV
+dt = pd.read_csv('Course.csv')  # Remplace par ton fichier CSV
 dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
 #print(dt[(dt['vitesse']<5) & (dt['rank'] != "-") & (dt['time'] != "-") & (dt['time'] != "- qi")])
 
@@ -43,14 +43,14 @@ def format_speed(value):
     except:
         return value  # En cas d'erreur, retourne la valeur d'origine
 
-# Layout pour la page d'accueil
 layout = html.Div([
     Header(),
     Navbar(),
-    html.H1("Bienvenue sur la page d'accueil", style={'textAlign': 'center'}),
+    html.H1("Chercher un coureur", style={'textAlign': 'center'}),
 
     # Barres de recherche
     html.Div([
+        # Autres champs de recherche
         html.Div([
             dcc.Input(
                 id=field['id'],
@@ -58,14 +58,74 @@ layout = html.Div([
                 placeholder=field['placeholder'],
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             )
-            for field in search_fields
+            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
-        
+
+        # Distance minimale et maximale sur la même ligne
+        html.Div([
+            html.Label("Distance :", style={
+                    'font-weight': 'bold',
+                    'margin-right': '10px',
+                    'align-self': 'center'  # Assure l'alignement vertical avec les menus déroulants
+            }),
+            dcc.Input(
+                id='search-distance-min',
+                type='number',
+                placeholder='Min',
+                style={'width': '80px', 'padding': '5px', 'margin-right': '10px', 'display': 'inline-block'}
+            ),
+            dcc.Input(
+                id='search-distance-max',
+                type='number',
+                placeholder='Max',
+                style={'width': '80px', 'padding': '5px', 'margin-right': '10px', 'display': 'inline-block'}
+            )
+        ], style={
+                'display': 'flex',  # Affiche les éléments horizontalement
+                'align-items': 'center',  # Aligne verticalement tous les éléments
+                'margin-top': '5px',
+                'margin-left': '9%'
+            }),
+
+        # Menus déroulants pour les dates alignés et espacés
+        html.Div([
+            html.Div([
+                html.Label("Date :", style={
+                    'font-weight': 'bold',
+                    'margin-right': '10px',
+                    'align-self': 'center'  # Assure l'alignement vertical avec les menus déroulants
+                }),
+                dcc.Dropdown(
+                    id='search-day',
+                    options=[{'label': f"{day:02}", 'value': f"{day:02}"} for day in range(1, 32)],
+                    placeholder='Jour',
+                    style={'width': '80px', 'display': 'inline-block', 'margin-right': '10px'}
+                ),
+                dcc.Dropdown(
+                    id='search-month',
+                    options=[{'label': f"{month:02}", 'value': f"{month:02}"} for month in range(1, 13)],
+                    placeholder='Mois',
+                    style={'width': '80px', 'display': 'inline-block', 'margin-right': '10px'}
+                ),
+                dcc.Dropdown(
+                    id='search-year',
+                    options=[{'label': f"{year % 100:02}", 'value': f"{year % 100:02}"} for year in range(2000, 2031)],
+                    placeholder='Année',
+                    style={'width': '80px', 'display': 'inline-block'}
+                )
+            ], style={
+                'display': 'flex',  # Affiche les éléments horizontalement
+                'align-items': 'center',  # Aligne verticalement tous les éléments
+                'margin-top': '5px',
+                'margin-left': '10.75%'
+            })
+        ]),
+
         html.Button(
             'Rechercher',
             id='search-button',
             n_clicks=0,
-            style={'padding': '10px 20px', 'background-color': '#007BFF', 'color': '#fff', 'border': 'none'}
+            style={'padding': '10px 20px', 'background-color': '#007BFF', 'color': '#fff', 'border': 'none', 'margin-top': '20px'}
         ),
         html.Div(id='search-result', style={'margin-top': '20px', 'font-size': '16px', 'color': '#333'})
     ], style={'textAlign': 'center'}),
@@ -86,7 +146,18 @@ layout = html.Div([
             ],
             data=[],  # Données initialement vides
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
-            style_cell={'textAlign': 'center', 'padding': '10px'},
+            style_cell={
+                'textAlign': 'center',
+                'padding': '10px',
+                'whiteSpace': 'normal',  # Permet les retours à la ligne
+                'overflow': 'hidden',  # Empêche les débordements
+                'textOverflow': 'ellipsis',  # Ajoute des "..." pour le texte coupé (utile pour éviter des débordements horizontaux)
+                'maxWidth': '150px',  # Largeur maximale fixe pour chaque colonne
+                'minWidth': '100px',  # Largeur minimale pour assurer une lisibilité
+            },
+            style_data={
+                'height': 'auto',  # Ajuste automatiquement la hauteur des cellules pour le texte
+            },
             style_header={'fontWeight': 'bold'}
         ),
         style={'width': '80%', 'margin': '0 auto'}
@@ -100,29 +171,39 @@ layout = html.Div([
     [Output('search-result', 'children'),
      Output('result-table', 'data')],
     [Input('search-button', 'n_clicks')],
-    [State(field['id'], 'value') for field in search_fields]  # Ajouter les valeurs dynamiquement
+    [State(field['id'], 'value') for field in search_fields if field['column'] != 'date'] + 
+    [State('search-day', 'value'), State('search-month', 'value'), State('search-year', 'value')]
 )
 def update_search_result(n_clicks, *args):
     if n_clicks > 0:
         # Associer les colonnes aux valeurs des champs
-        filters = {field['column']: value for field, value in zip(search_fields, args) if value}
-        
+        filters = {field['column']: value for field, value in zip(search_fields, args[:len(search_fields) - 1]) if value}
+
+        # Récupérer les valeurs des menus déroulants pour les dates
+        day, month, year = args[-3:]
+
+        # Si un ou plusieurs composants de la date sont renseignés
+        if day or month or year:
+            # Convertir le champ 'date' en parties (jour, mois, année)
+            dt['day'] = dt['date'].str.slice(0, 2)  # Extraire le jour
+            dt['month'] = dt['date'].str.slice(3, 5)  # Extraire le mois
+            dt['year'] = dt['date'].str.slice(6, 8)  # Extraire l'année (2 derniers chiffres)
+
+            # Ajouter les filtres partiels sur les jours, mois, années
+            if day:
+                filters['day'] = day
+            if month:
+                filters['month'] = month
+            if year:
+                filters['year'] = year
+
         # Filtrage des données
         filtered_data = dt.copy()
-
-        # Appliquer les filtres standards
         for column, value in filters.items():
-            if column == 'distance_min':
-                continue
-            if column == 'distance_max':
-                continue
             filtered_data = filtered_data[filtered_data[column].astype(str).str.contains(value, na=False, case=False)]
 
-        # Filtrer par plage de distances
-        if 'distance_min' in filters:
-            filtered_data = filtered_data[filtered_data['distance'] >= float(filters['distance_min'])]
-        if 'distance_max' in filters:
-            filtered_data = filtered_data[filtered_data['distance'] <= float(filters['distance_max'])]
+        # Supprimer les colonnes temporaires pour éviter des problèmes
+        filtered_data = filtered_data.drop(columns=['day', 'month', 'year'], errors='ignore')
 
         # Préparer les résultats pour le tableau
         if not filtered_data.empty:

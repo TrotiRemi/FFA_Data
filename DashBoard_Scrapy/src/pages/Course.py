@@ -21,7 +21,7 @@ search_fields = [
 layout = html.Div([
     Header(),
     Navbar(),
-    html.H1("Bienvenue sur la page des Courses", style={'textAlign': 'center'}),
+    html.H1("Chercher une course", style={'textAlign': 'center'}),
 
     # Champs de recherche pour Page 2
     html.Div([
@@ -60,7 +60,18 @@ layout = html.Div([
             ],
             data=[],  # Données initialement vides
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
-            style_cell={'textAlign': 'center', 'padding': '10px'},
+            style_cell={
+                'textAlign': 'center',
+                'padding': '10px',
+                'whiteSpace': 'normal',  # Permet les retours à la ligne
+                'overflow': 'hidden',  # Empêche les débordements
+                'textOverflow': 'ellipsis',  # Affiche des "..." si le texte est tronqué
+                'maxWidth': '150px',  # Largeur maximale fixe pour chaque colonne
+                'minWidth': '100px',  # Largeur minimale pour assurer une lisibilité
+            },
+            style_data={
+                'height': 'auto',  # Ajuste automatiquement la hauteur des cellules pour le texte
+            },
             style_header={'fontWeight': 'bold'}
         ),
         style={'width': '80%', 'margin': '0 auto'}
