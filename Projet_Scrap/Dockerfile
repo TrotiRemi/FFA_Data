@@ -1,6 +1,14 @@
+# Utiliser une version stable de Python
 FROM python:3.12.6 
 
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
-COPY . /app/
-RUN pip install -r requirements.txt
-CMD cd FFA && scrapy crawl Extract_Course.py -o Course.csv && cd .. && cp FFA/Course.csv . && python Extract_Coureur.py && python Lavage.py 
+
+# Copier tous les fichiers du projet dans le conteneur
+COPY . .
+
+# Installer les dépendances
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Définir la commande par défaut pour exécuter le script
+CMD ["python", "Extract_Course.py"]

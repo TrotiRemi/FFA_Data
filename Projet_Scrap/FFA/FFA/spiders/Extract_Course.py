@@ -39,13 +39,28 @@ class CompetitionSpider(scrapy.Spider):
                 break  # Arrêter la génération des URLs
 
             url = f"{self.base_url}&frmsaison={saison}&frmniveau={niveau}&frmtype1={type_}"
-            yield scrapy.Request(url, callback=self.parse)
+            yield scrapy.Request(url, callback=self.parse_pagination)
             count += 1
+
+    def parse_pagination(self, response):
+        # Vérifier si la page contient un sélecteur pour plusieurs pages
+        page_options = response.xpath('//select[@class="barSelect"]/option/@value').extract()
+
+        if page_options:
+            total_pages = max([int(option) for option in page_options]) + 1
+            self.logger.info(f"Nombre de pages détecté : {total_pages}")
+
+            for page_number in range(total_pages):
+                page_url = f"{response.url}&frmposition={page_number}"
+                yield scrapy.Request(page_url, callback=self.parse)
+        else:
+            # Si pas de pagination, directement traiter la page
+            yield from self.parse(response)
 
     def parse(self, response):
         # Extraire l'année depuis le texte principal
         year_text = response.xpath('//div[@class="mainheaders"]/span/text()').get()
-        
+
         year = None
         if year_text:  # Vérifier que year_text n'est pas None
             year_match = re.search(r"Année : (\d{4})", year_text)
@@ -79,6 +94,7 @@ class CompetitionSpider(scrapy.Spider):
                 "type": row.xpath('./td[15]/text()').get(),
                 "level": row.xpath('./td[17]/text()').get(),
             }
+
     def closed(self, reason):
         # Fonction appelée lorsque le spider se termine
         self.send_email(reason)
