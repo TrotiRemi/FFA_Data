@@ -11,4 +11,4 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Définir la commande par défaut pour exécuter le script
-CMD ["python", "Extract_Course.py"]
+CMD ["python", "Extract_Course_Mongo.py"]

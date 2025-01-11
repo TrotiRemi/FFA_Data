@@ -1,12 +1,21 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 
-
-class FfaItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class CompetitionResultItem(scrapy.Item):
+    rank = scrapy.Field()
+    time = scrapy.Field()
+    athlete = scrapy.Field()
+    club = scrapy.Field()
+    category = scrapy.Field()
+    competition_date = scrapy.Field()
+    competition_name = scrapy.Field()
+    location = scrapy.Field()
+    ligue = scrapy.Field()
+    department = scrapy.Field()
+    type = scrapy.Field()
+    level = scrapy.Field()
+    full_line = scrapy.Field()
+    distance = scrapy.Field()
+    Minute_Time = scrapy.Field()
+    ligue_complet = scrapy.Field()  # Ajout du champ ligue_complet
+    vitesse = scrapy.Field()        # Ajout du champ vitesse
+    sex = scrapy.Field()

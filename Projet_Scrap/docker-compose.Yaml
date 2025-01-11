@@ -1,21 +1,20 @@
-version: '3.8'
 services:
   mongodb:
     image: mongo:5.0
     container_name: mongodb
     ports:
-      - "27017:27017"  # Exposer MongoDB sur le port 27017
+      - "27017:27017"
     volumes:
-      - mongo-data:/data/db  # Volume pour persister les données MongoDB
+      - mongo-data:/data/db
 
   script-runner:
     build:
       context: .
     container_name: script-runner
     depends_on:
-      - mongodb  # Attendre que MongoDB soit prêt
+      - mongodb
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/CourseDatabase  # URI MongoDB pour le script
+      - MONGO_URI=mongodb://mongodb:27017/CourseDatabase
 
 volumes:
-  mongo-data:  # Volume pour MongoDB
+  mongo-data:

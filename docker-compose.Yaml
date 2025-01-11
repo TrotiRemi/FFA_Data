@@ -1,4 +1,11 @@
 services:
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
   scrapy-service:
     build:
       context: ./Projet_Scrap
@@ -9,13 +16,13 @@ services:
     command: >
       sh -c "
       cd FFA &&
-      scrapy crawl Extract_Course -o Course.csv &&
-      echo 'Fichier Course.csv créé :' && ls -la &&
-      cp Course.csv /shared/Course.csv &&
+      rm -f Course_Docker.csv && scrapy crawl Extract_Course -o Course_Docker.csv &&
+      echo 'Fichier Course_Docker.csv créé :' && ls -la &&
+      cp Course_Docker.csv /shared/Course_Docker.csv &&
       cd .. &&
-      python Extract_Coureur.py &&
-      python Lavage.py &&
-      cp Docker_results_laver.csv /shared/Docker_results_laver.csv &&
+      python Extract_Coureur_Mongo.py &&
+      python Lavage_Mongo.py &&
+      python ExportCSV.py --output /shared/Docker_results_laver.csv &&
       echo 'Fichier déplacé vers volume partagé : /shared' && ls -la /shared
       "
 
@@ -31,7 +38,9 @@ services:
     volumes:
       - shared_data:/shared  # Monte le volume dans /shared
     command: >
-      /bin/sh -c "/app/wait_for_file.sh python3 /app/main.py"
+      /bin/sh -c "sh /app/wait_for_file.sh && python3 /app/main.py"
 
 volumes:
   shared_data: # Déclaration du volume partagé
+  mongo-data:
+

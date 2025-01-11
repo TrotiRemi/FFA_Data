@@ -118,12 +118,12 @@ def scrape_url_with_pagination(base_url, max_results):
     return all_results[:max_results]
 
 try:
-    MAX_RESULTS = 50000
+    MAX_RESULTS = 5000
     progress_threshold = 0.1  # 10%
     next_progress = int(total_urls * progress_threshold)
 
     # URL de démarrage (vide signifie commencer depuis le début)
-    start_url = "https://bases.athle.fr/asp.net/liste.aspx?frmbase=resultats&frmmode=1&frmespace=0&frmcompetition=000004"
+    start_url = ""
     start_index = 0
 
     # Rechercher l'indice de l'URL de départ si spécifié

@@ -23,12 +23,12 @@ class CompetitionSpider(scrapy.Spider):
     base_url = "https://bases.athle.fr/asp.net/liste.aspx?frmpostback=true&frmbase=calendrier&frmmode=1&frmespace=0"
 
     # Paramètres possibles
-    saisons = range(1993, 2025)  # De 1993 à 2024 inclus
-    niveaux = ["Départemental", "Régional", "National", "International","Mondial","Européen"]
+    saisons = range(2005, 2026)  # De 1993 à 2024 inclus
+    niveaux = ["Départemental", "Régional", "National"]
     types = ["Hors+Stade","Cross"]
 
     # Limite du nombre d'URL
-    MAX_URLS = 10
+    MAX_URLS = 10000
 
     def start_requests(self):
         # Générer toutes les combinaisons d'URL
