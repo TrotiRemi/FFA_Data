@@ -1,21 +1,44 @@
 import dash
 from dash import html, dcc, Input, Output, State, dash_table
 from src.components import Navbar, Header, Footer
+from pymongo import MongoClient
 import pandas as pd
 
 # Enregistrement de la page d'accueil
 dash.register_page(__name__, path='/')
 
 # Charger le fichier CSV
-dt = pd.read_csv('FFA/Course2.csv')  # Remplace par ton fichier CSV
-dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
+#dt = pd.read_csv('FFA/Course2.csv')  # Remplace par ton fichier CSV
+#dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
 #print(dt[(dt['vitesse']<5) & (dt['rank'] != "-") & (dt['time'] != "-") & (dt['time'] != "- qi")])
+
+MONGO_URI = "mongodb://mongodb:27017/"
+MONGO_DATABASE = "athle_database"
+MONGO_COLLECTION = "results"
+
+def get_data_from_mongo(filters=None):
+    """
+    Récupère les données de MongoDB en fonction des filtres donnés.
+    :param filters: Dictionnaire des filtres pour la recherche.
+    :return: DataFrame Pandas contenant les données.
+    """
+    client = MongoClient(MONGO_URI)
+    db = client[MONGO_DATABASE]
+    collection = db[MONGO_COLLECTION]
+
+    query = filters if filters else {}
+    data = list(collection.find(query))
+
+    # Convertir en DataFrame Pandas
+    if data:
+        df = pd.DataFrame(data)
+        return df
+    return pd.DataFrame()  # DataFrame vide si aucune donnée trouvée
 
 # Liste des champs de recherche
 search_fields = [
     {'id': 'search-name', 'placeholder': 'Nom', 'column': 'athlete', 'type': 'text'},
     {'id': 'search-club', 'placeholder': 'Club', 'column': 'club', 'type': 'text'},
-    {'id': 'search-data', 'placeholder': 'Date (J/M/A(2 derniers chiffres))', 'column': 'date', 'type': 'text'},
     {'id': 'search-distance-min', 'placeholder': 'Distance minimale', 'column': 'distance_min', 'type': 'number'},
     {'id': 'search-distance-max', 'placeholder': 'Distance maximale', 'column': 'distance_max', 'type': 'number'}
 ]
@@ -164,45 +187,47 @@ layout = html.Div([
     [Output('search-result', 'children'),
      Output('result-table', 'data')],
     [Input('search-button', 'n_clicks')],
-    [State(field['id'], 'value') for field in search_fields if field['column'] != 'date'] + 
-    [State('search-day', 'value'), State('search-month', 'value'), State('search-year', 'value')]
+    [State('search-name', 'value'),
+     State('search-club', 'value'),
+     State('search-distance-min', 'value'),
+     State('search-distance-max', 'value'),
+     State('search-day', 'value'),
+     State('search-month', 'value'),
+     State('search-year', 'value')]
 )
-def update_search_result(n_clicks, *args):
+def update_search_result(n_clicks, name, club, distance_min, distance_max, day, month, year):
     if n_clicks > 0:
-        # Associer les colonnes aux valeurs des champs
-        filters = {field['column']: value for field, value in zip(search_fields, args[:len(search_fields) - 1]) if value}
+        # Construire les filtres pour MongoDB
+        filters = {}
+        if name:  # Nom
+            filters['athlete'] = {'$regex': name, '$options': 'i'}
+        if club:  # Club
+            filters['club'] = {'$regex': club, '$options': 'i'}
+        if distance_min:  # Distance minimale
+            filters['distance'] = {'$gte': float(distance_min)}
+        if distance_max:  # Distance maximale
+            if 'distance' in filters:
+                filters['distance']['$lte'] = float(distance_max)
+            else:
+                filters['distance'] = {'$lte': float(distance_max)}
 
-        # Récupérer les valeurs des menus déroulants pour les dates
-        day, month, year = args[-3:]
-
-        # Si un ou plusieurs composants de la date sont renseignés
+        # Gestion des dates
         if day or month or year:
-            # Convertir le champ 'date' en parties (jour, mois, année)
-            dt['day'] = dt['competition_date'].str.slice(0, 2)  # Extraire le jour
-            dt['month'] = dt['competition_date'].str.slice(3, 5)  # Extraire le mois
-            dt['year'] = dt['competition_date'].str.slice(6, 8)  # Extraire l'année (2 derniers chiffres)
-
-            # Ajouter les filtres partiels sur les jours, mois, années
+            date_filter = ""
             if day:
-                filters['day'] = day
+                date_filter += f"{day:02}/"
             if month:
-                filters['month'] = month
+                date_filter += f"{month:02}/"
             if year:
-                filters['year'] = year
+                date_filter += f"{year:02}"
+            filters['competition_date'] = {'$regex': date_filter, '$options': 'i'}
 
-        # Filtrage des données
-        filtered_data = dt.copy()
-        for column, value in filters.items():
-            filtered_data = filtered_data[filtered_data[column].astype(str).str.contains(value, na=False, case=False)]
-
-        # Supprimer les colonnes temporaires pour éviter des problèmes
-        filtered_data = filtered_data.drop(columns=['day', 'month', 'year'], errors='ignore')
+        # Obtenir les données de MongoDB
+        filtered_data = get_data_from_mongo(filters)
 
         # Préparer les résultats pour le tableau
         if not filtered_data.empty:
-            filtered_data['formatted_time'] = filtered_data['Minute_Time'].apply(format_time_from_minutes)
-
-            table_data = filtered_data[['rank', 'athlete', 'club', 'competition_date', 'competition_name', 'formatted_time', 'vitesse', 'distance']].to_dict('records')
+            table_data = filtered_data[['rank', 'athlete', 'club', 'competition_date', 'competition_name', 'vitesse', 'distance']].to_dict('records')
         else:
             table_data = []
 
@@ -210,5 +235,4 @@ def update_search_result(n_clicks, *args):
         result_text = f"{len(filtered_data)} résultat(s) trouvé(s)." if not filtered_data.empty else "Aucun résultat trouvé."
         return result_text, table_data
 
-    # Si aucun clic ou recherche vide
     return "", []

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mongodb:
     image: mongo:5.0
@@ -20,6 +18,10 @@ services:
       - "8060:8060"
     volumes:
       - shared_data:/shared  # Volume partagé pour les fichiers générés
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DATABASE=athle_database
+      - MONGO_COLLECTION=results
     command: >
       bash -c "
       cd FFA &&

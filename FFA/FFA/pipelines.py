@@ -1,6 +1,7 @@
+
 import re
 import scrapy
-
+from pymongo import MongoClient
 
 class DataCleaningPipeline:
     def round_to_two_decimals(self, value):
@@ -12,9 +13,46 @@ class DataCleaningPipeline:
             return round(value, 2)
         return value
 
-    def __init__(self):
-        # Ensemble pour stocker les enregistrements existants (clé unique basée sur les colonnes)
+    def __init__(self, mongo_uri, mongo_db, collection_name):
+        """
+        Initialisation du pipeline avec les paramètres MongoDB.
+        """
+        self.mongo_uri = mongo_uri
+        self.mongo_db = mongo_db
+        self.collection_name = collection_name
         self.existing_records = set()
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        """
+        Initialise le pipeline en utilisant les paramètres de Scrapy.
+        """
+        return cls(
+            mongo_uri=crawler.settings.get("MONGO_URI", "mongodb://localhost:27017/"),
+            mongo_db=crawler.settings.get("MONGO_DATABASE", "athle_database"),
+            collection_name=crawler.settings.get("MONGO_COLLECTION", "results")
+        )
+
+    def open_spider(self, spider):
+        """
+        Connexion à MongoDB et chargement des enregistrements existants.
+        """
+        self.client = MongoClient(self.mongo_uri)
+        self.db = self.client[self.mongo_db]
+        self.collection = self.db[self.collection_name]
+
+        # Charger les enregistrements existants pour éviter les doublons
+        self.existing_records = {
+            (doc.get("rank"), doc.get("time"), doc.get("athlete"),
+             doc.get("competition_date"), doc.get("competition_name"))
+            for doc in self.collection.find({}, {"rank": 1, "time": 1, "athlete": 1, "competition_date": 1, "competition_name": 1})
+        }
+
+    def close_spider(self, spider):
+        """
+        Fermeture de la connexion à MongoDB.
+        """
+        self.client.close()
 
     def is_time_format(self, time_str):
         """
@@ -22,20 +60,7 @@ class DataCleaningPipeline:
         """
         time_pattern = re.match(r"^\d+h\d+'\d+''$|^\d+'\d+''$|^\d+h\d+'$|^\d+''$", time_str)
         return bool(time_pattern)
-
-    def open_spider(self, spider):
-        """
-        Initialisation du pipeline à l'ouverture du spider.
-        """
-        # Aucune interaction avec MongoDB, mais initialisation des enregistrements existants si nécessaire
-        self.existing_records = set()
-
-    def close_spider(self, spider):
-        """
-        Fermeture du pipeline à la fin du spider.
-        """
-        pass  # Pas d'action nécessaire ici
-
+    
     def process_item(self, item, spider):
         """
         Processus pour traiter chaque élément en fonction des cas prioritaires,
@@ -51,7 +76,7 @@ class DataCleaningPipeline:
         )
         if record_key in self.existing_records:
             raise scrapy.exceptions.DropItem(f"Doublon détecté et supprimé : {item}")
-    
+
         # Ajouter le record aux enregistrements existants
         self.existing_records.add(record_key)
 
@@ -93,6 +118,9 @@ class DataCleaningPipeline:
         if 'club' in item:
             if not item['club'] or item['club'].strip() == "":
                 item['club'] = "No Club"
+
+        # Insérer dans MongoDB
+        self.collection.insert_one(dict(item))
 
         return item  # Retourner l'élément traité
 

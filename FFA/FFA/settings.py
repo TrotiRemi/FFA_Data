@@ -23,9 +23,9 @@ ITEM_PIPELINES = {
     "FFA.pipelines.DataCleaningPipeline": 300,
 }
 
-#MONGO_URI = "mongodb://localhost:27017/"
-#MONGO_DATABASE = "athle_database"
-#MONGO_COLLECTION = "test"
+MONGO_URI = "mongodb://mongodb:27017/"
+MONGO_DATABASE = "athle_database"
+MONGO_COLLECTION = "results"
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
