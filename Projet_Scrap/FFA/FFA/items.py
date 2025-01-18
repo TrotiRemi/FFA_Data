@@ -16,6 +16,6 @@ class CompetitionResultItem(scrapy.Item):
     full_line = scrapy.Field()
     distance = scrapy.Field()
     Minute_Time = scrapy.Field()
-    ligue_complet = scrapy.Field()  # Ajout du champ ligue_complet
+    ligue = scrapy.Field()  # Ajout du champ ligue_complet
     vitesse = scrapy.Field()        # Ajout du champ vitesse
-    sex = scrapy.Field()
+    type_course = scrapy.Field()

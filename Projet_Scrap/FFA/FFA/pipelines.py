@@ -1,6 +1,6 @@
 import re
 import scrapy
-from pymongo import MongoClient
+
 
 class DataCleaningPipeline:
     def round_to_two_decimals(self, value):
@@ -12,82 +12,70 @@ class DataCleaningPipeline:
             return round(value, 2)
         return value
 
-    def __init__(self, mongo_uri, mongo_db, collection_name):
-        # Initialisation des mappings
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
-        self.collection_name = collection_name
-        self.level_mapping = {
-            'Rég': 'Régional',
-            'Nat': 'National',
-            'Int': 'Interrégional',
-            'Dép': 'Départemental'
-        }
-        self.ligue_mapping = {
-            "NORM": "Normandie",
-            "BFC": "Bourgogne-Franche-Comté",
-            "OCC": "Occitanie",
-            "N-A": "Nouvelle-Aquitaine",
-            "PAC": "Provence-Alpes-Côte d'Azur",
-            "CEN": "Centre-Val de Loire",
-            "P-L": "Pays de la Loire",
-            "H-F": "Hauts-de-France",
-            "IDF": "Île-de-France",
-            "ARA": "Auvergne-Rhône-Alpes",
-            "BRE": "Bretagne",
-            "GE": "Grand Est",
-            "NAQ": "Nouvelle-Aquitaine",
-            "COR": "Corse",
-            "GUY": "Guyane",
-            "GUA": "Guadeloupe",
-            "MAR": "Martinique",
-            "REU": "La Réunion",
-            "MAY": "Mayotte"
-        }
-    @classmethod
-    def from_crawler(cls, crawler):
+    def __init__(self):
+        # Ensemble pour stocker les enregistrements existants (clé unique basée sur les colonnes)
+        self.existing_records = set()
+
+    def is_time_format(self, time_str):
         """
-        Initialisation avec les paramètres depuis les settings.
+        Détermine si le champ `time` est un format de temps ou de distance.
         """
-        return cls(
-            mongo_uri=crawler.settings.get("MONGO_URI", "mongodb://localhost:27017/"),
-            mongo_db=crawler.settings.get("MONGO_DATABASE", "athle_database"),
-            collection_name=crawler.settings.get("MONGO_COLLECTION", "results"),
-        )
+        time_pattern = re.match(r"^\d+h\d+'\d+''$|^\d+'\d+''$|^\d+h\d+'$|^\d+''$", time_str)
+        return bool(time_pattern)
 
     def open_spider(self, spider):
         """
-        Connexion à MongoDB.
+        Initialisation du pipeline à l'ouverture du spider.
         """
-        self.client = MongoClient(self.mongo_uri)
-        self.db = self.client[self.mongo_db]
-        self.collection = self.db[self.collection_name]
+        # Aucune interaction avec MongoDB, mais initialisation des enregistrements existants si nécessaire
+        self.existing_records = set()
 
     def close_spider(self, spider):
         """
-        Fermeture de la connexion à MongoDB.
+        Fermeture du pipeline à la fin du spider.
         """
-        self.client.close()
+        pass  # Pas d'action nécessaire ici
+
     def process_item(self, item, spider):
-        # Nettoyage et transformation des champs
+        """
+        Processus pour traiter chaque élément en fonction des cas prioritaires,
+        tout en évitant les doublons basés sur des colonnes clés.
+        """
+        # Vérification des doublons
+        record_key = (
+            item.get("rank"),
+            item.get("time"),
+            item.get("athlete"),
+            item.get("competition_date"),
+            item.get("competition_name"),
+        )
+        if record_key in self.existing_records:
+            raise scrapy.exceptions.DropItem(f"Doublon détecté et supprimé : {item}")
+    
+        # Ajouter le record aux enregistrements existants
+        self.existing_records.add(record_key)
+
+        # Vérification si le champ `athlete` est valide
         if not item.get('athlete') or item['athlete'].strip() == "Inconnu":
             raise scrapy.exceptions.DropItem(f"Ligne ignorée car `athlete` est vide : {item}")
-        
-        # Extraire la distance
-        if 'full_line' in item:
-            item['distance'] = self.extract_distance(item['full_line'])
 
-        # Extraire le sexe
-        if 'full_line' in item:
-            item['sex'] = self.extract_sex(item['full_line'])
+        # Extraction de la distance en priorité depuis `full_line`
+        item['distance'] = self.extract_distance(item.get('full_line'))
 
-        # Conversion du temps en minutes
-        if 'time' in item and item['time']:
+        if item['distance'] > 0:  # Cas où la distance est présente dans `full_line`
+            # Extraire le temps depuis `time`
             item['Minute_Time'] = self.convert_to_minutes(item.get('time'))
         else:
-            item['Minute_Time'] = 0
+            # Vérifier si une distance est présente dans `time` et un temps dans `full_line`
+            is_time_format = self.is_time_format(item.get('time'))
+            if not is_time_format:  # `time` est une distance
+                item['distance'] = self.extract_distance_from_time(item['time'])
+                item['Minute_Time'] = self.extract_duration_from_full_line(item.get('full_line'))
+            else:  # Cas normal où `time` est un temps
+                item['Minute_Time'] = self.convert_to_minutes(item['time'])
+                item['distance'] = 0  # Distance inconnue si non trouvée
 
-        # Calcul de la vitesse (si distance existe)
+        # Calcul de la vitesse (si distance et Minute_Time sont valides)
         if item.get('distance') and item['Minute_Time']:
             try:
                 item['vitesse'] = (item['distance'] / 1000) / (item['Minute_Time'] / 60)
@@ -101,20 +89,12 @@ class DataCleaningPipeline:
             if field in item:
                 item[field] = self.round_to_two_decimals(item[field])
 
-        # Nettoyage du niveau
-        if 'level' in item:
-            item['level'] = self.level_mapping.get(item['level'], item['level'])
-        
-        # Nettoyage du club
+        # Nettoyage du champ `club`
         if 'club' in item:
             if not item['club'] or item['club'].strip() == "":
                 item['club'] = "No Club"
 
-        # Remplacement des abréviations de ligue
-        if 'ligue' in item:
-            item['ligue_complet'] = self.ligue_mapping.get(item['ligue'], item['ligue'])
-
-        return item
+        return item  # Retourner l'élément traité
 
     def extract_distance(self, full_line):
         if not full_line:
@@ -138,28 +118,53 @@ class DataCleaningPipeline:
 
         return 0
 
-    def extract_sex(self, full_line):
+    def extract_distance_from_time(self, time_str):
         """
-        Extrait le sexe (M ou F) à partir de la ligne complète.
+        Extrait la distance depuis le champ `time` si c'est une distance (e.g., "190km500m").
         """
-        match_sex = re.search(r"Chr\s?:\s?([MF])", full_line, re.IGNORECASE)
-        if match_sex:
-            return match_sex.group(1).upper()
-        return "Unknown"
+        match_distance = re.match(r"(?:(\d+)\s?[kK][mM])?\s?(?:(\d+)\s?[mM])?", time_str)
+        if match_distance:
+            kilometers = match_distance.group(1)
+            meters = match_distance.group(2)
+            distance_in_meters = 0
+            if kilometers:
+                distance_in_meters += int(kilometers) * 1000
+            if meters:
+                distance_in_meters += int(meters)
+            return distance_in_meters
+        return 0
 
-    def convert_to_minutes(self, time_str):
+    def extract_duration_from_full_line(self, full_line):
+        """
+        Extrait la durée en minutes depuis `full_line` si c'est une course chronométrée (e.g., "34 heures").
+        """
+        match_hours = re.search(r"(\d+)\s?(?:heures|heure|h)", full_line, re.IGNORECASE)
+        if match_hours:
+            hours = int(match_hours.group(1))
+            return hours * 60
+        return 0
+
+    def convert_to_minutes(self, time_str, distance=None):
         """
         Convertit un format de temps (exemple : 1h15'19'') en minutes.
         """
         if not time_str:
             return None
 
+        # Vérifier la présence d'informations entre parenthèses
+        match_parentheses = re.search(r"\((.*?)\)", time_str)
+        if match_parentheses:
+            time_str = match_parentheses.group(1)
+        else:
+            time_str = re.sub(r"[^\d'hm'':]+$", "", time_str).strip()
+
+        # Correspondances des formats de temps
         match_hms_colon = re.match(r"^(\d+):(\d+):(\d+)$", time_str)
         match_ms_double_apostrophe = re.match(r"^(\d+)'(\d+)''$", time_str)
-        match_negative_ms = re.match(r"^- \((\d+)'(\d+)''\)$", time_str)
         match_seconds_only = re.match(r"^(\d+)''$", time_str)
         match_hms = re.match(r"(?:(\d+)h)?(?:(\d+)'|(\d+):)?(\d+)?", time_str)
 
+        # Extraction selon le format détecté
         if match_hms_colon:
             hours = int(match_hms_colon.group(1))
             minutes = int(match_hms_colon.group(2))
@@ -168,12 +173,11 @@ class DataCleaningPipeline:
             hours = 0
             minutes = int(match_ms_double_apostrophe.group(1))
             seconds = int(match_ms_double_apostrophe.group(2))
-        elif match_negative_ms:
-            minutes = int(match_negative_ms.group(1))
-            seconds = int(match_negative_ms.group(2))
-            return -(minutes + seconds / 60)
         elif match_seconds_only:
-            return float(match_seconds_only.group(1)) / 60
+            seconds = int(match_seconds_only.group(1))
+            if distance and distance > 1000:
+                return seconds
+            return seconds / 60
         elif match_hms:
             hours = int(match_hms.group(1)) if match_hms.group(1) else 0
             minutes = int(match_hms.group(2) or match_hms.group(3)) if (match_hms.group(2) or match_hms.group(3)) else 0
