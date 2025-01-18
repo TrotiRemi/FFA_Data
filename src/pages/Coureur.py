@@ -7,7 +7,7 @@ import pandas as pd
 dash.register_page(__name__, path='/')
 
 # Charger le fichier CSV
-dt = pd.read_csv('Docker_results_laver.csv')  # Remplace par ton fichier CSV
+dt = pd.read_csv('FFA/Course2.csv')  # Remplace par ton fichier CSV
 dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
 #print(dt[(dt['vitesse']<5) & (dt['rank'] != "-") & (dt['time'] != "-") & (dt['time'] != "- qi")])
 
@@ -35,13 +35,6 @@ def format_time_from_minutes(minutes):
             return f"{minutes:02}:{seconds:02}"
     except:
         return "00:00"  # Valeur par défaut en cas d'erreur
-
-# Fonction pour arrondir la vitesse
-def format_speed(value):
-    try:
-        return f"{float(value):.1f}"
-    except:
-        return value  # En cas d'erreur, retourne la valeur d'origine
 
 layout = html.Div([
     Header(),
@@ -138,10 +131,10 @@ layout = html.Div([
                 {"name": "Classement", "id": "rank"},
                 {"name": "Athlete", "id": "athlete"},
                 {"name": "Club", "id": "club"},
-                {"name": "Date", "id": "date"},
+                {"name": "Date", "id": "competition_date"},
                 {"name": "Course", "id": "competition_name"},
                 {"name": "Temps", "id": "formatted_time"},
-                {"name": "Vitesse", "id": "formatted_speed"},
+                {"name": "Vitesse", "id": "vitesse"},
                 {"name": "Distance", "id": "distance"}
             ],
             data=[],  # Données initialement vides
@@ -185,9 +178,9 @@ def update_search_result(n_clicks, *args):
         # Si un ou plusieurs composants de la date sont renseignés
         if day or month or year:
             # Convertir le champ 'date' en parties (jour, mois, année)
-            dt['day'] = dt['date'].str.slice(0, 2)  # Extraire le jour
-            dt['month'] = dt['date'].str.slice(3, 5)  # Extraire le mois
-            dt['year'] = dt['date'].str.slice(6, 8)  # Extraire l'année (2 derniers chiffres)
+            dt['day'] = dt['competition_date'].str.slice(0, 2)  # Extraire le jour
+            dt['month'] = dt['competition_date'].str.slice(3, 5)  # Extraire le mois
+            dt['year'] = dt['competition_date'].str.slice(6, 8)  # Extraire l'année (2 derniers chiffres)
 
             # Ajouter les filtres partiels sur les jours, mois, années
             if day:
@@ -208,9 +201,8 @@ def update_search_result(n_clicks, *args):
         # Préparer les résultats pour le tableau
         if not filtered_data.empty:
             filtered_data['formatted_time'] = filtered_data['Minute_Time'].apply(format_time_from_minutes)
-            filtered_data['formatted_speed'] = filtered_data['vitesse'].apply(format_speed)
 
-            table_data = filtered_data[['rank', 'athlete', 'club', 'date', 'competition_name', 'formatted_time', 'formatted_speed', 'distance']].to_dict('records')
+            table_data = filtered_data[['rank', 'athlete', 'club', 'competition_date', 'competition_name', 'formatted_time', 'vitesse', 'distance']].to_dict('records')
         else:
             table_data = []
 

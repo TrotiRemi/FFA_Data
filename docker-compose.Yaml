@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mongodb:
     image: mongo:5.0
@@ -6,41 +8,28 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-  scrapy-service:
-    build:
-      context: ./Projet_Scrap
-      dockerfile: Dockerfile
-    container_name: scrapy_service
-    volumes:
-      - shared_data:/shared  # Monte le volume dans /shared
-    command: >
-      sh -c "
-      cd FFA &&
-      rm -f Course_Docker.csv && scrapy crawl Extract_Course -o Course_Docker.csv &&
-      echo 'Fichier Course_Docker.csv créé :' && ls -la &&
-      cp Course_Docker.csv /shared/Course_Docker.csv &&
-      cd .. &&
-      python Extract_Coureur_Mongo.py &&
-      python Lavage_Mongo.py &&
-      python ExportCSV.py --output /shared/Docker_results_laver.csv &&
-      echo 'Fichier déplacé vers volume partagé : /shared' && ls -la /shared
-      "
 
-  dashboard-service:
+  app-service:
     build:
-      context: ./DashBoard_Scrapy
+      context: .
       dockerfile: Dockerfile
-    container_name: dashboard_service
+    container_name: app_service
     depends_on:
-      - scrapy-service
+      - mongodb
     ports:
       - "8060:8060"
     volumes:
-      - shared_data:/shared  # Monte le volume dans /shared
+      - shared_data:/shared  # Volume partagé pour les fichiers générés
     command: >
-      /bin/sh -c "sh /app/wait_for_file.sh && python3 /app/main.py"
+      bash -c "
+      cd FFA &&
+      echo 'Lancement de Scrapy...' &&
+      scrapy crawl competition_results -o Course2.csv &&
+      echo 'Scrapy terminé, lancement du Dashboard...' &&
+      cd .. &&
+      python3 main.py
+      "
 
 volumes:
-  shared_data: # Déclaration du volume partagé
+  shared_data:
   mongo-data:
-

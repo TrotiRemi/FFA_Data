@@ -26,12 +26,12 @@ class CompetitionAndResultsSpider(scrapy.Spider):
         },
     }
 
-    saisons = range(2022, 2026)
+    saisons = range(2020, 2026)
     niveaux = ["Départemental", "Régional", "National", "Interrégional"]
     types = ["Hors+Stade","Cross"]
 
     result_count = 0
-    max_results = 50000000
+    max_results = 500
 
     def start_requests(self):
         for saison, niveau, type_ in product(self.saisons, self.niveaux, self.types):
