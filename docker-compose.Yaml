@@ -16,22 +16,23 @@ services:
       - mongodb
     ports:
       - "8060:8060"
-    volumes:
-      - shared_data:/shared  # Volume partagé pour les fichiers générés
     environment:
       - MONGO_URI=mongodb://mongodb:27017/
       - MONGO_DATABASE=athle_database
       - MONGO_COLLECTION=results
     command: >
       bash -c "
-      cd FFA &&
-      echo 'Lancement de Scrapy...' &&
-      scrapy crawl competition_results -o Course2.csv &&
-      echo 'Scrapy terminé, lancement du Dashboard...' &&
-      cd .. &&
-      python3 main.py
+      python check_data.py && 
+      if python -c 'from check_data import check_data_count; print(check_data_count())' | grep -q True; then
+        echo 'Données suffisantes, lancement direct du Dashboard...' &&
+        python main.py;
+      else
+        echo 'Pas assez de données, exécution complète...' &&
+        cd FFA &&
+        scrapy crawl competition_results &&
+        python main.py;
+      fi
       "
 
 volumes:
-  shared_data:
   mongo-data:
