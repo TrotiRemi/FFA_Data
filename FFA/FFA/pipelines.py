@@ -1,7 +1,7 @@
-
 import re
 import scrapy
 from pymongo import MongoClient
+from datetime import datetime
 
 class DataCleaningPipeline:
     def round_to_two_decimals(self, value):
@@ -83,24 +83,31 @@ class DataCleaningPipeline:
         # Vérification si le champ `athlete` est valide
         if not item.get('athlete') or item['athlete'].strip() == "Inconnu":
             raise scrapy.exceptions.DropItem(f"Ligne ignorée car `athlete` est vide : {item}")
+        
+        # Conversion de `rank` en chaîne de caractères
+        if "rank" in item:
+            item["rank"] = str(item["rank"]) if item["rank"] is not None else None
 
-        # Extraction de la distance en priorité depuis `full_line`
+        # Formatage de la date pour ElasticSearch
+        if "competition_date" in item:
+            try:
+                item["competition_date"] = self.format_date_for_es(item["competition_date"])
+            except ValueError:
+                raise scrapy.exceptions.DropItem(f"Date invalide trouvée : {item['competition_date']}")
+
+        # Extraction et calcul des autres champs
         item['distance'] = self.extract_distance(item.get('full_line'))
-
         if item['distance'] > 0:  # Cas où la distance est présente dans `full_line`
-            # Extraire le temps depuis `time`
             item['Minute_Time'] = self.convert_to_minutes(item.get('time'))
         else:
-            # Vérifier si une distance est présente dans `time` et un temps dans `full_line`
             is_time_format = self.is_time_format(item.get('time'))
             if not is_time_format:  # `time` est une distance
                 item['distance'] = self.extract_distance_from_time(item['time'])
                 item['Minute_Time'] = self.extract_duration_from_full_line(item.get('full_line'))
-            else:  # Cas normal où `time` est un temps
+            else:
                 item['Minute_Time'] = self.convert_to_minutes(item['time'])
                 item['distance'] = 0  # Distance inconnue si non trouvée
 
-        # Calcul de la vitesse (si distance et Minute_Time sont valides)
         if item.get('distance') and item['Minute_Time']:
             try:
                 item['vitesse'] = (item['distance'] / 1000) / (item['Minute_Time'] / 60)
@@ -109,20 +116,32 @@ class DataCleaningPipeline:
         else:
             item['vitesse'] = 0
 
-        # Arrondir les champs numériques
         for field in ['distance', 'Minute_Time', 'vitesse']:
             if field in item:
                 item[field] = self.round_to_two_decimals(item[field])
 
-        # Nettoyage du champ `club`
-        if 'club' in item:
-            if not item['club'] or item['club'].strip() == "":
-                item['club'] = "No Club"
+        if 'club' in item and (not item['club'] or item['club'].strip() == ""):
+            item['club'] = "No Club"
 
         # Insérer dans MongoDB
         self.collection.insert_one(dict(item))
 
-        return item  # Retourner l'élément traité
+        return item
+
+    def format_date_for_es(self, date_str):
+        """
+        Convertit une date en chaîne au format ElasticSearch 'yyyy-MM-dd'.
+        """
+        try:
+            # Vérifiez si la date est déjà au format attendu
+            datetime.strptime(date_str, "%Y-%m-%d")
+            return date_str  # Retournez la date telle quelle si elle est correcte
+        except ValueError:
+            # Essayez de la convertir depuis d'autres formats possibles
+            try:
+                return datetime.strptime(date_str, "%d/%m/%Y").strftime("%Y-%m-%d")  # Exemple : "01/03/2020" -> "2020-03-01"
+            except ValueError:
+                raise ValueError(f"Format de date non reconnu pour {date_str}")
 
     def extract_distance(self, full_line):
         if not full_line:
@@ -214,3 +233,4 @@ class DataCleaningPipeline:
             return None
 
         return hours * 60 + minutes + seconds / 60
+

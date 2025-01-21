@@ -1,20 +1,21 @@
 import dash
 from dash import html, dcc, Input, Output, State, dash_table
+from elasticsearch import Elasticsearch
 from src.components import Navbar, Header, Footer
-from pymongo import MongoClient
 import pandas as pd
+from pymongo import MongoClient
 
 # Enregistrement de la page d'accueil
 dash.register_page(__name__, path='/')
 
-# Charger le fichier CSV
-#dt = pd.read_csv('FFA/Course2.csv')  # Remplace par ton fichier CSV
-#dt.loc[dt['competition_name'] == "Départementaux de cross-country cd14", 'distance'] = 8715
-#print(dt[(dt['vitesse']<5) & (dt['rank'] != "-") & (dt['time'] != "-") & (dt['time'] != "- qi")])
+# Configuration ElasticSearch
+ELASTICSEARCH_URL = "http://elasticsearch:9200"
+ELASTICSEARCH_INDEX = "athle_results"
 
 MONGO_URI = "mongodb://mongodb:27017/"
 MONGO_DATABASE = "athle_database"
 MONGO_COLLECTION = "results"
+
 
 def get_data_from_mongo(filters=None):
     """
@@ -34,6 +35,51 @@ def get_data_from_mongo(filters=None):
         df = pd.DataFrame(data)
         return df
     return pd.DataFrame()  # DataFrame vide si aucune donnée trouvée
+def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year):
+    query = {
+        "bool": {
+            "must": [],
+            "filter": []
+        }
+    }
+
+    # Ajout des filtres selon les champs
+    if name:
+        query["bool"]["must"].append({"match": {"athlete": name}})
+    if club:
+        query["bool"]["must"].append({"match": {"club": club}})
+    if distance_min or distance_max:
+        range_query = {}
+        if distance_min:
+            range_query["gte"] = distance_min
+        if distance_max:
+            range_query["lte"] = distance_max
+        query["bool"]["filter"].append({"range": {"distance": range_query}})
+    
+    if day or month or year:
+        date_query = ""
+        if day:
+            date_query += f"{int(day):02}/"
+        if month:
+            date_query += f"{int(month):02}/"
+        if year:
+            date_query += f"{int(year):02}"
+        query["bool"]["must"].append({"wildcard": {"competition_date": f"*{date_query}*"}})
+
+    # Recherche dans Elasticsearch
+    es = Elasticsearch(hosts=["http://elasticsearch:9200"])
+    ELASTICSEARCH_INDEX = "athle_results"
+    
+    try:
+        response = es.search(index=ELASTICSEARCH_INDEX, query=query)
+        hits = response["hits"]["hits"]
+        results = [hit["_source"] for hit in hits]  # Extraire les données sources
+        return results
+    except Exception as e:
+        print(f"Erreur lors de la recherche Elasticsearch : {e}")
+        return []
+
+
 
 # Liste des champs de recherche
 search_fields = [
@@ -59,6 +105,7 @@ def format_time_from_minutes(minutes):
     except:
         return "00:00"  # Valeur par défaut en cas d'erreur
 
+# Layout principal de la page
 layout = html.Div([
     Header(),
     Navbar(),
@@ -66,7 +113,6 @@ layout = html.Div([
 
     # Barres de recherche
     html.Div([
-        # Autres champs de recherche
         html.Div([
             dcc.Input(
                 id=field['id'],
@@ -77,12 +123,11 @@ layout = html.Div([
             for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
 
-        # Distance minimale et maximale sur la même ligne
         html.Div([
             html.Label("Distance :", style={
-                    'font-weight': 'bold',
-                    'margin-right': '10px',
-                    'align-self': 'center'  # Assure l'alignement vertical avec les menus déroulants
+                'font-weight': 'bold',
+                'margin-right': '10px',
+                'align-self': 'center'
             }),
             dcc.Input(
                 id='search-distance-min',
@@ -97,19 +142,18 @@ layout = html.Div([
                 style={'width': '80px', 'padding': '5px', 'margin-right': '10px', 'display': 'inline-block'}
             )
         ], style={
-                'display': 'flex',  # Affiche les éléments horizontalement
-                'align-items': 'center',  # Aligne verticalement tous les éléments
-                'margin-top': '5px',
-                'margin-left': '9%'
-            }),
+            'display': 'flex',
+            'align-items': 'center',
+            'margin-top': '5px',
+            'margin-left': '9%'
+        }),
 
-        # Menus déroulants pour les dates alignés et espacés
         html.Div([
             html.Div([
                 html.Label("Date :", style={
                     'font-weight': 'bold',
                     'margin-right': '10px',
-                    'align-self': 'center'  # Assure l'alignement vertical avec les menus déroulants
+                    'align-self': 'center'
                 }),
                 dcc.Dropdown(
                     id='search-day',
@@ -130,8 +174,8 @@ layout = html.Div([
                     style={'width': '80px', 'display': 'inline-block'}
                 )
             ], style={
-                'display': 'flex',  # Affiche les éléments horizontalement
-                'align-items': 'center',  # Aligne verticalement tous les éléments
+                'display': 'flex',
+                'align-items': 'center',
                 'margin-top': '5px',
                 'margin-left': '10.75%'
             })
@@ -165,15 +209,13 @@ layout = html.Div([
             style_cell={
                 'textAlign': 'center',
                 'padding': '10px',
-                'whiteSpace': 'normal',  # Permet les retours à la ligne
-                'overflow': 'hidden',  # Empêche les débordements
-                'textOverflow': 'ellipsis',  # Ajoute des "..." pour le texte coupé (utile pour éviter des débordements horizontaux)
-                'maxWidth': '150px',  # Largeur maximale fixe pour chaque colonne
-                'minWidth': '100px',  # Largeur minimale pour assurer une lisibilité
+                'whiteSpace': 'normal',
+                'overflow': 'hidden',
+                'textOverflow': 'ellipsis',
+                'maxWidth': '150px',
+                'minWidth': '100px',
             },
-            style_data={
-                'height': 'auto',  # Ajuste automatiquement la hauteur des cellules pour le texte
-            },
+            style_data={'height': 'auto'},
             style_header={'fontWeight': 'bold'}
         ),
         style={'width': '80%', 'margin': '0 auto'}
@@ -197,42 +239,28 @@ layout = html.Div([
 )
 def update_search_result(n_clicks, name, club, distance_min, distance_max, day, month, year):
     if n_clicks > 0:
-        # Construire les filtres pour MongoDB
-        filters = {}
-        if name:  # Nom
-            filters['athlete'] = {'$regex': name, '$options': 'i'}
-        if club:  # Club
-            filters['club'] = {'$regex': club, '$options': 'i'}
-        if distance_min:  # Distance minimale
-            filters['distance'] = {'$gte': float(distance_min)}
-        if distance_max:  # Distance maximale
-            if 'distance' in filters:
-                filters['distance']['$lte'] = float(distance_max)
-            else:
-                filters['distance'] = {'$lte': float(distance_max)}
-
-        # Gestion des dates
-        if day or month or year:
-            date_filter = ""
-            if day:
-                date_filter += f"{day:02}/"
-            if month:
-                date_filter += f"{month:02}/"
-            if year:
-                date_filter += f"{year:02}"
-            filters['competition_date'] = {'$regex': date_filter, '$options': 'i'}
-
-        # Obtenir les données de MongoDB
-        filtered_data = get_data_from_mongo(filters)
-
-        # Préparer les résultats pour le tableau
+        # Appeler la fonction de recherche
+        filtered_data = search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year)
+        
+        # Vérifier si `filtered_data` est vide après conversion
+        if isinstance(filtered_data, list) and filtered_data:  # Si c'est une liste non vide
+            filtered_data = pd.DataFrame(filtered_data)
+        elif isinstance(filtered_data, list):  # Si c'est une liste vide
+            return "Aucun résultat trouvé.", []
+        
+        # Si les données existent, préparer la table pour Dash
         if not filtered_data.empty:
-            table_data = filtered_data[['rank', 'athlete', 'club', 'competition_date', 'competition_name', 'vitesse', 'distance']].to_dict('records')
+            # Remplacer la colonne `time` par `Minute_Time` (au format float)
+            filtered_data['time'] = filtered_data['Minute_Time'].astype(float)
+
+            # Convertir les données en dictionnaire pour Dash
+            table_data = filtered_data.to_dict('records')
+            result_text = f"{len(filtered_data)} résultat(s) trouvé(s)."
         else:
             table_data = []
-
-        # Résumé des résultats
-        result_text = f"{len(filtered_data)} résultat(s) trouvé(s)." if not filtered_data.empty else "Aucun résultat trouvé."
+            result_text = "Aucun résultat trouvé."
+        
         return result_text, table_data
 
     return "", []
+

@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   mongodb:
     image: mongo:5.0
@@ -6,6 +8,30 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - my_network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false  # Désactiver la sécurité (HTTPS)
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "9200:9200"
+    networks:
+      - my_network
 
   app-service:
     build:
@@ -13,26 +39,41 @@ services:
       dockerfile: Dockerfile
     container_name: app_service
     depends_on:
-      - mongodb
+      - elasticsearch
     ports:
       - "8060:8060"
     environment:
       - MONGO_URI=mongodb://mongodb:27017/
       - MONGO_DATABASE=athle_database
       - MONGO_COLLECTION=results
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_INDEX=athle_results
+    networks:
+      - my_network
     command: >
       bash -c "
+      until curl -s http://elasticsearch:9200; do
+        echo 'Waiting for ElasticSearch...';
+        sleep 5;
+      done &&
       python check_data.py && 
       if python -c 'from check_data import check_data_count; print(check_data_count())' | grep -q True; then
-        echo 'Données suffisantes, lancement direct du Dashboard...' &&
+        echo 'Données suffisantes, synchronisation MongoDB -> ElasticSearch...' &&
+        python Mongo_Elastic.py &&
         python main.py;
       else
         echo 'Pas assez de données, exécution complète...' &&
         cd FFA &&
         scrapy crawl competition_results &&
+        cd .. &&
+        python Mongo_Elastic.py &&
         python main.py;
       fi
       "
 
 volumes:
   mongo-data:
+
+networks:
+  my_network:
+    driver: bridge
