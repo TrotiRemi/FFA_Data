@@ -200,7 +200,7 @@ layout = html.Div([
                 {"name": "Club", "id": "club"},
                 {"name": "Date", "id": "competition_date"},
                 {"name": "Course", "id": "competition_name"},
-                {"name": "Temps", "id": "formatted_time"},
+                {"name": "Temps", "id": "time"},
                 {"name": "Vitesse", "id": "vitesse"},
                 {"name": "Distance", "id": "distance"}
             ],
@@ -241,8 +241,8 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
     if n_clicks > 0:
         # Appeler la fonction de recherche
         filtered_data = search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year)
-        
-        # Vérifier si `filtered_data` est vide après conversion
+
+        # Vérifiez si `filtered_data` contient des données
         if isinstance(filtered_data, list) and filtered_data:  # Si c'est une liste non vide
             filtered_data = pd.DataFrame(filtered_data)
         elif isinstance(filtered_data, list):  # Si c'est une liste vide
@@ -250,8 +250,11 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
         
         # Si les données existent, préparer la table pour Dash
         if not filtered_data.empty:
-            # Remplacer la colonne `time` par `Minute_Time` (au format float)
-            filtered_data['time'] = filtered_data['Minute_Time'].astype(float)
+            # Vérifiez et remplacez la colonne "Temps" par `Minute_Time`
+            if 'Minute_Time' in filtered_data.columns:
+                filtered_data['time'] = filtered_data['Minute_Time'].fillna(0).astype(float)
+            else:
+                return "La colonne 'Minute_Time' est absente des résultats.", []
 
             # Convertir les données en dictionnaire pour Dash
             table_data = filtered_data.to_dict('records')
@@ -263,4 +266,5 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
         return result_text, table_data
 
     return "", []
+
 

@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app/
 
 # Installer les dépendances Python
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Assurez-vous que MongoDB est accessible dans Scrapy
 ENV MONGO_URI=mongodb://mongodb:27017/
