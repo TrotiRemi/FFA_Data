@@ -4,11 +4,14 @@ FROM python:3.9
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers de l'application
-COPY . /app/
+# Copier uniquement requirements.txt pour installer les dépendances
+COPY requirements.txt /app/
 
-# Installer les dépendances Python
-RUN pip install -r requirements.txt
+# Installer les dépendances Python (étape mise en cache)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le reste des fichiers de l'application
+COPY . /app/
 
 # Assurez-vous que MongoDB est accessible dans Scrapy
 ENV MONGO_URI=mongodb://mongodb:27017/

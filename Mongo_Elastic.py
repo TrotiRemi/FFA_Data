@@ -7,7 +7,7 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongodb:27017/")
 MONGO_DATABASE = os.getenv("MONGO_DATABASE", "athle_database")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "results")
 
-# Paramètres ElasticSearch
+# Paramètres Elasticsearch
 ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL", "http://elasticsearch:9200")
 ELASTICSEARCH_INDEX = os.getenv("ELASTICSEARCH_INDEX", "athle_results")
 
@@ -30,15 +30,48 @@ def Mongo_Elastic():
             body={
                 "mappings": {
                     "properties": {
-                        "rank": {"type": "keyword"},
-                        "time": {"type": "text"},
-                        "athlete": {"type": "text"},
-                        "club": {"type": "text"},
-                        "competition_date": {"type": "date", "format": "yyyy-MM-dd"},
-                        "competition_name": {"type": "text"},
+                        "competition_name": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
                         "distance": {"type": "float"},
                         "Minute_Time": {"type": "float"},
-                        "vitesse": {"type": "float"}
+                        "athlete": {"type": "text"},
+                        "club": {"type": "text"},
+                        "category": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "department": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "competition_date": {"type": "date", "format": "yyyy-MM-dd"},
+                        "vitesse": {"type": "float"},
+                        "type": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        }
                     }
                 }
             }

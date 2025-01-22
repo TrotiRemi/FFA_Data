@@ -37,6 +37,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      cache_from:
+        - app-service:latest  # Utiliser le cache des couches précédentes si possible
     container_name: app_service
     depends_on:
       - elasticsearch
@@ -50,6 +52,8 @@ services:
       - ELASTICSEARCH_INDEX=athle_results
     networks:
       - my_network
+    volumes:
+      - ~/.cache/pip:/root/.cache/pip  # Conserver le cache pip pour accélérer les builds futurs
     command: >
       bash -c "
       until curl -s http://elasticsearch:9200; do

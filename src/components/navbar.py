@@ -13,6 +13,16 @@ def Navbar():
                 href='/Course',
                 style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
+            dcc.Link(
+                [html.Img(src='/assets/map-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Map")],
+                href='/Map',
+                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
+            ),
+            dcc.Link(
+                [html.Img(src='/assets/map-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Histogramme")],
+                href='/Histogram',
+                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
+            ),
         ],
         style={
             'padding': '10px',

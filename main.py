@@ -3,7 +3,7 @@ from dash import dcc, html
 from dash import page_registry
 
 # Initialisation de l'application
-app = dash.Dash(__name__, use_pages=True, pages_folder="src/pages")
+app = dash.Dash(__name__, use_pages=True, pages_folder="src/pages", suppress_callback_exceptions=True)
 
 # Mise en page principale de l'application
 app.layout = html.Div(children=[
