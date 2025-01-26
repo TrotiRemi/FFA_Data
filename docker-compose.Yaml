@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 
 services:
   mongodb:
@@ -54,6 +54,8 @@ services:
       - my_network
     volumes:
       - ~/.cache/pip:/root/.cache/pip  # Conserver le cache pip pour accélérer les builds futurs
+      - ./src:/app/src                # Monter les fichiers Python locaux dans le conteneur
+      - ./check_data.py:/app/check_data.py  # Monter directement un fichier si nécessaire
     command: >
       bash -c "
       until curl -s http://elasticsearch:9200; do
@@ -63,7 +65,6 @@ services:
       python check_data.py && 
       if python -c 'from check_data import check_data_count; print(check_data_count())' | grep -q True; then
         echo 'Données suffisantes, synchronisation MongoDB -> ElasticSearch...' &&
-        python Mongo_Elastic.py &&
         python main.py;
       else
         echo 'Pas assez de données, exécution complète...' &&
@@ -74,7 +75,6 @@ services:
         python main.py;
       fi
       "
-
 volumes:
   mongo-data:
 

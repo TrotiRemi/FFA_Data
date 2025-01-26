@@ -41,7 +41,6 @@ class DataCleaningPipeline:
         self.db = self.client[self.mongo_db]
         self.collection = self.db[self.collection_name]
 
-        # Charger les enregistrements existants pour éviter les doublons
         self.existing_records = {
             (doc.get("rank"), doc.get("time"), doc.get("athlete"),
              doc.get("competition_date"), doc.get("competition_name"))
@@ -66,7 +65,6 @@ class DataCleaningPipeline:
         Processus pour traiter chaque élément en fonction des cas prioritaires,
         tout en évitant les doublons basés sur des colonnes clés.
         """
-        # Vérification des doublons
         record_key = (
             item.get("rank"),
             item.get("time"),
@@ -77,37 +75,31 @@ class DataCleaningPipeline:
         if record_key in self.existing_records:
             raise scrapy.exceptions.DropItem(f"Doublon détecté et supprimé : {item}")
 
-        # Ajouter le record aux enregistrements existants
         self.existing_records.add(record_key)
 
-        # Vérification si le champ `athlete` est valide
         if not item.get('athlete') or item['athlete'].strip() == "Inconnu":
             raise scrapy.exceptions.DropItem(f"Ligne ignorée car `athlete` est vide : {item}")
         
-        # Conversion de `rank` en chaîne de caractères
         if "rank" in item:
             item["rank"] = str(item["rank"]) if item["rank"] is not None else None
 
-        # Formatage de la date pour ElasticSearch
         if "competition_date" in item:
             try:
                 item["competition_date"] = self.format_date_for_es(item["competition_date"])
             except ValueError:
                 raise scrapy.exceptions.DropItem(f"Date invalide trouvée : {item['competition_date']}")
 
-        # Extraction et calcul des autres champs
         item['distance'] = self.extract_distance(item.get('full_line'))
-        if item['distance'] > 0:  # Cas où la distance est présente dans `full_line`
+        if item['distance'] > 0: 
             item['Minute_Time'] = self.convert_to_minutes(item.get('time'))
         else:
             is_time_format = self.is_time_format(item.get('time'))
-            if not is_time_format:  # `time` est une distance
+            if not is_time_format:  
                 item['distance'] = self.extract_distance_from_time(item['time'])
                 item['Minute_Time'] = self.extract_duration_from_full_line(item.get('full_line'))
             else:
                 item['Minute_Time'] = self.convert_to_minutes(item['time'])
-                item['distance'] = 0  # Distance inconnue si non trouvée
-
+                item['distance'] = 0 
         if item.get('distance') and item['Minute_Time']:
             try:
                 item['vitesse'] = (item['distance'] / 1000) / (item['Minute_Time'] / 60)
@@ -123,7 +115,6 @@ class DataCleaningPipeline:
         if 'club' in item and (not item['club'] or item['club'].strip() == ""):
             item['club'] = "No Club"
 
-        # Insérer dans MongoDB
         self.collection.insert_one(dict(item))
 
         return item
@@ -133,13 +124,13 @@ class DataCleaningPipeline:
         Convertit une date en chaîne au format ElasticSearch 'yyyy-MM-dd'.
         """
         try:
-            # Vérifiez si la date est déjà au format attendu
+            
             datetime.strptime(date_str, "%Y-%m-%d")
-            return date_str  # Retournez la date telle quelle si elle est correcte
+            return date_str  
         except ValueError:
-            # Essayez de la convertir depuis d'autres formats possibles
+
             try:
-                return datetime.strptime(date_str, "%d/%m/%Y").strftime("%Y-%m-%d")  # Exemple : "01/03/2020" -> "2020-03-01"
+                return datetime.strptime(date_str, "%d/%m/%Y").strftime("%Y-%m-%d") 
             except ValueError:
                 raise ValueError(f"Format de date non reconnu pour {date_str}")
 
@@ -147,18 +138,15 @@ class DataCleaningPipeline:
         if not full_line:
             return 0
 
-        # Recherche des cas prioritaires
         if re.search(r"1/2\s?marathon|semi[-\s]?marathon", full_line, re.IGNORECASE):
             return 21097.5
         if re.search(r"marathon", full_line, re.IGNORECASE):
             return 42195
 
-        # Recherche des distances en mètres
         match_meters = re.findall(r"(\d+)\s?[mM]", full_line)
         if match_meters:
             return max(float(m) for m in match_meters)
 
-        # Recherche des distances en kilomètres
         match_kilometers = re.search(r"(\d+)\s?[kK][mM]", full_line)
         if match_kilometers:
             return float(match_kilometers.group(1)) * 1000
@@ -198,20 +186,17 @@ class DataCleaningPipeline:
         if not time_str:
             return None
 
-        # Vérifier la présence d'informations entre parenthèses
         match_parentheses = re.search(r"\((.*?)\)", time_str)
         if match_parentheses:
             time_str = match_parentheses.group(1)
         else:
             time_str = re.sub(r"[^\d'hm'':]+$", "", time_str).strip()
 
-        # Correspondances des formats de temps
         match_hms_colon = re.match(r"^(\d+):(\d+):(\d+)$", time_str)
         match_ms_double_apostrophe = re.match(r"^(\d+)'(\d+)''$", time_str)
         match_seconds_only = re.match(r"^(\d+)''$", time_str)
         match_hms = re.match(r"(?:(\d+)h)?(?:(\d+)'|(\d+):)?(\d+)?", time_str)
 
-        # Extraction selon le format détecté
         if match_hms_colon:
             hours = int(match_hms_colon.group(1))
             minutes = int(match_hms_colon.group(2))

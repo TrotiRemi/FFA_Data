@@ -1,20 +1,26 @@
 import dash
 from dash import html, dcc, Input, Output, State, dash_table
+from elasticsearch import Elasticsearch
 from src.components import Navbar, Header, Footer
 import pandas as pd
+from datetime import datetime
+
 
 # Enregistrement de la page d'accueil
 dash.register_page(__name__, path='/Course')
 
-# Charger le fichier CSV
-dt = pd.read_csv('resultat_course.csv')  # Remplace par ton fichier CSV
+# Configuration Elasticsearch
+ELASTICSEARCH_URL = "http://elasticsearch:9200"
+ELASTICSEARCH_INDEX = "athle_results"
+es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
+# Liste des champs de recherche
 search_fields = [
     {'id': 'search-name', 'placeholder': 'Nom de la Course', 'column': 'competition_name', 'type': 'text'},
     {'id': 'search-level', 'placeholder': 'Niveau', 'column': 'level', 'type': 'text'},
-    {'id': 'search-date', 'placeholder': 'Date (J/M/A(2 derniers chiffres))', 'column': 'date', 'type': 'text'},
-    {'id': 'search-type', 'placeholder': 'Type de competition', 'column': 'competition_type', 'type': 'text'},
-    {'id': 'search-dep', 'placeholder': 'Département', 'column': 'departement', 'type': 'number'}
+    {'id': 'search-date', 'placeholder': 'Date (J/M/A)', 'column': 'competition_date', 'type': 'text'},
+    {'id': 'search-type', 'placeholder': 'Type de compétition', 'column': 'type', 'type': 'text'},
+    {'id': 'search-dep', 'placeholder': 'Département', 'column': 'department', 'type': 'text'}
 ]
 
 # Layout
@@ -23,7 +29,7 @@ layout = html.Div([
     Navbar(),
     html.H1("Chercher une course", style={'textAlign': 'center'}),
 
-    # Champs de recherche pour Page 2
+    # Champs de recherche
     html.Div([
         html.Div([
             dcc.Input(
@@ -44,34 +50,29 @@ layout = html.Div([
         html.Div(id='search-result-page2', style={'margin-top': '20px', 'font-size': '16px', 'color': '#333'})
     ], style={'textAlign': 'center'}),
 
-    # Tableau des résultats pour Page 2
+    # Tableau des résultats
     html.Div(
         dash_table.DataTable(
             id='result-table-page2',
             columns=[
-                {"name": "Date", "id": "date"},
+                {"name": "Date", "id": "competition_date"},
                 {"name": "Nom", "id": "competition_name"},
-                {"name": "Lieu", "id": "location"},
-                {"name": "Ligue", "id": "ligue1"},
-                {"name": "Type", "id": "competition_type"},
-                {"name": "Niveau", "id": "level"},
-                {"name": "Distances", "id": "distance"},
-                {"name": "Nombre de Coureur", "id": "Nombre_Coureur"}
+                {"name": "Distance", "id": "distance"},
+                {"name": "Nombre de Coureurs (Total)", "id": "total_runners"},
+                {"name": "Nombre de Coureurs (Distance)", "id": "distance_runners"}
             ],
-            data=[],  # Données initialement vides
+            data=[],
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
             style_cell={
                 'textAlign': 'center',
                 'padding': '10px',
-                'whiteSpace': 'normal',  # Permet les retours à la ligne
-                'overflow': 'hidden',  # Empêche les débordements
-                'textOverflow': 'ellipsis',  # Affiche des "..." si le texte est tronqué
-                'maxWidth': '150px',  # Largeur maximale fixe pour chaque colonne
-                'minWidth': '100px',  # Largeur minimale pour assurer une lisibilité
+                'whiteSpace': 'normal',
+                'overflow': 'hidden',
+                'textOverflow': 'ellipsis',
+                'maxWidth': '150px',
+                'minWidth': '100px',
             },
-            style_data={
-                'height': 'auto',  # Ajuste automatiquement la hauteur des cellules pour le texte
-            },
+            style_data={'height': 'auto'},
             style_header={'fontWeight': 'bold'}
         ),
         style={'width': '80%', 'margin': '0 auto'}
@@ -79,7 +80,7 @@ layout = html.Div([
     Footer()
 ])
 
-
+# Callback pour mettre à jour les résultats de recherche et le tableau
 @dash.callback(
     [Output('search-result-page2', 'children'),
      Output('result-table-page2', 'data')],
@@ -88,19 +89,73 @@ layout = html.Div([
 )
 def update_page2(n_clicks, *args):
     if n_clicks > 0:
-        # Associer les colonnes aux valeurs des champs
-        filters = {field['column']: value for field, value in zip(search_fields, args) if value}
+        filters = [{"match_phrase": {field['column']: value}} for field, value in zip(search_fields, args) if value]
+        query = {
+            "bool": {
+                "must": filters
+            }
+        }
 
-        # Filtrage des données
-        filtered_data = dt.copy()
-        for column, value in filters.items():
-            filtered_data = filtered_data[
-                filtered_data[column].astype(str).str.contains(str(value), case=False, na=False)
-            ]
+        try:
+            response = es.search(
+                index=ELASTICSEARCH_INDEX,
+                body={
+                    "size": 0,
+                    "query": query,
+                    "aggs": {
+                        "competitions": {
+                            "composite": {
+                                "sources": [
+                                    {"competition_name": {"terms": {"field": "competition_name.keyword"}}},
+                                    {"competition_date": {"terms": {"field": "competition_date"}}}
+                                ],
+                                "size": 10000
+                            },
+                            "aggregations": {
+                                "distances": {
+                                    "terms": {"field": "distance"},
+                                    "aggs": {
+                                        "runner_count": {
+                                            "value_count": {"field": "distance"}
+                                        }
+                                    }
+                                },
+                                "total_runners": {
+                                    "sum_bucket": {
+                                        "buckets_path": "distances>_count"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            )
 
-        # Résumé des résultats
-        result_text = f"{len(filtered_data)} résultat(s) trouvé(s)." if not filtered_data.empty else "Aucun résultat trouvé."
-        return result_text, filtered_data.to_dict('records')
+            data = []
+            for bucket in response['aggregations']['competitions']['buckets']:
+                competition_name = bucket['key']['competition_name']
+                raw_date = bucket['key']['competition_date']
+                competition_date = datetime.utcfromtimestamp(raw_date / 1000).strftime('%Y-%m-%d')
+
+                total_runners = bucket['total_runners']['value']
+
+                for distance_bucket in bucket['distances']['buckets']:
+                    distance = distance_bucket['key']
+                    runners_on_distance = distance_bucket['doc_count']
+
+                    data.append({
+                        "competition_date": competition_date, 
+                        "competition_name": competition_name,
+                        "type": "N/A" if "type" not in bucket else bucket["type"],
+                        "distance": distance,
+                        "total_runners": total_runners,
+                        "distance_runners": runners_on_distance
+                    })
+            result_text = f"{len(data)} résultat(s) trouvé(s)." if data else "Aucun résultat trouvé."
+            return result_text, data
+
+        except Exception as e:
+            print(f"Erreur Elasticsearch : {e}")
+            return "Erreur lors de la récupération des données.", []
 
     return "", []
-
