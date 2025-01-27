@@ -175,20 +175,34 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
         query["bool"]["must"].append({"match_phrase": {"club": club}})
     if distance_min or distance_max:
         range_query = {}
-        if distance_min:
+        if distance_min is not None:
             range_query["gte"] = distance_min
-        if distance_max:
+        if distance_max is not None:
             range_query["lte"] = distance_max
         query["bool"]["filter"].append({"range": {"distance": range_query}})
+        
+    date_query = {}
     if day or month or year:
-        date_query = ""
-        if day:
-            date_query += f"{int(day):02}/"
-        if month:
-            date_query += f"{int(month):02}/"
-        if year:
-            date_query += f"{int(year):02}"
-        query["bool"]["must"].append({"wildcard": {"competition_date": f"*{date_query}*"}})
+      if year:
+        start_date = f"{year}-{month or '01'}-{day or '01'}"
+        end_date = f"{year}-{month or '12'}-{day or '31'}"
+    elif month:
+        start_date = f"2025-{month}-{day or '01'}"
+        end_date = f"2025-{month}-{day or '31'}"  # Mois fixe
+    elif day:
+        # Chercher un jour précis dans tous les mois/années
+        raise ValueError("Pour chercher un jour, le mois/année est obligatoire.")
+
+    date_query = {
+        "range": {
+            "competition_date": {
+                "gte": start_date,
+                "lte": end_date
+            }
+        }
+    }
+
+    query["bool"]["must"].append(date_query)
 
     es = Elasticsearch(hosts=["http://elasticsearch:9200"])
     try:

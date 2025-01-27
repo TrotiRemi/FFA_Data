@@ -81,7 +81,7 @@ layout = html.Div([
                 ),
                 dcc.Dropdown(
                     id='search-year',
-                    options=[{'label': f"{year % 100:02}", 'value': f"{year % 100:02}"} for year in range(2000, 2031)],
+                    options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
                     placeholder='Année',
                     style={'width': '80px', 'display': 'inline-block'}
                 )
