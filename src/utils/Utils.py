@@ -1,3 +1,4 @@
+
 import os
 from elasticsearch import Elasticsearch
 import pandas as pd
@@ -168,12 +169,16 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
             "filter": []
         }
     }
-    
-    
+
+    # Recherche par nom
     if name:
         query["bool"]["must"].append({"match_phrase": {"athlete": name}})
+
+    # Recherche par club
     if club:
         query["bool"]["must"].append({"match_phrase": {"club": club}})
+
+    # Recherche par distance
     if distance_min or distance_max:
         range_query = {}
         if distance_min is not None:
@@ -182,32 +187,55 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
             range_query["lte"] = distance_max
         query["bool"]["filter"].append({"range": {"distance": range_query}})
 
+    # Gestion des dates (jour, mois, année)
     start_date = None
     end_date = None
-      
-    date_query = {}
-    if day or month or year:
-      if year:
-        start_date = f"{year}-{month or '01'}-{day or '01'}"
-        end_date = f"{year}-{month or '12'}-{day or '31'}"
-    elif month:
-        start_date = f"2025-{month}-{day or '01'}"
-        end_date = f"2025-{month}-{day or '31'}"  # Mois fixe
-    elif day:
-        # Chercher un jour précis dans tous les mois/années
-        raise ValueError("Pour chercher un jour, le mois/année est obligatoire.")
 
-    date_query = {
-        "range": {
-            "competition_date": {
-                "gte": start_date,
-                "lte": end_date
+    if month :
+        if not year:
+            raise ValueError("Le mois et/ou le jour nécessitent une année pour effectuer une recherche.")
+    if day : 
+        if not month:
+            raise ValueError("Le mois et/ou le jour nécessitent une année pour effectuer une recherche.")
+    # Gestion du mois et du jour (format à deux chiffres si nécessaire)
+    if month and len(month) == 1:
+        month = f"0{month}"
+    if day and len(day) == 1:
+        day = f"0{day}"
+
+    # Si l'année est précisée
+    if year:
+        if month:
+            # Si mois précisé, définir une plage pour ce mois
+            start_date = f"{year}-{month}-{day or '01'}"
+            end_date = f"{year}-{month}-{day or '31'}"  # Fin du mois
+        else:
+            # Si seul l'année est précisée, définir une plage pour l'année entière
+            start_date = f"{year}-01-01"
+            end_date = f"{year}-12-31"
+    
+    # Si seul le mois est précisé sans année, on fixe l'année par défaut (par exemple 2025)
+    elif month:
+        start_date = f"2025-{month}-01"
+        end_date = f"2025-{month}-31"  # Fin du mois
+
+    # Si seul le jour est précisé sans mois et année, une erreur est levée
+    elif day:
+        raise ValueError("Pour chercher un jour, le mois et l'année doivent être précisés.")
+
+    # Ajout du filtre de date à la requête si une date est définie
+    if start_date and end_date:
+        date_query = {
+            "range": {
+                "competition_date": {
+                    "gte": start_date,
+                    "lte": end_date
+                }
             }
         }
-    }
+        query["bool"]["must"].append(date_query)
 
-    query["bool"]["must"].append(date_query)
-
+    # Exécution de la requête Elasticsearch
     es = Elasticsearch(hosts=["http://elasticsearch:9200"])
     try:
         response = es.search(index=ELASTICSEARCH_INDEX, query=query, size=size)
@@ -218,11 +246,7 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
     except Exception as e:
         print(f"Erreur lors de la recherche Elasticsearch : {e}")
         return []
-
-    except Exception as e:
-        print(f"Erreur lors de la recherche Elasticsearch : {e}")
-        return []
-
+    
 # Fonction pour formater le temps en H:M:S à partir de Minute_Time
 def format_time_from_minutes(minutes):
     try:

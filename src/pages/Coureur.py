@@ -184,5 +184,3 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
         return result_text, table_data
 
     return "", []
-
-
