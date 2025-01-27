@@ -169,6 +169,7 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
         }
     }
     
+    
     if name:
         query["bool"]["must"].append({"match_phrase": {"athlete": name}})
     if club:
@@ -180,7 +181,10 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
         if distance_max is not None:
             range_query["lte"] = distance_max
         query["bool"]["filter"].append({"range": {"distance": range_query}})
-        
+
+    start_date = None
+    end_date = None
+      
     date_query = {}
     if day or month or year:
       if year:
