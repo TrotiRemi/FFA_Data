@@ -62,6 +62,7 @@ layout = html.Div([
                 {"name": "Nombre de Coureurs (Distance)", "id": "distance_runners"}
             ],
             data=[],
+            fixed_rows={'headers': True},
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
             style_cell={
                 'textAlign': 'center',

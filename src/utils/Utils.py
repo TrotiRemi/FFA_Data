@@ -76,7 +76,7 @@ def get_competition_data():
             "departments": {
                 "terms": {
                     "field": "department.keyword",
-                    "size": 100
+                    "size": 10000
                 },
                 "aggs": {
                     "competitions": {
@@ -162,7 +162,7 @@ def get_data_from_mongo(filters=None):
     return pd.DataFrame()
 
 
-def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year, size=100):
+def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year, size=10000):
     query = {
         "bool": {
             "must": [],
@@ -320,7 +320,7 @@ def get_competitions():
 # Fonction pour récupérer les distances d'une compétition
 def get_distances(competition_name, year):
     query = {
-        "size": 100,
+        "size": 10000,  # Augmente la taille pour récupérer toutes les distances possibles
         "_source": ["distance"],
         "query": {
             "bool": {
@@ -332,13 +332,18 @@ def get_distances(competition_name, year):
         }
     }
     response = es.search(index=ELASTICSEARCH_INDEX, body=query)
-    distances = {doc["_source"]["distance"] for doc in response["hits"]["hits"]}
+
+    # Extraction des distances et suppression des doublons
+    distances = {doc["_source"]["distance"] for doc in response["hits"]["hits"] if "distance" in doc["_source"]}
+    
+    print(f"DEBUG - Distances récupérées pour {competition_name} {year}: {distances}")  # Ajout d'un log
+
     return sorted(distances)
 
-# Fonction pour récupérer les données filtrées
+
 def get_filtered_data(competition_name, year, distance):
     query = {
-        "size": 10000,
+        "size": 10000,  # Assure de récupérer toutes les données
         "_source": ["Minute_Time"],
         "query": {
             "bool": {
@@ -351,5 +356,10 @@ def get_filtered_data(competition_name, year, distance):
         }
     }
     response = es.search(index=ELASTICSEARCH_INDEX, body=query)
-    data = [doc["_source"] for doc in response["hits"]["hits"]]
+
+    # Extraction et conversion en DataFrame
+    data = [doc["_source"] for doc in response["hits"]["hits"] if "Minute_Time" in doc["_source"]]
+    
+    print(f"DEBUG - Nombre de résultats récupérés pour {competition_name} {year} - {distance}m : {len(data)}")  # Log
+
     return pd.DataFrame(data)

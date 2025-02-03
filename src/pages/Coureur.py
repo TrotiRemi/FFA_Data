@@ -117,6 +117,8 @@ layout = html.Div([
                 {"name": "Distance", "id": "distance"}
             ],
             data=[],
+            fixed_rows={'headers': True},
+
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
             style_cell={
                 'textAlign': 'center',

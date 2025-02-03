@@ -54,10 +54,16 @@ def update_distances(competition_with_year):
         parts = competition_with_year.split()
         year = parts[-1]
         competition_name = " ".join(parts[:-1])
+
         distances = get_distances(competition_name, year)
-        options = [{"label": str(d), "value": d} for d in distances]
-        return options, False
+        print(f"DEBUG - Distances affichées dans le dropdown: {distances}")  # Ajout de log
+        
+        if distances:
+            options = [{"label": str(d), "value": d} for d in distances]
+            return options, False
+        
     return [], True
+
 
 @callback(
     Output("histogram", "figure"),
@@ -69,8 +75,14 @@ def update_histogram(competition_with_year, distance):
         parts = competition_with_year.split()
         year = parts[-1]
         competition_name = " ".join(parts[:-1])
+
         data = get_filtered_data(competition_name, year, distance)
+        print(f"DEBUG - Données finales pour l'histogramme: {len(data)} lignes")  # Log
+
         if not data.empty:
+            data = data.dropna(subset=["Minute_Time"])  # Éviter les valeurs NaN
+            print(f"DEBUG - Valeurs Minute_Time après nettoyage: {data['Minute_Time'].unique()}")  # Log
+
             fig = px.histogram(
                 data,
                 x="Minute_Time",
