@@ -20,15 +20,5 @@ layout = html.Div([
             figure=generate_map() 
         )
     ]),
-
-    # Deuxième carte : Compétitions par département
-    html.Div([
-        html.H2("Carte des Compétitions par Département"),
-        dcc.Graph(
-            id='map_competitions',
-            figure=generate_competition_map() 
-        )
-    ]),
-
     Footer()
 ])

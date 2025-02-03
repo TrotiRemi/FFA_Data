@@ -5,7 +5,6 @@ from src.components import Navbar, Header, Footer
 import pandas as pd
 from datetime import datetime
 
-
 # Enregistrement de la page d'accueil
 dash.register_page(__name__, path='/Course')
 
@@ -57,6 +56,8 @@ layout = html.Div([
             columns=[
                 {"name": "Date", "id": "competition_date"},
                 {"name": "Nom", "id": "competition_name"},
+                {"name": "Niveau", "id": "level"},
+                {"name": "Département", "id": "department"},
                 {"name": "Distance", "id": "distance"},
                 {"name": "Nombre de Coureurs (Total)", "id": "total_runners"},
                 {"name": "Nombre de Coureurs (Distance)", "id": "distance_runners"}
@@ -90,41 +91,34 @@ layout = html.Div([
 )
 def update_page2(n_clicks, *args):
     if n_clicks > 0:
+        # Création du filtre basé sur les valeurs remplies par l'utilisateur
         filters = [{"match_phrase": {field['column']: value}} for field, value in zip(search_fields, args) if value]
-        query = {
-            "bool": {
-                "must": filters
-            }
-        }
+
+        query = {"bool": {"must": filters}}
 
         try:
             response = es.search(
                 index=ELASTICSEARCH_INDEX,
                 body={
-                    "size": 0,
+                    "size": 0,  # On n'a pas besoin des documents, seulement des agrégations
                     "query": query,
                     "aggs": {
                         "competitions": {
                             "composite": {
                                 "sources": [
                                     {"competition_name": {"terms": {"field": "competition_name.keyword"}}},
-                                    {"competition_date": {"terms": {"field": "competition_date"}}}
+                                    {"competition_date": {"terms": {"field": "competition_date"}}},
+                                    {"level": {"terms": {"field": "level.keyword"}}},  # Ajout du champ Niveau
+                                    {"department": {"terms": {"field": "department.keyword"}}}  # Ajout du champ Département
                                 ],
                                 "size": 10000
                             },
                             "aggregations": {
                                 "distances": {
-                                    "terms": {"field": "distance"},
-                                    "aggs": {
-                                        "runner_count": {
-                                            "value_count": {"field": "distance"}
-                                        }
-                                    }
+                                    "terms": {"field": "distance", "size": 100}
                                 },
                                 "total_runners": {
-                                    "sum_bucket": {
-                                        "buckets_path": "distances>_count"
-                                    }
+                                    "sum_bucket": {"buckets_path": "distances>_count"}  # Fix du total
                                 }
                             }
                         }
@@ -132,13 +126,17 @@ def update_page2(n_clicks, *args):
                 }
             )
 
+            print("DEBUG - Réponse Elasticsearch :", response)  # Vérification
+
             data = []
             for bucket in response['aggregations']['competitions']['buckets']:
                 competition_name = bucket['key']['competition_name']
                 raw_date = bucket['key']['competition_date']
                 competition_date = datetime.utcfromtimestamp(raw_date / 1000).strftime('%Y-%m-%d')
+                level = bucket['key'].get('level', 'N/A')  # Récupération du Niveau
+                department = bucket['key'].get('department', 'N/A')  # Récupération du Département
 
-                total_runners = bucket['total_runners']['value']
+                total_runners = sum(dist["doc_count"] for dist in bucket['distances']['buckets'])
 
                 for distance_bucket in bucket['distances']['buckets']:
                     distance = distance_bucket['key']
@@ -147,11 +145,13 @@ def update_page2(n_clicks, *args):
                     data.append({
                         "competition_date": competition_date, 
                         "competition_name": competition_name,
-                        "type": "N/A" if "type" not in bucket else bucket["type"],
+                        "level": level,  # Ajout Niveau
+                        "department": department,  # Ajout Département
                         "distance": distance,
                         "total_runners": total_runners,
                         "distance_runners": runners_on_distance
                     })
+
             result_text = f"{len(data)} résultat(s) trouvé(s)." if data else "Aucun résultat trouvé."
             return result_text, data
 

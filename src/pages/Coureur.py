@@ -71,19 +71,19 @@ layout = html.Div([
                     id='search-day',
                     options=[{'label': f"{day:02}", 'value': f"{day:02}"} for day in range(1, 32)],
                     placeholder='Jour',
-                    style={'width': '80px', 'display': 'inline-block', 'margin-right': '10px'}
+                    style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
                 ),
                 dcc.Dropdown(
                     id='search-month',
                     options=[{'label': f"{month:02}", 'value': f"{month:02}"} for month in range(1, 13)],
                     placeholder='Mois',
-                    style={'width': '80px', 'display': 'inline-block', 'margin-right': '10px'}
+                    style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
                 ),
                 dcc.Dropdown(
                     id='search-year',
                     options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
                     placeholder='Année',
-                    style={'width': '80px', 'display': 'inline-block'}
+                    style={'width': '100px', 'display': 'inline-block'}
                 )
             ], style={
                 'display': 'flex',
