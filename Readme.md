@@ -25,7 +25,7 @@ Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : "h
 
 
 
-![](Images/Structure2.png)
+![](ages/Structure2.png)
 
 ## Architecture du code
 
