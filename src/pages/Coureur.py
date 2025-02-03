@@ -11,7 +11,8 @@ dash.register_page(__name__, path='/')
 
 # Liste des champs de recherche
 search_fields = [
-    {'id': 'search-name', 'placeholder': 'Nom', 'column': 'athlete', 'type': 'text'},
+    {'id': 'search-first-name', 'placeholder': 'Prénom', 'column': 'first_name', 'type': 'text'},
+    {'id': 'search-last-name', 'placeholder': 'Nom', 'column': 'last_name', 'type': 'text'},
     {'id': 'search-club', 'placeholder': 'Club', 'column': 'club', 'type': 'text'},
     {'id': 'search-distance-min', 'placeholder': 'Distance minimale', 'column': 'distance_min', 'type': 'number'},
     {'id': 'search-distance-max', 'placeholder': 'Distance maximale', 'column': 'distance_max', 'type': 'number'}
@@ -34,7 +35,7 @@ layout = html.Div([
             )
             for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
-
+        
         html.Div([
             html.Label("Distance :", style={
                 'font-weight': 'bold',
@@ -71,19 +72,19 @@ layout = html.Div([
                     id='search-day',
                     options=[{'label': f"{day:02}", 'value': f"{day:02}"} for day in range(1, 32)],
                     placeholder='Jour',
-                    style={'width': '80px', 'display': 'inline-block', 'margin-right': '10px'}
+                    style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
                 ),
                 dcc.Dropdown(
                     id='search-month',
                     options=[{'label': f"{month:02}", 'value': f"{month:02}"} for month in range(1, 13)],
                     placeholder='Mois',
-                    style={'width': '80px', 'display': 'inline-block', 'margin-right': '10px'}
+                    style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
                 ),
                 dcc.Dropdown(
                     id='search-year',
                     options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
                     placeholder='Année',
-                    style={'width': '80px', 'display': 'inline-block'}
+                    style={'width': '100px', 'display': 'inline-block'}
                 )
             ], style={
                 'display': 'flex',
@@ -143,7 +144,8 @@ layout = html.Div([
     [Output('search-result', 'children'),
      Output('result-table', 'data')],
     [Input('search-button', 'n_clicks')],
-    [State('search-name', 'value'),
+    [State('search-first-name', 'value'),
+     State('search-last-name', 'value'),
      State('search-club', 'value'),
      State('search-distance-min', 'value'),
      State('search-distance-max', 'value'),
@@ -151,41 +153,27 @@ layout = html.Div([
      State('search-month', 'value'),
      State('search-year', 'value')]
 )
-def update_search_result(n_clicks, name, club, distance_min, distance_max, day, month, year):
+def update_search_result(n_clicks, first_name, last_name, club, distance_min, distance_max, day, month, year):
     if n_clicks > 0:
-        filtered_data = search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year)
-        
+        filtered_data = search_in_elasticsearch(first_name, last_name, club, distance_min, distance_max, day, month, year)
+
         if isinstance(filtered_data, list) and filtered_data:
             filtered_data = pd.DataFrame(filtered_data)
         elif isinstance(filtered_data, list):
             return "Aucun résultat trouvé.", []
-        
-        if not filtered_data.empty:
-            if 'athlete' in filtered_data.columns:
-                def format_name(full_name):
-                    parts = full_name.split(' ', 1)
-                    first_name = parts[0]
-                    last_name = parts[1] if len(parts) > 1 else ''
-                    return f"{last_name.upper()}, {first_name.capitalize()}"
-                
-                filtered_data['athlete'] = filtered_data['athlete'].apply(format_name)
-            else:
-                return "La colonne 'athlete' est absente des résultats.", []
 
+        if not filtered_data.empty:
             if 'Minute_Time' in filtered_data.columns:
                 filtered_data['time'] = filtered_data['Minute_Time'].fillna(0).astype(float)
             else:
                 return "La colonne 'Minute_Time' est absente des résultats.", []
-
-            # Suppression des doublons
-            filtered_data = filtered_data.drop_duplicates()
 
             table_data = filtered_data.to_dict('records')
             result_text = f"{len(filtered_data)} résultat(s) trouvé(s)."
         else:
             table_data = []
             result_text = "Aucun résultat trouvé."
-        
+
         return result_text, table_data
 
     return "", []

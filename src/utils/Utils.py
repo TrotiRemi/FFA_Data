@@ -162,7 +162,7 @@ def get_data_from_mongo(filters=None):
     return pd.DataFrame()
 
 
-def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year, size=10000):
+def search_in_elasticsearch(first_name, last_name, club, distance_min, distance_max, day, month, year, size=10000):
     query = {
         "bool": {
             "must": [],
@@ -170,10 +170,23 @@ def search_in_elasticsearch(name, club, distance_min, distance_max, day, month, 
         }
     }
 
-    # Recherche par nom
-    if name:
-        query["bool"]["must"].append({"match_phrase": {"athlete": name}})
-
+    # Recherche exacte sur Nom + Prénom
+    if first_name and last_name:
+        query["bool"]["must"].append({
+            "bool": {
+                "should": [
+                    {"match_phrase": {"athlete": f"{first_name} {last_name}"}},  # Recherche exacte "Jean Dupont"
+                    {"match_phrase": {"athlete": f"{last_name} {first_name}"}},  # Recherche exacte "Dupont Jean"
+                    {"term": {"athlete.keyword": f"{first_name} {last_name}"}},  # Recherche stricte avec keyword
+                    {"term": {"athlete.keyword": f"{last_name} {first_name}"}}   # Recherche stricte inversée
+                ],
+                "minimum_should_match": 1
+            }
+        })
+    elif first_name:
+        query["bool"]["must"].append({"match": {"athlete": first_name}})
+    elif last_name:
+        query["bool"]["must"].append({"match": {"athlete": last_name}})
     # Recherche par club
     if club:
         query["bool"]["must"].append({"match_phrase": {"club": club}})
