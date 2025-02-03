@@ -18,40 +18,8 @@ Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : "h
 # DEVELOPER GUIDE
 
 ## Structure du projet
+![Structure1](Images\Structure1.png)
 
-root/
-│
-├── utils/                     # Contient les fonctions utilitaires et les configurations Docker
-│   ├── __init__.py            # Initialisation du module
-│   ├── get_data.py            # Récupère les données depuis des sources externes
-│   ├── get_Json.py            # Télécharge et parse les fichiers JSON
-│   ├── Utils.py               # Contient des fonctions utilitaires supplémentaires
-│
-├── FFA_DATA/                  # Contient les données scrappées
-│   ├── assets/                # Contient des fichiers statiques (images, etc.)
-│   ├── data/                  # Données brutes scrappées
-│   └── FFA/                   # Contient les configurations et le scrapper Scrapy
-│       ├── spiders/           # Spiders de Scrapy pour collecter les données
-│       ├── items.py           # Définition des objets de données scrappées
-│       ├── middlewares.py     # Middlewares Scrapy
-│       ├── pipelines.py       # Pipelines de Scrapy pour traiter les données
-│       ├── settings.py        # Paramètres de Scrapy
-│       └── scrapy.cfg         # Configuration générale de Scrapy
-│
-├── src/                       # Contient les composants et pages du dashboard
-│   ├── components/            # Composants de l'interface utilisateur
-│   ├── pages/                 # Pages principales du dashboard
-│   └── __init__.py            # Initialisation du module
-│
-├── check_data.py          # Valide et contrôle la qualité des données
-├── docker-compose.yaml    # Fichier de configuration pour Docker
-├── Dockerfile             # Définition de l'environnement Docker
-├── Mongo_Elastic.py       # Gestion de la connexion entre MongoDB et Elasticsearch
-├── requirements.txt       # Liste des dépendances Python
-├── wait_for_file.sh       # Script d'attente avant l'exécution
-├── main.py                    # Point d'entrée de l'application Dash
-└── README.md                  # Documentation du projet
-  
 ## Architecture du code
 
 ```mermaid
