@@ -15,6 +15,12 @@ ELASTICSEARCH_INDEX = "athle_results"
 es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
 
+# Configuration Elasticsearch
+ELASTICSEARCH_URL = "http://elasticsearch:9200"
+ELASTICSEARCH_INDEX = "athle_results"
+es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
+
+
 # Liste des champs de recherche
 search_fields = [
     {'id': 'search-first-name', 'placeholder': 'Prénom', 'column': 'first_name', 'type': 'text'},
@@ -39,6 +45,7 @@ layout = html.Div([
                 placeholder=field['placeholder'],
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             )
+            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date', 'club']
             for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date', 'club']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
         
