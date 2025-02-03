@@ -150,9 +150,9 @@ layout = html.Div([
      State('search-year', 'value')]
 )
 def update_search_result(n_clicks, name, club, distance_min, distance_max, day, month, year):
-
     if n_clicks > 0:
         filtered_data = search_in_elasticsearch(name, club, distance_min, distance_max, day, month, year)
+        
         if isinstance(filtered_data, list) and filtered_data:
             filtered_data = pd.DataFrame(filtered_data)
         elif isinstance(filtered_data, list):
@@ -163,7 +163,10 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
                 filtered_data['time'] = filtered_data['Minute_Time'].fillna(0).astype(float)
             else:
                 return "La colonne 'Minute_Time' est absente des résultats.", []
-            
+
+            # Suppression des doublons
+            filtered_data = filtered_data.drop_duplicates()
+
             table_data = filtered_data.to_dict('records')
             result_text = f"{len(filtered_data)} résultat(s) trouvé(s)."
         else:
