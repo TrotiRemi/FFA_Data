@@ -9,6 +9,12 @@ from src.utils.Utils import search_in_elasticsearch
 # Enregistrement de la page d'accueil
 dash.register_page(__name__, path='/')
 
+# Configuration Elasticsearch
+ELASTICSEARCH_URL = "http://elasticsearch:9200"
+ELASTICSEARCH_INDEX = "athle_results"
+es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
+
+
 # Liste des champs de recherche
 search_fields = [
     {'id': 'search-first-name', 'placeholder': 'Prénom', 'column': 'first_name', 'type': 'text'},
@@ -33,9 +39,19 @@ layout = html.Div([
                 placeholder=field['placeholder'],
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             )
-            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
+            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date', 'club']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
         
+        html.Div([
+            dcc.Dropdown(
+                id='search-club',
+                options=[],  # Options chargées dynamiquement
+                placeholder="Sélectionnez un club",
+                searchable=True,
+                style={'width': '86%', 'height': '45px', 'font-size': '16px', 'margin-left': '7%', 'margin-right': 'auto', 'margin-bottom': '10px'}
+            )
+        ], style={'textAlign': 'center'}),
+
         html.Div([
             html.Label("Distance :", style={
                 'font-weight': 'bold',
@@ -177,3 +193,29 @@ def update_search_result(n_clicks, first_name, last_name, club, distance_min, di
         return result_text, table_data
 
     return "", []
+
+@dash.callback(
+    Output('search-club', 'options'),
+    Input('search-club', 'id')  # Se déclenche à l'initialisation
+)
+def load_clubs(_):
+    try:
+        response = es.search(
+            index=ELASTICSEARCH_INDEX,
+            body={
+                "size": 0,
+                "aggs": {
+                    "unique_clubs": {
+                        "terms": {"field": "club.keyword", "size": 1000}  
+                    }
+                }
+            }
+        )
+
+        clubs = [bucket['key'] for bucket in response["aggregations"]["unique_clubs"]["buckets"]]
+
+        return [{"label": club, "value": club} for club in clubs]
+
+    except Exception as e:
+        print(f"Erreur Elasticsearch lors du chargement des clubs : {e}")
+        return []

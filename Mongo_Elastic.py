@@ -42,7 +42,15 @@ def Mongo_Elastic():
                         "distance": {"type": "float"},
                         "Minute_Time": {"type": "float"},
                         "athlete": {"type": "text"},
-                        "club": {"type": "text"},
+                        "club": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
                         "category": {
                             "type": "text",
                             "fields": {
