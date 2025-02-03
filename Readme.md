@@ -1,3 +1,6 @@
+# Projet FFA - Dashboard Marathon
+
+
 #Commande pour copier le csv du docker
 #docker cp 86cbaa15d83e:/app/TestDocker_results.csv C:\Users\Rémi\OneDrive\Bureau\Esiee\Esiee\E4\DSIA\Projet_FFA\Projet_Scrap\Test1234.csv
 #
@@ -9,42 +12,74 @@ Avant de lire la suite du texte, assurer-vous d'avoir installer mongoDB, Docker 
 # DATA
 
 
-Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : 
+Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : "https://bases.athle.fr/asp.net/liste.aspx?frmpostback=true&frmbase=calendrier&frmmode=1&frmespace=0"
 
 #
 # DEVELOPER GUIDE
 
+## Structure du projet
+
+root/
+│
+├── utils/                     # Contient les fonctions utilitaires et les configurations Docker
+│   ├── __init__.py            # Initialisation du module
+│   ├── get_data.py            # Récupère les données depuis des sources externes
+│   ├── get_Json.py            # Télécharge et parse les fichiers JSON
+│   ├── Utils.py               # Contient des fonctions utilitaires supplémentaires
+│
+├── FFA_DATA/                  # Contient les données scrappées
+│   ├── assets/                # Contient des fichiers statiques (images, etc.)
+│   ├── data/                  # Données brutes scrappées
+│   └── FFA/                   # Contient les configurations et le scrapper Scrapy
+│       ├── spiders/           # Spiders de Scrapy pour collecter les données
+│       ├── items.py           # Définition des objets de données scrappées
+│       ├── middlewares.py     # Middlewares Scrapy
+│       ├── pipelines.py       # Pipelines de Scrapy pour traiter les données
+│       ├── settings.py        # Paramètres de Scrapy
+│       └── scrapy.cfg         # Configuration générale de Scrapy
+│
+├── src/                       # Contient les composants et pages du dashboard
+│   ├── components/            # Composants de l'interface utilisateur
+│   ├── pages/                 # Pages principales du dashboard
+│   └── __init__.py            # Initialisation du module
+│
+├── check_data.py          # Valide et contrôle la qualité des données
+├── docker-compose.yaml    # Fichier de configuration pour Docker
+├── Dockerfile             # Définition de l'environnement Docker
+├── Mongo_Elastic.py       # Gestion de la connexion entre MongoDB et Elasticsearch
+├── requirements.txt       # Liste des dépendances Python
+├── wait_for_file.sh       # Script d'attente avant l'exécution
+├── main.py                    # Point d'entrée de l'application Dash
+└── README.md                  # Documentation du projet
+  
 ## Architecture du code
 
 ```mermaid
 flowchart TB
+    main --> utils
+    main --> ffa_data
     main --> src
+    utils --> docker
+    ffa_data --> assets
+    ffa_data --> data
+    ffa_data --> ffa
+    ffa --> ffa_spiders
+    ffa --> ffa_items
+    ffa --> ffa_middlewares
+    ffa --> ffa_pipelines
+    ffa --> ffa_settings
+    ffa --> ffa_scrapy
+    src --> components
     src --> pages
-
-    pages --> evolution
-    pages --> map
+    components --> components_init
+    components --> footer
+    components --> header
+    components --> navbar
+    components --> search
+    pages --> pages_init
+    pages --> course
     pages --> histogram
-    pages --> Graph
-    pages --> home
-
-    evolution ------> Images
-    evolution -----> components
-    
-    evolution ---> utils
-
-    histogram --> utils
-    histogram -----> components
-    
-    Graph --> utils
-    Graph ---> components
-    
-    map ------> Images
-    map -----> components
-    
-    map --> utils
-    
-    home ---> components
-    home -----> assets
+    pages --> map
 ```
 ## Main : 
 
