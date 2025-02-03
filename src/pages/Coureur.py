@@ -81,7 +81,7 @@ layout = html.Div([
                 ),
                 dcc.Dropdown(
                     id='search-year',
-                    options=[{'label': f"{year % 100:02}", 'value': f"{year % 100:02}"} for year in range(2000, 2031)],
+                    options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
                     placeholder='Année',
                     style={'width': '80px', 'display': 'inline-block'}
                 )
@@ -159,6 +159,17 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
             return "Aucun résultat trouvé.", []
         
         if not filtered_data.empty:
+            if 'athlete' in filtered_data.columns:
+                def format_name(full_name):
+                    parts = full_name.split(' ', 1)
+                    first_name = parts[0]
+                    last_name = parts[1] if len(parts) > 1 else ''
+                    return f"{last_name.upper()}, {first_name.capitalize()}"
+                
+                filtered_data['athlete'] = filtered_data['athlete'].apply(format_name)
+            else:
+                return "La colonne 'athlete' est absente des résultats.", []
+
             if 'Minute_Time' in filtered_data.columns:
                 filtered_data['time'] = filtered_data['Minute_Time'].fillna(0).astype(float)
             else:
@@ -176,5 +187,3 @@ def update_search_result(n_clicks, name, club, distance_min, distance_max, day, 
         return result_text, table_data
 
     return "", []
-
-
