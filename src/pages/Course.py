@@ -13,16 +13,23 @@ LEVEL_MAPPING = {
     "Int": "Interrégional",
     "Nat": "National"
 }
-
+# Style général pour aligner les labels et dropdowns
+common_style = {
+    'display': 'flex',  # Utilisation de flexbox
+    'align-items': 'center',  # Aligne verticalement le texte et le dropdown
+    'justify-content': 'flex-start',  # Alignement à gauche
+    'width': '50%',  # Largeur de l'élément
+    'margin-left': '4%',  # Décale l'ensemble vers la gauche
+    'margin-bottom': '15px',  # Ajoute un peu d'espace entre les éléments
+    'height': '40px',  # Ajuste la hauteur (épaisseur)
+}
 # Configuration Elasticsearch
 ELASTICSEARCH_URL = "http://elasticsearch:9200"
 ELASTICSEARCH_INDEX = "athle_results"
 es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
 # Liste des champs de recherche (modifié pour utiliser Dropdown pour `level`)
-search_fields = [
-    {'id': 'search-name', 'placeholder': 'Nom de la Course', 'column': 'competition_name', 'type': 'text'}
-]
+search_fields = []
 
 # Layout avec Dropdown pour Niveau
 layout = html.Div([
@@ -40,6 +47,7 @@ layout = html.Div([
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             ) for field in search_fields
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
+
     # Ajout du filtre Date
     html.Div([
         html.Label("Date :", style={
@@ -69,30 +77,45 @@ layout = html.Div([
         'display': 'flex',
         'align-items': 'center',
         'margin-top': '5px',
-        'margin-left': '10.75%'
+        'margin-left': '10.75%',
+        'margin-bottom': '15px'
     }),
-
-        # Dropdown pour Niveau avec recherche
+        # Dropdown pour Nom de la Course
         html.Div([
+            html.Label("Nom de la Course :", style={'font-weight': 'bold', 'width': '20%'}),
+            dcc.Dropdown(
+                id='search-competition-page2',
+                options=[],  # Options chargées dynamiquement
+                placeholder="Sélectionnez une course",
+                searchable=True,
+                style={'width': '78%', 'height': '45px', 'font-size': '16px'}
+            )
+        ], style=common_style),
+
+        # Dropdown pour Niveau
+        html.Div([
+            html.Label("Niveau de la Course :", style={'font-weight': 'bold', 'width': '20%'}),
             dcc.Dropdown(
                 id='search-level-page2',
                 options=[],  # Les options seront chargées dynamiquement
                 placeholder="Sélectionnez un Niveau",
                 searchable=True,
-                style={'width': '85%','height': '45px', 'font-size': '16px', 'margin-left': '7.5%', 'margin-right': 'auto', 'margin-bottom': '10px'}
+                style={'width': '78%', 'height': '45px', 'font-size': '16px'}
             )
-        ], style={'textAlign': 'center'}),
+        ], style=common_style),
 
-        # Dropdown pour Département avec affichage des noms complets
+        # Dropdown pour Département
         html.Div([
+            html.Label("Département de la Course :", style={'font-weight': 'bold', 'width': '20%'}),
             dcc.Dropdown(
                 id='search-department-page2',
                 options=[],  # Options chargées dynamiquement
                 placeholder="Sélectionnez un Département",
                 searchable=True,
-                style={'width': '86%', 'height': '45px', 'font-size': '16px', 'margin-left': '7%', 'margin-right': 'auto', 'margin-bottom': '10px'}
+                style={'width': '78%', 'height': '45px', 'font-size': '16px'}
             )
-        ], style={'textAlign': 'center'}),
+        ], style=common_style),
+
 
 
         html.Button(
@@ -170,19 +193,19 @@ def load_levels(_):
     [Output('search-result-page2', 'children'),
      Output('result-table-page2', 'data')],
     [Input('search-button-page2', 'n_clicks')],
-    [State('search-name-page2', 'value'),
+    [State('search-competition-page2', 'value'),  # Utilisation du Dropdown pour la course
      State('search-department-page2', 'value'),
      State('search-level-page2', 'value'),
      State('search-day-course', 'value'),  # Ajout du filtre Jour
      State('search-month-course', 'value'),  # Ajout du filtre Mois
      State('search-year-course', 'value')]  # Ajout du filtre Année
 )
-def update_page2(n_clicks, search_name, search_department, search_level, search_day, search_month, search_year):
+def update_page2(n_clicks, search_competition, search_department, search_level, search_day, search_month, search_year):
     if n_clicks > 0:
         # Création du filtre basé sur les valeurs remplies par l'utilisateur
         filters = []
-        if search_name:
-            filters.append({"match_phrase": {"competition_name.keyword": search_name}})
+        if search_competition:
+            filters.append({"match_phrase": {"competition_name.keyword": search_competition}})  # 🔹 Recherche avec le Dropdown Nom de Course
         if search_department:
             filters.append({"match_phrase": {"department.keyword": search_department}})
         if search_level:
@@ -293,4 +316,30 @@ def load_departments(_):
     
     except Exception as e:
         print(f"Erreur Elasticsearch lors du chargement des départements : {e}")
+        return []
+@dash.callback(
+    Output('search-competition-page2', 'options'),
+    Input('search-competition-page2', 'id')
+)
+def load_competitions(_):
+    try:
+        response = es.search(
+            index=ELASTICSEARCH_INDEX,
+            body={
+                "size": 0,
+                "aggs": {
+                    "unique_competitions": {
+                        "terms": {"field": "competition_name.keyword", "size": 1000}
+                    }
+                }
+            }
+        )
+
+        competitions = [bucket['key'] for bucket in response["aggregations"]["unique_competitions"]["buckets"]]
+        
+        # Générer la liste des compétitions sous forme de {label, value}
+        return [{"label": comp, "value": comp} for comp in competitions]
+    
+    except Exception as e:
+        print(f"Erreur Elasticsearch lors du chargement des compétitions : {e}")
         return []
