@@ -18,7 +18,14 @@ Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : "h
 # DEVELOPER GUIDE
 
 ## Structure du projet
-![Structure1](Images\Structure1.png)
+![Structure1](Images/Structure1.png)
+
+
+
+
+
+
+![](Images/Structure2.png)
 
 ## Architecture du code
 
