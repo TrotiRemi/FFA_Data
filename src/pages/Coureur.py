@@ -9,6 +9,12 @@ from src.utils.Utils import search_in_elasticsearch
 # Enregistrement de la page d'accueil
 dash.register_page(__name__, path='/')
 
+# Configuration Elasticsearch
+ELASTICSEARCH_URL = "http://elasticsearch:9200"
+ELASTICSEARCH_INDEX = "athle_results"
+es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
+
+
 # Liste des champs de recherche
 search_fields = [
     {'id': 'search-first-name', 'placeholder': 'Prénom', 'column': 'first_name', 'type': 'text'},
@@ -33,9 +39,27 @@ layout = html.Div([
                 placeholder=field['placeholder'],
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             )
-            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
+            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date', 'club']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
         
+        html.Div([
+            dcc.Dropdown(
+                id='search-club',
+                options=[],  # Options chargées dynamiquement
+                placeholder="Sélectionnez un club",
+                searchable=True,
+                style={
+                    'width': '80%',  # Ajuste la largeur à 80% de la div parent
+                    'margin': '0 auto',  # Centre horizontalement l'élément
+                    'height': '45px',  # Ajuste la hauteur pour plus de lisibilité
+                    'margin-left': '7.7%',
+                    'font-size': '16px',  # Agrandir le texte pour améliorer l'affichage
+                    'textAlign': 'left',  # Aligne le texte à gauche
+                }
+            )
+        ], style={'textAlign': 'center', 'margin-bottom': '10px'}),
+
+
         html.Div([
             html.Label("Distance :", style={
                 'font-weight': 'bold',
@@ -177,3 +201,26 @@ def update_search_result(n_clicks, first_name, last_name, club, distance_min, di
         return result_text, table_data
 
     return "", []
+
+@dash.callback(
+    Output('search-club', 'options'),
+    Input('search-club', 'id')  # Se déclenche à l'initialisation
+)
+def load_clubs(_):
+    try:
+        response = es.search(
+            index=ELASTICSEARCH_INDEX,
+            body={
+                "size": 10000,  # Récupère jusqu'à 10 000 documents
+                "_source": ["club"]  # Ne récupère que le champ "club"
+            }
+        )
+
+        # Extraire les valeurs uniques des clubs
+        clubs = list(set(hit["_source"]["club"] for hit in response["hits"]["hits"] if "club" in hit["_source"]))
+
+        return [{"label": club, "value": club} for club in clubs]
+
+    except Exception as e:
+        print(f"Erreur Elasticsearch lors du chargement des clubs : {e}")
+        return []
