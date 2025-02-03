@@ -21,8 +21,7 @@ es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
 # Liste des champs de recherche (modifié pour utiliser Dropdown pour `level`)
 search_fields = [
-    {'id': 'search-name', 'placeholder': 'Nom de la Course', 'column': 'competition_name', 'type': 'text'},
-    {'id': 'search-date', 'placeholder': 'Date (J/M/A)', 'column': 'competition_date', 'type': 'text'}
+    {'id': 'search-name', 'placeholder': 'Nom de la Course', 'column': 'competition_name', 'type': 'text'}
 ]
 
 # Layout avec Dropdown pour Niveau
