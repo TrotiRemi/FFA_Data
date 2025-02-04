@@ -8,7 +8,7 @@ def Accueil():
         children=[
             # Image de fond en arrière-plan
             html.Img(
-                src="/assets/aaa.png",
+                src="/assets/fondaccueil.png",
                 style={
                     'position': 'fixed',  # Fixe l'image en arrière-plan
                     'top': '0',
