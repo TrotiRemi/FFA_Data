@@ -13,9 +13,6 @@ def Footer():
                           'fontWeight': 'bold'}),
         ],
         style={
-            'position': 'fixed',             # Fixe le footer même si la page est grande
-            'bottom': '0',                   # Toujours en bas
-            'left': '0',                     # Aligné à gauche
             'width': '100%',                 # Prend toute la largeur
             'padding': '5px 10px',           # Barre fine
             'minHeight': '30px',             # Assure une hauteur fine
@@ -23,6 +20,5 @@ def Footer():
             'borderTop': '2px solid white',  # Bordure blanche en haut
             'textAlign': 'center',           # Centrage du texte
             'fontFamily': "'Poppins', sans-serif",
-            'zIndex': '1000'                 # S'assure qu'il reste au-dessus des autres éléments
         }
     )
