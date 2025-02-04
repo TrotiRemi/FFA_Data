@@ -183,6 +183,8 @@ Cette seconde page permet d'étudier cette fois les courses et non pas les coure
  
 ## Page Map
 
+![](Images/MAP.png)
+
 Cette page permet d'avoir une vision d'ensemble de la répartition des coureurs en France selon les départements. On peut ainsi y voir quels sont les départements compétitifs en France pour la course. Les zones non rensignées par une couleur indiquent une absence de donnée pour les évaluer. 
 
 ## Page Histogramme
