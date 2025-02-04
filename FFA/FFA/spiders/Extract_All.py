@@ -31,7 +31,7 @@ class CompetitionAndResultsSpider(scrapy.Spider):
     types = ["Hors+Stade","Cross"]
 
     result_count = 0
-    max_results = 10000
+    max_results = 0
 
     def start_requests(self):
         for saison, niveau, type_ in product(self.saisons, self.niveaux, self.types):
