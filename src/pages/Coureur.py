@@ -14,13 +14,6 @@ ELASTICSEARCH_URL = "http://elasticsearch:9200"
 ELASTICSEARCH_INDEX = "athle_results"
 es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
-
-# Configuration Elasticsearch
-ELASTICSEARCH_URL = "http://elasticsearch:9200"
-ELASTICSEARCH_INDEX = "athle_results"
-es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
-
-
 # Liste des champs de recherche
 search_fields = [
     {'id': 'search-first-name', 'placeholder': 'Prénom', 'column': 'first_name', 'type': 'text'},
@@ -45,28 +38,9 @@ layout = html.Div([
                 placeholder=field['placeholder'],
                 style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
             )
-            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date', 'club']
-            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date', 'club']
+            for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
         
-        html.Div([
-            dcc.Dropdown(
-                id='search-club',
-                options=[],  # Options chargées dynamiquement
-                placeholder="Sélectionnez un club",
-                searchable=True,
-                style={
-                    'width': '80%',  # Ajuste la largeur à 80% de la div parent
-                    'margin': '0 auto',  # Centre horizontalement l'élément
-                    'height': '45px',  # Ajuste la hauteur pour plus de lisibilité
-                    'margin-left': '7.7%',
-                    'font-size': '16px',  # Agrandir le texte pour améliorer l'affichage
-                    'textAlign': 'left',  # Aligne le texte à gauche
-                }
-            )
-        ], style={'textAlign': 'center', 'margin-bottom': '10px'}),
-
-
         html.Div([
             html.Label("Distance :", style={
                 'font-weight': 'bold',
@@ -146,7 +120,9 @@ layout = html.Div([
                 {"name": "Course", "id": "competition_name"},
                 {"name": "Temps", "id": "time"},
                 {"name": "Vitesse", "id": "vitesse"},
-                {"name": "Distance", "id": "distance"}
+                {"name": "Distance", "id": "distance"},
+                {"name": "Lieu", "id": "location"},  # Ajout de la colonne "Lieu"
+                {"name": "Catégorie", "id": "category"}  # Ajout de la colonne "Catégorie"
             ],
             data=[],
             fixed_rows={'headers': True},
@@ -164,7 +140,7 @@ layout = html.Div([
             style_data={'height': 'auto'},
             style_header={'fontWeight': 'bold'}
         ),
-        style={'width': '80%', 'margin': '0 auto'}
+        style={'width': '90%', 'margin': '0 auto'}
     ),
 
     Footer()
@@ -189,7 +165,7 @@ def update_search_result(n_clicks, first_name, last_name, club, distance_min, di
         filtered_data = search_in_elasticsearch(first_name, last_name, club, distance_min, distance_max, day, month, year)
 
         if isinstance(filtered_data, list) and filtered_data:
-            filtered_data = pd.DataFrame(filtered_data)
+            filtered_data = pd.DataFrame(filtered_data).drop_duplicates()  # Suppression des doublons
         elif isinstance(filtered_data, list):
             return "Aucun résultat trouvé.", []
 
@@ -198,6 +174,10 @@ def update_search_result(n_clicks, first_name, last_name, club, distance_min, di
                 filtered_data['time'] = filtered_data['Minute_Time'].fillna(0).astype(float)
             else:
                 return "La colonne 'Minute_Time' est absente des résultats.", []
+
+            # S'assurer que les colonnes "location" et "category" existent
+            filtered_data["location"] = filtered_data.get("location", "Non spécifié")
+            filtered_data["category"] = filtered_data.get("category", "Non spécifié")
 
             table_data = filtered_data.to_dict('records')
             result_text = f"{len(filtered_data)} résultat(s) trouvé(s)."
@@ -208,26 +188,3 @@ def update_search_result(n_clicks, first_name, last_name, club, distance_min, di
         return result_text, table_data
 
     return "", []
-
-@dash.callback(
-    Output('search-club', 'options'),
-    Input('search-club', 'id')  # Se déclenche à l'initialisation
-)
-def load_clubs(_):
-    try:
-        response = es.search(
-            index=ELASTICSEARCH_INDEX,
-            body={
-                "size": 10000,  # Récupère jusqu'à 10 000 documents
-                "_source": ["club"]  # Ne récupère que le champ "club"
-            }
-        )
-
-        # Extraire les valeurs uniques des clubs
-        clubs = list(set(hit["_source"]["club"] for hit in response["hits"]["hits"] if "club" in hit["_source"]))
-
-        return [{"label": club, "value": club} for club in clubs]
-
-    except Exception as e:
-        print(f"Erreur Elasticsearch lors du chargement des clubs : {e}")
-        return []

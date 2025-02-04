@@ -137,9 +137,13 @@ layout = html.Div([
                 {"name": "Niveau", "id": "level"},
                 {"name": "Département", "id": "department"},
                 {"name": "Distance", "id": "distance"},
+                {"name": "Type", "id": "type_course"},  # ✅ Ajout de la colonne "Type"
+                {"name": "Ligue", "id": "ligue"},  # ✅ Ajout de la colonne "Ligue"
                 {"name": "Nombre de Coureurs (Total)", "id": "total_runners"},
                 {"name": "Nombre de Coureurs (Distance)", "id": "distance_runners"}
             ],
+
+
             data=[],
             fixed_rows={'headers': True},
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
@@ -193,19 +197,19 @@ def load_levels(_):
     [Output('search-result-page2', 'children'),
      Output('result-table-page2', 'data')],
     [Input('search-button-page2', 'n_clicks')],
-    [State('search-competition-page2', 'value'),  # Utilisation du Dropdown pour la course
+    [State('search-competition-page2', 'value'),
      State('search-department-page2', 'value'),
      State('search-level-page2', 'value'),
-     State('search-day-course', 'value'),  # Ajout du filtre Jour
-     State('search-month-course', 'value'),  # Ajout du filtre Mois
-     State('search-year-course', 'value')]  # Ajout du filtre Année
+     State('search-day-course', 'value'),
+     State('search-month-course', 'value'),
+     State('search-year-course', 'value')]
 )
 def update_page2(n_clicks, search_competition, search_department, search_level, search_day, search_month, search_year):
     if n_clicks > 0:
         # Création du filtre basé sur les valeurs remplies par l'utilisateur
         filters = []
         if search_competition:
-            filters.append({"match_phrase": {"competition_name.keyword": search_competition}})  # 🔹 Recherche avec le Dropdown Nom de Course
+            filters.append({"match_phrase": {"competition_name.keyword": search_competition}})
         if search_department:
             filters.append({"match_phrase": {"department.keyword": search_department}})
         if search_level:
@@ -238,7 +242,9 @@ def update_page2(n_clicks, search_competition, search_department, search_level, 
                                     {"competition_name": {"terms": {"field": "competition_name.keyword"}}},
                                     {"competition_date": {"terms": {"field": "competition_date"}}},
                                     {"level": {"terms": {"field": "level.keyword"}}},
-                                    {"department": {"terms": {"field": "department.keyword"}}}
+                                    {"department": {"terms": {"field": "department.keyword"}}},
+                                    {"type_course": {"terms": {"field": "type_course.keyword"}}},
+                                    {"ligue": {"terms": {"field": "ligue.keyword"}}}
                                 ],
                                 "size": 10000
                             },
@@ -262,8 +268,11 @@ def update_page2(n_clicks, search_competition, search_department, search_level, 
                 competition_name = bucket['key']['competition_name']
                 raw_date = bucket['key']['competition_date']
                 competition_date = datetime.utcfromtimestamp(raw_date / 1000).strftime('%Y-%m-%d')
-                level = bucket['key'].get('level', 'N/A')
+                level_abbreviation = bucket['key'].get('level', 'N/A')
+                level = LEVEL_MAPPING.get(level_abbreviation, level_abbreviation)  # 🔹 Remplace le code par le texte complet
                 department = bucket['key'].get('department', 'N/A')
+                type_course = bucket['key'].get('type_course', 'N/A')
+                ligue = bucket['key'].get('ligue', 'N/A')
 
                 total_runners = sum(dist["doc_count"] for dist in bucket['distances']['buckets'])
 
@@ -272,11 +281,13 @@ def update_page2(n_clicks, search_competition, search_department, search_level, 
                     runners_on_distance = distance_bucket['doc_count']
 
                     data.append({
-                        "competition_date": competition_date, 
+                        "competition_date": competition_date,
                         "competition_name": competition_name,
-                        "level": level,
+                        "level": level,  # ✅ Affichage du niveau en texte lisible
                         "department": department,
                         "distance": distance,
+                        "type_course": type_course,
+                        "ligue": ligue,
                         "total_runners": total_runners,
                         "distance_runners": runners_on_distance
                     })

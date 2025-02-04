@@ -9,11 +9,11 @@ MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "results")
 
 # Paramètres Elasticsearch
 ELASTICSEARCH_URL = os.getenv("ELASTICSEARCH_URL", "http://elasticsearch:9200")
-ELASTICSEARCH_INDEX = os.getenv("ELASTICSEARCH_INDEX", "athle_results")
+INDEX_NAME = os.getenv("INDEX_NAME", "athle_results")
 
 def Mongo_Elastic():
     """
-    Synchronise les données de MongoDB vers Elasticsearch.
+    Synchronise les données de MongoDB vers Elasticsearch avec le nouveau mapping.
     """
     # Connexion à MongoDB
     client = MongoClient(MONGO_URI)
@@ -24,67 +24,51 @@ def Mongo_Elastic():
     es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
     # Vérification si l'index existe dans Elasticsearch, sinon création
-    if not es.indices.exists(index=ELASTICSEARCH_INDEX):
+    if not es.indices.exists(index=INDEX_NAME):
         es.indices.create(
-            index=ELASTICSEARCH_INDEX,
+            index=INDEX_NAME,
             body={
                 "mappings": {
                     "properties": {
                         "competition_name": {
                             "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword",
-                                    "ignore_above": 256
-                                }
-                            }
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
                         },
                         "distance": {"type": "float"},
                         "Minute_Time": {"type": "float"},
                         "athlete": {"type": "text"},
-                        "club": {
-                            "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword",
-                                    "ignore_above": 256
-                                }
-                            }
-                        },
+                        "club": {"type": "text"},
                         "category": {
                             "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword",
-                                    "ignore_above": 256
-                                }
-                            }
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
                         },
                         "department": {
                             "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword",
-                                    "ignore_above": 256
-                                }
-                            }
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
                         },
                         "competition_date": {"type": "date", "format": "yyyy-MM-dd"},
                         "vitesse": {"type": "float"},
                         "type": {
                             "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword",
-                                    "ignore_above": 256
-                                }
-                            }
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
+                        },
+                        "type_course": {
+                            "type": "text",
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
+                        },
+                        "location": {
+                            "type": "text",
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
+                        },
+                        "ligue": {
+                            "type": "text",
+                            "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}
                         }
                     }
                 }
             }
         )
-        print(f"Index '{ELASTICSEARCH_INDEX}' créé avec succès.")
+        print(f"Index '{INDEX_NAME}' créé avec succès.")
 
     # Extraction des documents depuis MongoDB
     documents = list(collection.find({}))
@@ -104,9 +88,14 @@ def Mongo_Elastic():
                 print(f"Erreur dans le format de la date pour le document ID {doc_id}: {doc['competition_date']}")
                 continue
 
+        # S'assurer que les nouveaux champs existent dans chaque document
+        doc.setdefault("type_course", "")
+        doc.setdefault("location", "")
+        doc.setdefault("ligue", "")
+
         # Préparation de l'action pour Elasticsearch
         actions.append({
-            "_index": ELASTICSEARCH_INDEX,
+            "_index": INDEX_NAME,
             "_id": doc_id,
             "_source": doc
         })
