@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from src.utils.Utils import search_in_elasticsearch
 
 # Enregistrement de la page d'accueil
-dash.register_page(__name__, path='/')
+dash.register_page(__name__, path='/Coureur')
 
 # Configuration Elasticsearch
 ELASTICSEARCH_URL = "http://elasticsearch:9200"

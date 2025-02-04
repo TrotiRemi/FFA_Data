@@ -6,7 +6,7 @@ def Navbar():
             dcc.Link(
                 [html.Img(src='/assets/run.svg', style={'width': '18px', 'margin-right': '5px', 'filter': 'invert(1)'}), 
                  html.B(" Coureur", style={'font-family': "'Poppins', sans-serif"})],
-                href='/',
+                href='/Coureur',
                 style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
             dcc.Link(
