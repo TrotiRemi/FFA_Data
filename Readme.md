@@ -12,6 +12,8 @@ Avant de lire la suite du texte, assurer-vous d'avoir installer mongoDB, Docker 
 
 
 Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : "https://bases.athle.fr/asp.net/liste.aspx?frmpostback=true&frmbase=calendrier&frmmode=1&frmespace=0"
+Néanmoins, pour scrapper nos données nous avons utilisé cet url comme une base avant de faire une concaténation d'url avec les saisons, types et niveaux sur le site de la FFA.
+
 
 #
 # DEVELOPER GUIDE
