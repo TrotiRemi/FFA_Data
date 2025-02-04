@@ -187,8 +187,11 @@ Cette page permet d'avoir une vision d'ensemble de la répartition des coureurs 
 
 ## Page Histogramme
 
+Cette page permet d'observer la distribution des résultats pour la course choisie, ainsi les athlètes peuvent se situer en terme de résultats. On peut bien évidemment choisir la distance de chaque course lors de la recherche.
 
-### Conclusion de l'analyse
+## Exemple d'utilisation du dashboard
+
+Le but de ce dashboard est de pouvoir trouver ses résultats sur la première page en tant que coureur. Ensuite on peut rechercher la course en question pour l'étudier (nombre de coureur etc). Enfin, grâce à la page histogramme, on peut examiner la distribution des résultats pour se situer dans le niveau de la course. Ainsi chaque coureur peut effectuer une analyse approfondi de ses rsultats sur chaque course qu'il a effectué. 
 
 
 
