@@ -15,6 +15,10 @@ Nous avons choisis de scrapper le site de la FFA pour ce projet voici l'url : "h
 
 Néanmoins, pour scrapper nos données nous avons utilisé cet url comme une base avant de faire une concaténation d'url avec les saisons, types et niveaux sur le site de la FFA.
 
+Voici une capture d'écran du code réalisant cela :
+
+![](Images/scrapp.png)
+
 
 #
 # DEVELOPER GUIDE
