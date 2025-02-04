@@ -19,7 +19,7 @@ def Navbar():
                 style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
             dcc.Link(
-                [html.Img(src='/assets/chart-simple-solid.svg', style={'width': '18px', 'margin-right': '5px'}), html.B(" Histogramme")],
+                [html.Img(src='/assets/chart-simple-solid.svg', style={'width': '18px', 'margin-right': '5px'}), html.B(" Caca")],
                 href='/Histogram',
                 style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
