@@ -1,8 +1,7 @@
-# Projet FFA - Dashboard Marathon
+# Projet FFA - Dashboard Fédération Française Athlétisme
 
 
-#Commande pour copier le csv du docker
-#docker cp 86cbaa15d83e:/app/TestDocker_results.csv C:\Users\Rémi\OneDrive\Bureau\Esiee\Esiee\E4\DSIA\Projet_FFA\Projet_Scrap\Test1234.csv
+
 #
 # USER GUIDE
 
