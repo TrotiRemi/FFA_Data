@@ -4,31 +4,32 @@ def Navbar():
     return html.Nav(
         children=[
             dcc.Link(
-                [html.Img(src='/assets/run.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Coureur")],
+                [html.Img(src='/assets/run.svg', style={'width': '18px', 'margin-right': '5px'}), html.B(" Coureur")],
                 href='/',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
+                style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
             dcc.Link(
-                [html.Img(src='/assets/flag.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Course")],
+                [html.Img(src='/assets/flag.svg', style={'width': '18px', 'margin-right': '5px'}), html.B(" Course")],
                 href='/Course',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
+                style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
             dcc.Link(
-                [html.Img(src='/assets/map-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Map")],
+                [html.Img(src='/assets/map-solid.svg', style={'width': '18px', 'margin-right': '5px'}), html.B(" Map")],
                 href='/Map',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
+                style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
             dcc.Link(
-                [html.Img(src='/assets/chart-simple-solid.svg', style={'width': '20px', 'margin-right': '5px'}), html.B(" Histogramme")],
+                [html.Img(src='/assets/chart-simple-solid.svg', style={'width': '18px', 'margin-right': '5px'}), html.B(" Histogramme")],
                 href='/Histogram',
-                style={'color': 'Black', 'padding': '10px 20px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
+                style={'color': 'white', 'padding': '8px 15px', 'text-decoration': 'none', 'display': 'flex', 'align-items': 'center'}
             ),
         ],
         style={
-            'padding': '10px',
-            'backgroundColor': 'White',      # Couleur de fond de la navbar
-            'display': 'flex',               # Alignement des liens sur une ligne
-            'justify-content': 'space-around',# Espacement uniforme des liens
-            'borderBottom': '2px solid black' # Barre noire fine en bas de la navbar
+            'padding': '5px 10px',             # Réduction de la hauteur
+            'backgroundColor': '#0d2366',      # Bleu foncé
+            'display': 'flex',                 # Alignement des liens sur une ligne
+            'justify-content': 'space-around', # Espacement uniforme
+            'borderBottom': '2px solid white', # Bordure fine blanche
+            'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.2)'  # Ombre douce en bas
         }
     )
