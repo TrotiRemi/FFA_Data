@@ -18,7 +18,7 @@ if __name__ == '__main__':
 app.layout = html.Div(
     children=[
         html.Div(id="content", style={'flex': '1'}),  # Le contenu prend toute la hauteur disponible
-        Footer()  # Le footer est toujours en bas
+        Footer()  # Le footer reste en bas
     ],
     style={
         'display': 'flex',
@@ -26,3 +26,4 @@ app.layout = html.Div(
         'minHeight': '100vh'  # La page doit au moins remplir toute la hauteur de l'écran
     }
 )
+
