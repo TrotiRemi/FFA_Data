@@ -7,7 +7,7 @@ def Footer():
                    style={'textAlign': 'center', 'color': 'white', 'margin': '3px', 
                           'fontFamily': "'Poppins', sans-serif", 'fontSize': '12px', 
                           'fontWeight': 'bold'}),
-            html.P("Ce Projet est possible grâce aux données de la FFA", 
+            html.P("Ce Projet est possible grâce aux données de la FFA : https://www.athle.fr", 
                    style={'textAlign': 'center', 'color': 'white', 'margin': '3px', 
                           'fontFamily': "'Poppins', sans-serif", 'fontSize': '12px', 
                           'fontWeight': 'bold'}),
