@@ -193,6 +193,8 @@ Cette page permet d'avoir une vision d'ensemble de la répartition des coureurs 
 
 ## Page Histogramme
 
+![](Images/Histogram.png)
+
 Cette page permet d'observer la distribution des résultats pour la course choisie, ainsi les athlètes peuvent se situer en terme de résultats. On peut bien évidemment choisir la distance de chaque course lors de la recherche.
 
 ## Exemple d'utilisation du dashboard
