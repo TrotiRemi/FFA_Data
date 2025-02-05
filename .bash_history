@@ -1,3 +1,0 @@
-pipenv shell
-exit$
-exit
