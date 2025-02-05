@@ -26,7 +26,7 @@ layout = html.Div([
 
     # 📌 Titre stylisé
     html.H1(
-        ["Analyse des Compétitions ", html.Span("📊", style={"fontSize": "1.2em"})],
+        ["Histogramme dynamique des compétitions ", html.Span("📊", style={"fontSize": "1.2em"})],
         style={
             'textAlign': 'center',
             'fontFamily': "'Poppins', sans-serif",

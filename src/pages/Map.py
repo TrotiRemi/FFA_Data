@@ -6,28 +6,33 @@ from src.components import Navbar, Header, Footer
 # Enregistrement de la page
 dash.register_page(__name__, path='/Map')
 
+# 🎨 Définition du style du titre
+title_style = {
+    'textAlign': 'center',
+    'fontFamily': "'Poppins', sans-serif",
+    'fontWeight': 'bold',
+    'fontSize': '32px',
+    'color': '#0d2366',
+    'textShadow': '2px 2px 4px rgba(0, 0, 0, 0.3)',
+    'marginBottom': '30px',
+    'display': 'inline-block',
+    'marginRight': '10px',
+    'verticalAlign': 'middle'
+}
+
 # Layout de la page Dash
 layout = html.Div([
     Header(),
     Navbar(),
     
-    # Titre principal avec l'icône 📍 bien centré
+    # Titre principal stylisé avec l'icône 📍 bien alignée
     html.Div([
-        html.H1("Carte des coureurs par départements", style={
-            'fontFamily': "'Poppins', sans-serif",
-            'fontSize': '26px',
-            'fontWeight': 'bold',
-            'color': '#0d2366',
-            'textShadow': '2px 2px 4px rgba(0, 0, 0, 0.3)',
-            'display': 'inline-block',
-            'marginRight': '10px',
-            'verticalAlign': 'middle'  # Assure un bon alignement vertical
-        }),
+        html.H1("Carte représentative du nombre de coureurs par départements", style=title_style),
         html.Span("📍", style={
-            'fontSize': '26px',  # Taille ajustée pour correspondre au texte
+            'fontSize': '32px',  # Taille ajustée pour correspondre au texte
             'fontWeight': 'bold',
             'color': '#0d2366',
-            'verticalAlign': 'middle',  # Assure un alignement parfait avec le texte
+            'verticalAlign': 'middle',  # Alignement parfait avec le texte
             'display': 'inline-block'
         })
     ], style={'textAlign': 'center', 'marginBottom': '15px', 'display': 'flex', 'justifyContent': 'center', 'alignItems': 'center'}),
