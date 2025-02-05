@@ -5,126 +5,141 @@ from src.components import Navbar, Header, Footer
 import pandas as pd
 from datetime import datetime
 
-# Enregistrement de la page d'accueil
+# Enregistrement de la page
 dash.register_page(__name__, path='/Course')
+
+# Configuration Elasticsearch
+ELASTICSEARCH_URL = "http://elasticsearch:9200"
+ELASTICSEARCH_INDEX = "athle_results"
+es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
+
+# Mapping des niveaux
 LEVEL_MAPPING = {
     "Dép": "Départemental",
     "Rég": "Régional",
     "Int": "Interrégional",
     "Nat": "National"
 }
-# Style général pour aligner les labels et dropdowns
-common_style = {
-    'display': 'flex',  # Utilisation de flexbox
-    'align-items': 'center',  # Aligne verticalement le texte et le dropdown
-    'justify-content': 'flex-start',  # Alignement à gauche
-    'width': '50%',  # Largeur de l'élément
-    'margin-left': '4%',  # Décale l'ensemble vers la gauche
-    'margin-bottom': '15px',  # Ajoute un peu d'espace entre les éléments
-    'height': '40px',  # Ajuste la hauteur (épaisseur)
+
+# Style général appliqué à tous les éléments pour une police moderne
+general_style = {
+    'fontFamily': "'Poppins', sans-serif"
 }
-# Configuration Elasticsearch
-ELASTICSEARCH_URL = "http://elasticsearch:9200"
-ELASTICSEARCH_INDEX = "athle_results"
-es = Elasticsearch(hosts=[ELASTICSEARCH_URL])
 
-# Liste des champs de recherche (modifié pour utiliser Dropdown pour `level`)
-search_fields = []
+# Style spécifique pour le titre
+title_style = {
+    'textAlign': 'center',
+    'fontFamily': "'Poppins', sans-serif",
+    'fontSize': '32px',
+    'fontWeight': 'bold',
+    'background': 'linear-gradient(to right, #0d2366, #007BFF)',
+    'WebkitBackgroundClip': 'text',
+    'WebkitTextFillColor': 'transparent',
+    'textShadow': '1px 1px 2px rgba(0, 0, 0, 0.2)',
+    'letterSpacing': '1px',
+    'marginTop': '20px'
+}
 
-# Layout avec Dropdown pour Niveau
+# Style pour aligner les labels et dropdowns
+common_style = {
+    'display': 'flex',
+    'alignItems': 'center',
+    'justifyContent': 'flex-start',
+    'width': '50%',
+    'margin-left': '4%',
+    'margin-bottom': '15px',
+    'height': '40px',
+    'fontFamily': "'Poppins', sans-serif"
+}
+# Style spécifique pour le titre
+title_style = {
+    'textAlign': 'center',
+    'fontFamily': "'Poppins', sans-serif",
+    'fontSize': '32px',
+    'fontWeight': 'bold',
+    'background': 'linear-gradient(to right, #0d2366, #007BFF)',
+    'WebkitBackgroundClip': 'text',
+    'WebkitTextFillColor': 'transparent',
+    'textShadow': '1px 1px 2px rgba(0, 0, 0, 0.2)',
+    'letterSpacing': '1px',
+    'marginTop': '20px'
+}
+
+# Layout de la page
 layout = html.Div([
     Header(),
     Navbar(),
-    html.H1("Chercher une course", style={'textAlign': 'center'}),
+    html.H1("Chercher une course", style=title_style),
+
 
     # Champs de recherche
     html.Div([
+        # Section Date centrée et avec une police moderne
         html.Div([
-            dcc.Input(
-                id=field['id'] + '-page2',
-                type=field['type'],
-                placeholder=field['placeholder'],
-                style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
-            ) for field in search_fields
-        ], style={'textAlign': 'center', 'margin-top': '20px'}),
+            html.Label("Date :", style={'fontWeight': 'bold', 'margin-right': '10px', 'alignSelf': 'center', **general_style}),
+            dcc.Dropdown(
+                id='search-day-course',
+                options=[{'label': f"{day:02}", 'value': f"{day:02}"} for day in range(1, 32)],
+                placeholder='Jour',
+                style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px', **general_style}
+            ),
+            dcc.Dropdown(
+                id='search-month-course',
+                options=[{'label': f"{month:02}", 'value': f"{month:02}"} for month in range(1, 13)],
+                placeholder='Mois',
+                style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px', **general_style}
+            ),
+            dcc.Dropdown(
+                id='search-year-course',
+                options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
+                placeholder='Année',
+                style={'width': '100px', 'display': 'inline-block', **general_style}
+            )
+        ], style={'display': 'flex', 'align-items': 'center', 'margin-top': '5px', 'margin-left': '10.75%', 'margin-bottom': '15px'}),
 
-    # Ajout du filtre Date
-    html.Div([
-        html.Label("Date :", style={
-            'font-weight': 'bold',
-            'margin-right': '10px',
-            'align-self': 'center'
-        }),
-        dcc.Dropdown(
-            id='search-day-course',
-            options=[{'label': f"{day:02}", 'value': f"{day:02}"} for day in range(1, 32)],
-            placeholder='Jour',
-            style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
-        ),
-        dcc.Dropdown(
-            id='search-month-course',
-            options=[{'label': f"{month:02}", 'value': f"{month:02}"} for month in range(1, 13)],
-            placeholder='Mois',
-            style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
-        ),
-        dcc.Dropdown(
-            id='search-year-course',
-            options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
-            placeholder='Année',
-            style={'width': '100px', 'display': 'inline-block'}
-        )
-    ], style={
-        'display': 'flex',
-        'align-items': 'center',
-        'margin-top': '5px',
-        'margin-left': '10.75%',
-        'margin-bottom': '15px'
-    }),
         # Dropdown pour Nom de la Course
         html.Div([
-            html.Label("Nom de la Course :", style={'font-weight': 'bold', 'width': '20%'}),
+            html.Label("Nom de la Course :", style={'fontWeight': 'bold', 'width': '20%', **general_style}),
             dcc.Dropdown(
                 id='search-competition-page2',
-                options=[],  # Options chargées dynamiquement
+                options=[],
                 placeholder="Sélectionnez une course",
                 searchable=True,
-                style={'width': '78%', 'height': '45px', 'font-size': '16px'}
+                style={'width': '78%', 'height': '45px', 'font-size': '16px', **general_style}
             )
         ], style=common_style),
 
         # Dropdown pour Niveau
         html.Div([
-            html.Label("Niveau de la Course :", style={'font-weight': 'bold', 'width': '20%'}),
+            html.Label("Niveau de la Course :", style={'fontWeight': 'bold', 'width': '20%', **general_style}),
             dcc.Dropdown(
                 id='search-level-page2',
-                options=[],  # Les options seront chargées dynamiquement
+                options=[],
                 placeholder="Sélectionnez un Niveau",
                 searchable=True,
-                style={'width': '78%', 'height': '45px', 'font-size': '16px'}
+                style={'width': '78%', 'height': '45px', 'font-size': '16px', **general_style}
             )
         ], style=common_style),
 
         # Dropdown pour Département
         html.Div([
-            html.Label("Département de la Course :", style={'font-weight': 'bold', 'width': '20%'}),
+            html.Label("Département de la Course :", style={'fontWeight': 'bold', 'width': '20%', **general_style}),
             dcc.Dropdown(
                 id='search-department-page2',
-                options=[],  # Options chargées dynamiquement
+                options=[],
                 placeholder="Sélectionnez un Département",
                 searchable=True,
-                style={'width': '78%', 'height': '45px', 'font-size': '16px'}
+                style={'width': '78%', 'height': '45px', 'font-size': '16px', **general_style}
             )
         ], style=common_style),
-
-
 
         html.Button(
             'Rechercher',
             id='search-button-page2',
             n_clicks=0,
-            style={'padding': '10px 20px', 'background-color': '#007BFF', 'color': '#fff', 'border': 'none'}
+            style={'padding': '10px 20px', 'backgroundColor': '#007BFF', 'color': '#fff', 'border': 'none', **general_style}
         ),
-        html.Div(id='search-result-page2', style={'margin-top': '20px', 'font-size': '16px', 'color': '#333'})
+        html.Div(id='search-result-page2', style={'margin-top': '20px', 'font-size': '16px', 'color': '#333', **general_style})
     ], style={'textAlign': 'center'}),
 
     # Tableau des résultats
@@ -137,32 +152,23 @@ layout = html.Div([
                 {"name": "Niveau", "id": "level"},
                 {"name": "Département", "id": "department"},
                 {"name": "Distance", "id": "distance"},
-                {"name": "Type", "id": "type_course"},  # ✅ Ajout de la colonne "Type"
-                {"name": "Ligue", "id": "ligue"},  # ✅ Ajout de la colonne "Ligue"
+                {"name": "Type", "id": "type_course"},
+                {"name": "Ligue", "id": "ligue"},
                 {"name": "Nombre de Coureurs (Total)", "id": "total_runners"},
                 {"name": "Nombre de Coureurs (Distance)", "id": "distance_runners"}
             ],
-
-
             data=[],
             fixed_rows={'headers': True},
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
-            style_cell={
-                'textAlign': 'center',
-                'padding': '10px',
-                'whiteSpace': 'normal',
-                'overflow': 'hidden',
-                'textOverflow': 'ellipsis',
-                'maxWidth': '150px',
-                'minWidth': '100px',
-            },
-            style_data={'height': 'auto'},
-            style_header={'fontWeight': 'bold'}
+            style_cell={'textAlign': 'center', 'padding': '10px', 'fontFamily': "'Poppins', sans-serif"},
+            style_header={'fontWeight': 'bold', **general_style}
         ),
         style={'width': '80%', 'margin': '0 auto'}
     ),
+    
     Footer()
 ])
+
 
 # Callback pour récupérer tous les niveaux disponibles dans Elasticsearch
 @dash.callback(

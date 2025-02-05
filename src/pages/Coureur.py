@@ -23,11 +23,26 @@ search_fields = [
     {'id': 'search-distance-max', 'placeholder': 'Distance maximale', 'column': 'distance_max', 'type': 'number'}
 ]
 
+# Style spécifique pour le titre
+title_style = {
+    'textAlign': 'center',
+    'fontFamily': "'Poppins', sans-serif",
+    'fontSize': '32px',
+    'fontWeight': 'bold',
+    'background': 'linear-gradient(to right, #0d2366, #007BFF)',
+    'WebkitBackgroundClip': 'text',
+    'WebkitTextFillColor': 'transparent',
+    'textShadow': '1px 1px 2px rgba(0, 0, 0, 0.2)',
+    'letterSpacing': '1px',
+    'marginTop': '20px'
+}
+
+
 # Layout principal de la page
 layout = html.Div([
     Header(),
     Navbar(),
-    html.H1("Chercher un coureur", style={'textAlign': 'center', 'fontFamily': "'Poppins', sans-serif"}),
+    html.H1("Chercher un coureur", style=title_style),
 
     # Barres de recherche
     html.Div([
