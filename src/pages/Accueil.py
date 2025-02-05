@@ -8,7 +8,7 @@ def Accueil():
         children=[
             # Image de fond en arrière-plan
             html.Img(
-                src="/assets/fondaccueil.png",
+                src="/assets/fondaccueil3.png",
                 style={
                     'position': 'fixed',  # Fixe l'image en arrière-plan
                     'top': '0',
@@ -20,7 +20,7 @@ def Accueil():
                 }
             ),
 
-            # Contenu principal
+            # Contenu principal (encore plus abaissé)
             html.Div(
                 children=[
                     html.H1("Bienvenue sur notre Application FFA", style={
@@ -57,7 +57,7 @@ def Accueil():
                     'boxShadow': '0px 4px 10px rgba(0, 0, 0, 0.2)',
                     'maxWidth': '600px',
                     'margin': 'auto',
-                    'marginTop': '50px',
+                    'marginTop': '180px',  # Abaissé encore plus
                     'textAlign': 'center'
                 }
             )
@@ -66,9 +66,10 @@ def Accueil():
             'display': 'flex',
             'flexDirection': 'column',
             'alignItems': 'center',
-            'justifyContent': 'center',
+            'justifyContent': 'start',  # Garde un alignement propre
             'height': '100vh',
-            'width': '100vw'
+            'width': '100vw',
+            'paddingTop': '60px'  # Ajoute encore un léger décalage vers le bas
         }
     )
 
