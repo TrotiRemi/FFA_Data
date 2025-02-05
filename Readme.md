@@ -179,9 +179,13 @@ Dans cette section nous allons vous partager différentes informations sur les p
 
 ## Page Coureur
 
+![](Images/Coureur.png)
+
 Cette première page vous permet de chercher les résultats d'un coureur à l'aide de ce nom et/ou prenom. Vous pouvez aussi chercher les résultats des coureurs d'un club. De plus, pour ces coureurs, vous pouvez suivre leur résultats sur des plages de distances ou de dates pour une recherche approfondi. Néanmoins voici une petite indication pour utiliser la recherche correctement, lors d'une recherche par date, il est obligatoire d'indiquer une année si un mois est renseigné, de même il est obligatoire d'indiquer un mois si un jour est renseigné.
 
 ## Page Course
+
+![](Images/Courses.png)
 
 Cette seconde page permet d'étudier cette fois les courses et non pas les coureurs. L'utilisateur peut chercher selon un système de date qui est le même que sur la page précèdente. La recherche peut aussi être précisé selon le nom de la course, le niveau de cette dernière ou bien encore le département où elle a lieu.
  
