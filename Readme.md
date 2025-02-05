@@ -177,6 +177,12 @@ Les données sont récupérées depuis Elasticsearch et MongoDB, et utilisées p
 
 Dans cette section nous allons vous partager différentes informations sur les pages du dashboard.
 
+## Page d'accueil
+
+![](Images/Accueil.png)
+
+La page d’accueil de notre application a été soigneusement conçue pour offrir une expérience utilisateur fluide, intuitive et visuellement attrayante. Dès l’arrivée sur la plateforme, l’utilisateur est accueilli par une interface moderne et épurée, mettant en avant les différentes fonctionnalités essentielles pour explorer et analyser les performances des coureurs et compétitions. L’ensemble du design de l’application a été créé et importé, garantissant une identité visuelle cohérente et une expérience immersive.
+
 ## Page Coureur
 
 ![](Images/Coureur.png)
@@ -191,7 +197,7 @@ Cette seconde page permet d'étudier cette fois les courses et non pas les coure
  
 ## Page Map
 
-![](Images/MAP.png)
+![](Images/Map.png)
 
 Cette page permet d'avoir une vision d'ensemble de la répartition des coureurs en France selon les départements. On peut ainsi y voir quels sont les départements compétitifs en France pour la course. Les zones non rensignées par une couleur indiquent une absence de donnée pour les évaluer. 
 
