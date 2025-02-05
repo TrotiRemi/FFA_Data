@@ -1,4 +1,4 @@
-from dash import html
+from dash import html, dcc
 
 def Header():
     return html.Header(
@@ -22,18 +22,21 @@ def Header():
                         style={'display': 'inline-block', 'verticalAlign': 'middle'}
                     ),
 
-                    # Logo au centre avec fond blanc cassé et bord arrondi
-                    html.Div(
-                        html.Img(
-                            src="/assets/logo.png",  # Remplacez par votre image
-                            style={'height': '60px', 'display': 'block', 'margin': '0 auto'}
+                    # Logo au centre avec fond blanc cassé et bord arrondi (cliquable)
+                    dcc.Link(
+                        html.Div(
+                            html.Img(
+                                src="/assets/logo.png",  # Remplacez par votre image
+                                style={'height': '60px', 'display': 'block', 'margin': '0 auto', 'cursor': 'pointer'}
+                            ),
+                            style={
+                                'backgroundColor': '#f8f9fa',  # Fond blanc cassé
+                                'padding': '10px 25px',  # Ajustement de l'espace autour du logo
+                                'boxShadow': '0px 0px 10px rgba(0,0,0,0.1)',  # Ombre légère pour un effet propre
+                                'borderRadius': '15px'  # Arrondi des bords sans contour
+                            }
                         ),
-                        style={
-                            'backgroundColor': '#f8f9fa',  # Fond blanc cassé
-                            'padding': '10px 25px',  # Ajustement de l'espace autour du logo
-                            'boxShadow': '0px 0px 10px rgba(0,0,0,0.1)',  # Ombre légère pour un effet propre
-                            'borderRadius': '15px'  # Arrondi des bords sans contour
-                        }
+                        href="/"  # Redirige vers la page d'accueil
                     ),
 
                     # Barres droite (plus longues)

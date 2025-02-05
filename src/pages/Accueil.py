@@ -26,16 +26,16 @@ def Accueil():
                     html.H1("Bienvenue sur notre Application FFA", style={
                         'color': 'white',
                         'textAlign': 'center',
-                        'marginBottom': '10px',
+                        'marginBottom': '8px',  # Réduction de la marge
                         'fontWeight': 'bold',
-                        'fontFamily': "'Poppins', sans-serif"  # Police moderne
+                        'fontFamily': "'Poppins', sans-serif"
                     }),
                     html.P(
                         "Découvrez les statistiques et visualisations des courses officielles.",
                         style={
                             'color': 'white',
                             'textAlign': 'center',
-                            'fontSize': '16px',
+                            'fontSize': '15px',  # Légère réduction de la taille du texte
                             'fontFamily': "'Poppins', sans-serif"
                         }
                     ),
@@ -47,16 +47,16 @@ def Accueil():
                                 html.Button("Bibliothèque des coureurs", style={
                                     'backgroundColor': 'white',
                                     'color': '#0d2366',
-                                    'padding': '12px 0',
+                                    'padding': '10px 0',  # Légère réduction du padding
                                     'border': 'none',
                                     'borderRadius': '5px',
                                     'cursor': 'pointer',
-                                    'fontSize': '16px',
+                                    'fontSize': '15px',
                                     'fontWeight': 'bold',
-                                    'width': '200px',  # Taille uniforme
+                                    'width': '200px',
                                     'textAlign': 'center',
                                     'fontFamily': "'Poppins', sans-serif",
-                                    'margin': '8px 0'
+                                    'margin': '6px 0'  # Moins d'espace entre les boutons
                                 }),
                                 href="/Coureur"
                             ),
@@ -64,16 +64,16 @@ def Accueil():
                                 html.Button("Rechercher une course", style={
                                     'backgroundColor': 'white',
                                     'color': '#0d2366',
-                                    'padding': '12px 0',
+                                    'padding': '10px 0',
                                     'border': 'none',
                                     'borderRadius': '5px',
                                     'cursor': 'pointer',
-                                    'fontSize': '16px',
+                                    'fontSize': '15px',
                                     'fontWeight': 'bold',
                                     'width': '200px',
                                     'textAlign': 'center',
                                     'fontFamily': "'Poppins', sans-serif",
-                                    'margin': '8px 0'
+                                    'margin': '6px 0'
                                 }),
                                 href="/Course"
                             ),
@@ -81,16 +81,16 @@ def Accueil():
                                 html.Button("Histogramme des compétitions", style={
                                     'backgroundColor': 'white',
                                     'color': '#0d2366',
-                                    'padding': '12px 0',
+                                    'padding': '10px 0',
                                     'border': 'none',
                                     'borderRadius': '5px',
                                     'cursor': 'pointer',
-                                    'fontSize': '16px',
+                                    'fontSize': '15px',
                                     'fontWeight': 'bold',
                                     'width': '200px',
                                     'textAlign': 'center',
                                     'fontFamily': "'Poppins', sans-serif",
-                                    'margin': '8px 0'
+                                    'margin': '6px 0'
                                 }),
                                 href="/Histogram"
                             ),
@@ -98,16 +98,16 @@ def Accueil():
                                 html.Button("Carte des coureurs par départements", style={
                                     'backgroundColor': 'white',
                                     'color': '#0d2366',
-                                    'padding': '12px 0',
+                                    'padding': '10px 0',
                                     'border': 'none',
                                     'borderRadius': '5px',
                                     'cursor': 'pointer',
-                                    'fontSize': '16px',
+                                    'fontSize': '15px',
                                     'fontWeight': 'bold',
                                     'width': '200px',
                                     'textAlign': 'center',
                                     'fontFamily': "'Poppins', sans-serif",
-                                    'margin': '8px 0'
+                                    'margin': '6px 0'
                                 }),
                                 href="/Map"
                             ),
@@ -116,13 +116,13 @@ def Accueil():
                     )
                 ],
                 style={
-                    'padding': '30px',  # Réduction du padding pour diminuer la hauteur
-                    'backgroundColor': 'rgba(13, 35, 102, 0.85)',  # Fond semi-transparent pour lisibilité
+                    'padding': '25px',  # Réduction du padding pour une hauteur plus compacte
+                    'backgroundColor': 'rgba(13, 35, 102, 0.85)',  # Fond semi-transparent
                     'borderRadius': '20px',  # Coins arrondis
                     'boxShadow': '0px 6px 15px rgba(0, 0, 0, 0.3)',  # Ombre plus marquée
-                    'maxWidth': '400px',  # Largeur maintenue
+                    'maxWidth': '400px',
                     'margin': 'auto',
-                    'marginTop': '180px',  # Bloc toujours abaissé
+                    'marginTop': '180px',
                     'textAlign': 'center'
                 }
             )
@@ -131,10 +131,10 @@ def Accueil():
             'display': 'flex',
             'flexDirection': 'column',
             'alignItems': 'center',
-            'justifyContent': 'start',  # Garde un alignement propre
+            'justifyContent': 'start',
             'height': '100vh',
             'width': '100vw',
-            'paddingTop': '60px'  # Ajoute encore un léger décalage vers le bas
+            'paddingTop': '60px'
         }
     )
 
