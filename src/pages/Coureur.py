@@ -6,7 +6,7 @@ import pandas as pd
 from pymongo import MongoClient
 from src.utils.Utils import search_in_elasticsearch
 
-# Enregistrement de la page d'accueil
+# Enregistrement de la page
 dash.register_page(__name__, path='/Coureur')
 
 # Configuration Elasticsearch
@@ -27,7 +27,7 @@ search_fields = [
 layout = html.Div([
     Header(),
     Navbar(),
-    html.H1("Chercher un coureur", style={'textAlign': 'center'}),
+    html.H1("Chercher un coureur", style={'textAlign': 'center', 'fontFamily': "'Poppins', sans-serif"}),
 
     # Barres de recherche
     html.Div([
@@ -36,74 +36,96 @@ layout = html.Div([
                 id=field['id'],
                 type=field['type'],
                 placeholder=field['placeholder'],
-                style={'width': '70%', 'padding': '10px', 'margin-bottom': '10px'}
+                style={
+                    'width': '70%',
+                    'padding': '10px',
+                    'margin-bottom': '10px',
+                    'borderRadius': '8px',
+                    'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                    'border': '1px solid #ccc',
+                    'backgroundColor': '#f8f9fa',
+                    'fontFamily': "'Poppins', sans-serif"
+                }
             )
             for field in search_fields if field['column'] not in ['distance_min', 'distance_max', 'date']
         ], style={'textAlign': 'center', 'margin-top': '20px'}),
-        
+
+        # Section Distance
         html.Div([
             html.Label("Distance :", style={
-                'font-weight': 'bold',
+                'fontWeight': 'bold',
                 'margin-right': '10px',
-                'align-self': 'center'
+                'alignSelf': 'center',
+                'fontFamily': "'Poppins', sans-serif"
             }),
             dcc.Input(
                 id='search-distance-min',
                 type='number',
                 placeholder='Min',
-                style={'width': '80px', 'padding': '5px', 'margin-right': '10px', 'display': 'inline-block'}
+                style={
+                    'width': '140px',
+                    'padding': '10px',
+                    'borderRadius': '8px',
+                    'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                    'border': '1px solid #ccc',
+                    'backgroundColor': '#f8f9fa',
+                    'textAlign': 'center',
+                    'fontFamily': "'Poppins', sans-serif",
+                    'margin-right': '10px'
+                }
             ),
             dcc.Input(
                 id='search-distance-max',
                 type='number',
                 placeholder='Max',
-                style={'width': '80px', 'padding': '5px', 'margin-right': '10px', 'display': 'inline-block'}
+                style={
+                    'width': '140px',
+                    'padding': '10px',
+                    'borderRadius': '8px',
+                    'boxShadow': '0px 4px 8px rgba(0, 0, 0, 0.2)',
+                    'border': '1px solid #ccc',
+                    'backgroundColor': '#f8f9fa',
+                    'textAlign': 'center',
+                    'fontFamily': "'Poppins', sans-serif"
+                }
             )
-        ], style={
-            'display': 'flex',
-            'align-items': 'center',
-            'margin-top': '5px',
-            'margin-left': '9%'
-        }),
+        ], style={'display': 'flex', 'justifyContent': 'center', 'margin-top': '5px'}),
 
+        # Section Date centrée
         html.Div([
+            html.Label("Date :", style={
+                'fontWeight': 'bold',
+                'margin-bottom': '10px',
+                'alignSelf': 'center',
+                'fontFamily': "'Poppins', sans-serif"
+            }),
             html.Div([
-                html.Label("Date :", style={
-                    'font-weight': 'bold',
-                    'margin-right': '10px',
-                    'align-self': 'center'
-                }),
                 dcc.Dropdown(
                     id='search-day',
                     options=[{'label': f"{day:02}", 'value': f"{day:02}"} for day in range(1, 32)],
                     placeholder='Jour',
-                    style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
+                    style={'width': '110px', 'display': 'inline-block', 'margin-right': '10px'}
                 ),
                 dcc.Dropdown(
                     id='search-month',
                     options=[{'label': f"{month:02}", 'value': f"{month:02}"} for month in range(1, 13)],
                     placeholder='Mois',
-                    style={'width': '100px', 'display': 'inline-block', 'margin-right': '10px'}
+                    style={'width': '110px', 'display': 'inline-block', 'margin-right': '10px'}
                 ),
                 dcc.Dropdown(
                     id='search-year',
                     options=[{'label': str(year), 'value': str(year)} for year in range(2000, 2031)],
                     placeholder='Année',
-                    style={'width': '100px', 'display': 'inline-block'}
+                    style={'width': '110px', 'display': 'inline-block'}
                 )
-            ], style={
-                'display': 'flex',
-                'align-items': 'center',
-                'margin-top': '5px',
-                'margin-left': '10.75%'
-            })
-        ]),
+            ], style={'display': 'flex', 'justifyContent': 'center'})
+        ], style={'textAlign': 'center', 'margin-top': '10px'}),
 
         html.Button(
             'Rechercher',
             id='search-button',
             n_clicks=0,
-            style={'padding': '10px 20px', 'background-color': '#007BFF', 'color': '#fff', 'border': 'none', 'margin-top': '20px'}
+            style={'padding': '10px 20px', 'backgroundColor': '#007BFF', 'color': '#fff', 'border': 'none', 'margin-top': '20px'}
         ),
         html.Div(id='search-result', style={'margin-top': '20px', 'font-size': '16px', 'color': '#333'})
     ], style={'textAlign': 'center'}),
@@ -121,23 +143,13 @@ layout = html.Div([
                 {"name": "Temps", "id": "time"},
                 {"name": "Vitesse", "id": "vitesse"},
                 {"name": "Distance", "id": "distance"},
-                {"name": "Lieu", "id": "location"},  # Ajout de la colonne "Lieu"
-                {"name": "Catégorie", "id": "category"}  # Ajout de la colonne "Catégorie"
+                {"name": "Lieu", "id": "location"},
+                {"name": "Catégorie", "id": "category"}
             ],
             data=[],
             fixed_rows={'headers': True},
-
             style_table={'margin-top': '20px', 'overflowX': 'auto'},
-            style_cell={
-                'textAlign': 'center',
-                'padding': '10px',
-                'whiteSpace': 'normal',
-                'overflow': 'hidden',
-                'textOverflow': 'ellipsis',
-                'maxWidth': '150px',
-                'minWidth': '100px',
-            },
-            style_data={'height': 'auto'},
+            style_cell={'textAlign': 'center', 'padding': '10px', 'fontFamily': "'Poppins', sans-serif"},
             style_header={'fontWeight': 'bold'}
         ),
         style={'width': '90%', 'margin': '0 auto'}
