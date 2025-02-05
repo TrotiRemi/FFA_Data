@@ -27,18 +27,21 @@ general_style = {
 }
 
 # Style spécifique pour le titre
+# 🎨 Nouveau style du titre (même que pour l'histogramme)
 title_style = {
     'textAlign': 'center',
     'fontFamily': "'Poppins', sans-serif",
-    'fontSize': '32px',
     'fontWeight': 'bold',
-    'background': 'linear-gradient(to right, #0d2366, #007BFF)',
-    'WebkitBackgroundClip': 'text',
-    'WebkitTextFillColor': 'transparent',
-    'textShadow': '1px 1px 2px rgba(0, 0, 0, 0.2)',
-    'letterSpacing': '1px',
-    'marginTop': '20px'
+    'fontSize': '32px',
+    'color': '#0d2366',
+    'textShadow': '2px 2px 4px rgba(0, 0, 0, 0.3)',
+    'marginBottom': '30px',
+    'display': 'inline-block',
+    'marginRight': '10px',
+    'verticalAlign': 'middle'
 }
+
+
 
 # Style pour aligner les labels et dropdowns
 common_style = {

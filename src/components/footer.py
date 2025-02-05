@@ -3,7 +3,7 @@ from dash import html
 def Footer():
     return html.Footer(
         children=[
-            html.P("Rémi LOCQUETTE - Lorenzo Vidy - Romain Alves Ferreira 2024-2025", 
+            html.P("Rémi LOCQUETTE, Lorenzo Vidy, Romain Alves Ferreira - 2025", 
                    style={'textAlign': 'center', 'color': 'white', 'margin': '3px', 
                           'fontFamily': "'Poppins', sans-serif", 'fontSize': '12px', 
                           'fontWeight': 'bold'}),
