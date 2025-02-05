@@ -1,4 +1,4 @@
-import dash
+import dash 
 from dash import html, dcc
 
 dash.register_page(__name__, path='/')
@@ -20,7 +20,7 @@ def Accueil():
                 }
             ),
 
-            # Contenu principal (bloc légèrement plus bas)
+            # Contenu principal (bloc fixe, légèrement descendu)
             html.Div(
                 children=[
                     html.H1("Bienvenue sur notre Application FFA", style={
@@ -116,13 +116,15 @@ def Accueil():
                     )
                 ],
                 style={
+                    'position': 'fixed',  # Fixe le bloc en place
+                    'top': '55%',  # Descend légèrement le bloc
+                    'left': '50%',  # Centre horizontalement
+                    'transform': 'translate(-50%, -50%)',  # Ajuste le centrage
                     'padding': '25px',  # Réduction du padding pour une hauteur plus compacte
                     'backgroundColor': 'rgba(13, 35, 102, 0.85)',  # Fond semi-transparent
                     'borderRadius': '20px',  # Coins arrondis
                     'boxShadow': '0px 6px 15px rgba(0, 0, 0, 0.3)',  # Ombre plus marquée
                     'maxWidth': '400px',
-                    'margin': 'auto',
-                    'marginTop': '180px',
                     'textAlign': 'center'
                 }
             )
@@ -131,10 +133,9 @@ def Accueil():
             'display': 'flex',
             'flexDirection': 'column',
             'alignItems': 'center',
-            'justifyContent': 'start',
+            'justifyContent': 'center',
             'height': '100vh',
-            'width': '100vw',
-            'paddingTop': '60px'
+            'width': '100vw'
         }
     )
 
